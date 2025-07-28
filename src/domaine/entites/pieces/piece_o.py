@@ -12,8 +12,10 @@ PieceO représente la pièce en forme de carré (4 blocs en 2x2).
 from typing import List
 from ..piece import Piece, TypePiece
 from ..position import Position
+from ..fabriques.registre_pieces import piece_tetris
 
 
+@piece_tetris(TypePiece.O)
 class PieceO(Piece):
     """
     Pièce O - Carré de 4 blocs.

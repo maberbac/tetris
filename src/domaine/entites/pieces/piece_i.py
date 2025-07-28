@@ -14,8 +14,10 @@ PieceI représente la pièce en ligne droite (4 blocs alignés).
 from typing import List
 from ..piece import Piece, TypePiece
 from ..position import Position
+from ..fabriques.registre_pieces import piece_tetris
 
 
+@piece_tetris(TypePiece.I)
 class PieceI(Piece):
     """
     Pièce I - Ligne droite de 4 blocs.
