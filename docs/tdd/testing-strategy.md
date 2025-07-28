@@ -27,18 +27,18 @@
 
 ## 🔄 **Phases en cours**
 
-### Phase 3 : Comportements spécialisés (TDD)
+### Phase 3 : Comportements spécialisés (TDD) ✅
 1. **Rotation PieceI** ✅
    - ✅ Test : Rotation horizontal ↔ vertical
    - ✅ Implémentation : Logic rotation autour pivot
    
-2. **PieceO (carré)** 🔄
-   - 🔄 Test : Création positions carré 2x2
-   - 🔄 Test : Rotation = no-op (carré)
-   - 🔄 Démonstration polymorphisme
+2. **PieceO (carré)** ✅
+   - ✅ Test : Création positions carré 2x2
+   - ✅ Test : Rotation = no-op (carré)
+   - ✅ Démonstration polymorphisme
 
 ### Phase 4 : Factory Pattern complet
-1. **FabriqueePieces**
+1. **FabriquePieces** 🔄
    - 🔄 Test : Création aléatoire
    - 🔄 Test : Création par type spécifique
    - 🔄 Implémentation : Pattern Factory
