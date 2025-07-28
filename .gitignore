@@ -1,0 +1,84 @@
+# Tetris Python - Garder seulement l'essentiel pour Git
+
+# === Python ===
+# Bytecode et cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# === Tests ===
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.cache
+
+# === Environnements ===
+# Environnements virtuels
+venv/
+.venv/
+env/
+.env
+ENV/
+
+# Configuration locale
+.python-version
+
+# === IDE ===
+# VS Code (garder seulement config essentielle)
+.vscode/
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# PyCharm
+.idea/
+
+# === Système ===
+# Windows
+Thumbs.db
+*.stackdump
+$RECYCLE.BIN/
+
+# macOS  
+.DS_Store
+.AppleDouble
+
+# Linux
+*~
+.directory
+
+# === Logs et temporaires ===
+*.log
+*.tmp
+temp/
+tmp/
+
+# === Jeu spécifique ===
+# Données utilisateur (à ne pas committer)
+saves/
+screenshots/
+user_config.json
+high_scores.json
+
+# === Documentation ===
+# GARDER tous les .md - ils sont importants !
+# Ne pas ignorer : *.md, docs/*.md, etc.
+
+# === Backup ===
+*.bak
+*.backup
+*.old
+*.orig
+
+# === Build ===
+*.exe
+*.dmg
+*.pkg
