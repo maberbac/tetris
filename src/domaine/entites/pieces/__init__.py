@@ -9,14 +9,18 @@ leur auto-enregistrement via le décorateur @piece_tetris.
 from .piece_i import PieceI
 from .piece_o import PieceO
 from .piece_t import PieceT
+from .piece_s import PieceS
+from .piece_z import PieceZ
+from .piece_j import PieceJ
+from .piece_l import PieceL
 
 __all__ = [
     'PieceI',
     'PieceO',
     'PieceT',
-    # À ajouter lors de l'implémentation :
-    # 'PieceS',  # À implémenter
-    # 'PieceZ',  # À implémenter
-    # 'PieceJ',  # À implémenter
+    'PieceS',
+    'PieceZ',
+    'PieceJ',
+    'PieceL'
     # 'PieceL'   # À implémenter
 ]

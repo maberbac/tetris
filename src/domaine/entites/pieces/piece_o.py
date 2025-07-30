@@ -33,19 +33,19 @@ class PieceO(Piece):
         return TypePiece.O
     
     @classmethod
-    def creer(cls, x_spawn: int, y_spawn: int) -> 'PieceO':
+    def creer(cls, x_pivot: int, y_pivot: int) -> 'PieceO':
         """
         Factory method pour créer une PieceO.
         
         Args:
-            x_spawn: Position X de spawn (coin gauche du carré)
-            y_spawn: Position Y de spawn (ligne du haut)
+            x_pivot: Position X du pivot
+            y_pivot: Position Y du pivot
             
         Returns:
             Nouvelle instance PieceO en carré 2x2
         """
         instance = cls.__new__(cls)
-        positions_initiales = instance.obtenir_positions_initiales(x_spawn, y_spawn)
+        positions_initiales = instance.obtenir_positions_initiales(x_pivot, y_pivot)
         
         # Pivot = coin supérieur gauche (position 0)
         position_pivot = positions_initiales[0]
@@ -55,25 +55,25 @@ class PieceO(Piece):
         
         return instance
     
-    def obtenir_positions_initiales(self, x_spawn: int, y_spawn: int) -> List[Position]:
+    def obtenir_positions_initiales(self, x_pivot: int, y_pivot: int) -> List[Position]:
         """
         Crée les positions initiales pour PieceO (carré 2x2).
         
-        Format : ██ avec x_spawn, y_spawn = coin supérieur gauche
+        Format : ██ avec pivot = coin supérieur gauche
                 ██
         
         Args:
-            x_spawn: Position X de spawn (gauche)
-            y_spawn: Position Y de spawn (haut)
+            x_pivot: Position X du pivot
+            y_pivot: Position Y du pivot
             
         Returns:
             4 positions en carré 2x2
         """
         return [
-            Position(x_spawn, y_spawn),         # Haut-gauche (pivot)
-            Position(x_spawn + 1, y_spawn),     # Haut-droite
-            Position(x_spawn, y_spawn + 1),     # Bas-gauche
-            Position(x_spawn + 1, y_spawn + 1)  # Bas-droite
+            Position(x_pivot, y_pivot),         # [pivot.x, pivot.y] (le pivot de la pièce)
+            Position(x_pivot + 1, y_pivot),     # [pivot.x+1, pivot.y]
+            Position(x_pivot, y_pivot + 1),     # [pivot.x, pivot.y+1]
+            Position(x_pivot + 1, y_pivot + 1)  # [pivot.x+1, pivot.y+1]
         ]
     
     def tourner(self) -> None:

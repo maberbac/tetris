@@ -47,14 +47,14 @@ class FabriquePieces:
         pass
     
     def creer(self, type_piece: TypePiece, 
-              x_spawn: int = None, y_spawn: int = None) -> Piece:
+              x_pivot: int = None, y_pivot: int = None) -> Piece:
         """
         Créer une pièce du type spécifié via le registre.
         
         Args:
             type_piece: Type de pièce à créer
-            x_spawn: Position X de spawn (utilise défaut si None)
-            y_spawn: Position Y de spawn (utilise défaut si None)
+            x_pivot: Position X du pivot (utilise défaut si None)
+            y_pivot: Position Y du pivot (utilise défaut si None)
             
         Returns:
             Instance de la pièce demandée
@@ -63,24 +63,23 @@ class FabriquePieces:
             ValueError: Si le type de pièce n'est pas supporté
         """
         # Utiliser les valeurs par défaut si non spécifiées
-        x = x_spawn if x_spawn is not None else self.X_SPAWN_DEFAUT
-        y = y_spawn if y_spawn is not None else self.Y_SPAWN_DEFAUT
+        x = x_pivot if x_pivot is not None else self.X_SPAWN_DEFAUT
+        y = y_pivot if y_pivot is not None else self.Y_SPAWN_DEFAUT
         
         # Obtenir la classe via le registre
         classe_piece = RegistrePieces.obtenir_classe_piece(type_piece)
         
         # Créer l'instance
-        return classe_piece.creer(x_spawn=x, y_spawn=y)
-        return classe_piece.creer(x_spawn=x, y_spawn=y)
+        return classe_piece.creer(x_pivot=x, y_pivot=y)
     
     
-    def creer_aleatoire(self, x_spawn: int = None, y_spawn: int = None) -> Piece:
+    def creer_aleatoire(self, x_pivot: int = None, y_pivot: int = None) -> Piece:
         """
         Créer une pièce aléatoire parmi les types supportés.
         
         Args:
-            x_spawn: Position X de spawn (utilise défaut si None)
-            y_spawn: Position Y de spawn (utilise défaut si None)
+            x_pivot: Position X du pivot (utilise défaut si None)
+            y_pivot: Position Y du pivot (utilise défaut si None)
             
         Returns:
             Instance d'une pièce aléatoire
@@ -94,7 +93,7 @@ class FabriquePieces:
             raise ValueError("Aucune pièce enregistrée dans le registre")
         
         type_choisi = random.choice(types_disponibles)
-        return self.creer(type_choisi, x_spawn, y_spawn)
+        return self.creer(type_choisi, x_pivot, y_pivot)
     
     def obtenir_types_supportes(self) -> List[TypePiece]:
         """Obtenir la liste des types de pièces supportés."""

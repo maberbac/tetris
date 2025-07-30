@@ -16,7 +16,10 @@ tetris/
 │           │   ├── piece_i.py  # Pièce ligne
 │           │   ├── piece_o.py  # Pièce carrée  
 │           │   ├── piece_t.py  # Pièce en T
-│           │   └── piece_s.py  # Pièce en S
+│           │   ├── piece_s.py  # Pièce en S
+│           │   ├── piece_z.py  # Pièce en Z
+│           │   ├── piece_j.py  # Pièce en J
+│           │   └── piece_l.py  # Pièce en L
 │           └── fabriques/      # Factory Pattern
 │               ├── registre_pieces.py    # Registry avec auto-enregistrement
 │               └── fabrique_pieces.py    # Factory pour créer les pièces
@@ -54,6 +57,47 @@ class PieceI(Piece):
 - **PieceO** : Carré (rotation = no-op) 
 - **PieceT** : Forme en T (4 orientations)
 - **PieceS** : Forme en S (2 orientations)
+- **PieceZ** : Forme en Z (2 orientations)
+- **PieceJ** : Forme en J (4 orientations)
+- **PieceL** : Forme en L (4 orientations) ✅ **Nouvelle !**
+
+#### Détail des formes et rotations
+```
+PieceI (ligne) - 2 orientations :
+Horizontal: ████        Vertical: █
+                                  █
+                                  █
+                                  █
+
+PieceO (carré) - 1 orientation :
+██
+██
+
+PieceT (T) - 4 orientations :
+Nord:  █     Est: █      Sud: ███    Ouest: █
+      ███         ██           █            ██
+                  █                         █
+
+PieceS (S) - 2 orientations :
+Horizontal:  ██    Vertical: █
+            ██               ██
+                              █
+
+PieceZ (Z) - 2 orientations :
+Horizontal: ██     Vertical:  █
+             ██              ██
+                             █
+
+PieceJ (J) - 4 orientations :
+Nord: █      Est: ██     Sud: ███    Ouest: █
+      ███         █           █             █
+                  █                        ██
+
+PieceL (L) - 4 orientations :
+Nord:    █     Est:  █     Sud: ███    Ouest:  ██
+       ███           █          █               █
+                     ██                         █
+```
 
 #### Comportement des pièces
 - **Mutables** : Peuvent changer d'état (déplacement, rotation)
@@ -65,11 +109,11 @@ class PieceI(Piece):
 ```python
 # Création via fabrique
 fabrique = FabriquePieces()
-piece = fabrique.creer(TypePiece.S, x_spawn=5, y_spawn=0)
+piece = fabrique.creer(TypePiece.J, x_spawn=5, y_spawn=0)
 
 # Auto-enregistrement avec décorateur
-@piece_tetris(TypePiece.S)
-class PieceS(Piece):
+@piece_tetris(TypePiece.J)
+class PieceJ(Piece):
     # Implémentation...
 ```
 
@@ -78,28 +122,49 @@ class PieceS(Piece):
 - **Auto-découverte** : Registry trouve automatiquement les pièces
 - **Découplage** : Factory ne connaît pas les classes concrètes
 
-### 4. Tests et qualité
+### 4. Patterns d'implémentation appris
+
+#### Registry Pattern avec décorateurs
+- **Auto-enregistrement** : `@piece_tetris(TypePiece.X)` enregistre automatiquement les classes
+- **Découverte dynamique** : Pas besoin de modifier le registre pour chaque nouvelle pièce
+- **Type safety** : Vérification des types à l'exécution
+
+#### Rotation systématique
+- **Pivot fixe** : Chaque pièce a un point de rotation constant
+- **Cycle d'orientations** : Nord → Est → Sud → Ouest → Nord
+- **Calculs géométriques** : Transformations matricielles pour les rotations
+
+#### TDD avec patterns métier
+- **RED-GREEN-REFACTOR** : Cycle systématique pour chaque nouvelle pièce
+- **Tests par comportement** : Création, mouvement, rotation, type
+- **Différenciation** : Tests pour distinguer les pièces similaires (S/Z, J/L)
+
+### 5. Tests et qualité
 ```bash
 # Exécuter tous les tests
 python test_runner.py
 
 # Tests spécifiques par pièce
-python -m unittest tests.test_domaine.test_entites.test_pieces.test_piece_s -v
+python -m unittest tests.test_domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
 #### Métriques actuelles
-- **33 tests** passent (100% ✅)
+- **56 tests** passent (100% ✅)
 - **Couverture** : Value Objects, Entities, Factory, Registry
 - **TDD** : Cycle RED-GREEN-REFACTOR respecté
+- **7 pièces** complètement implémentées : I, O, T, S, Z, J, L
+- **Symétrie J/L** : Architecture miroir parfaite
 - Vérification des blocs déjà placés
 - Validation avant chaque mouvement
+
+### 6. Game Logic (futures fonctionnalités)
 
 #### Suppression de lignes
 - Détection des lignes complètes
 - Animation de suppression
 - Calcul du score selon le nombre de lignes
 
-### 5. Système de score
+### 7. Système de score (futur)
 - Ligne simple : 100 points
 - Double ligne : 300 points
 - Triple ligne : 500 points
@@ -195,3 +260,34 @@ Pour chaque ligne du bas vers le haut :
 - Mode debug avec affichage des coordonnées
 - Logs des événements de jeu
 - Visualisation des zones de collision
+
+---
+
+## 🎯 État d'avancement du projet
+
+### ✅ Phase 1 - Fondations (TERMINÉE)
+**Objectif** : Implémenter toutes les pièces de Tetris avec TDD
+
+**Réalisations** :
+- ✅ **7/7 pièces Tetris complètes** : I, O, T, S, Z, J, L
+- ✅ **56 tests TDD** avec 100% de réussite
+- ✅ **Registry Pattern** avec auto-enregistrement
+- ✅ **Factory Pattern** pour création centralisée
+- ✅ **Architecture hexagonale** respectée
+- ✅ **Symétrie J/L** parfaitement implémentée
+
+**Architecture stable** : Prête pour la phase suivante 🚀
+
+### 🔄 Phase 2 - Plateau de jeu (PROCHAINE)
+**Objectifs** :
+- Grille de jeu 10×20
+- Détection de collision avec le plateau
+- Placement définitif des pièces
+- Détection de lignes complètes
+
+### ⏳ Phase 3 - Interface utilisateur
+**Objectifs** :
+- Interface Pygame
+- Contrôles clavier
+- Affichage graphique
+- Game loop principal

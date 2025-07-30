@@ -28,7 +28,7 @@ class TestPieceO(unittest.TestCase):
         - Avoir un pivot au centre du carré
         """
         # Act : Créer une PieceO
-        piece = PieceO.creer(x_spawn=5, y_spawn=1)
+        piece = PieceO.creer(x_pivot=5, y_pivot=1)
         
         # Assert : Vérifier les propriétés
         self.assertEqual(piece.type_piece, TypePiece.O)
@@ -56,7 +56,7 @@ class TestPieceO(unittest.TestCase):
         mais comportement différent.
         """
         # Arrange : PieceO avec positions initiales
-        piece = PieceO.creer(x_spawn=7, y_spawn=2)
+        piece = PieceO.creer(x_pivot=7, y_pivot=2)
         positions_initiales = piece.positions.copy()
         pivot_initial = piece.position_pivot
         
@@ -75,7 +75,7 @@ class TestPieceO(unittest.TestCase):
         Vérifie que le déplacement fonctionne comme PieceI.
         """
         # Arrange : PieceO
-        piece = PieceO.creer(x_spawn=5, y_spawn=1)
+        piece = PieceO.creer(x_pivot=5, y_pivot=1)
         
         # Act : Déplacer vers la droite et vers le bas
         piece.deplacer(2, 3)

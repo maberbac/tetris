@@ -17,6 +17,9 @@ def main():
         'tests.test_domaine.test_entites.test_pieces.test_piece_o', 
         'tests.test_domaine.test_entites.test_pieces.test_piece_t',
         'tests.test_domaine.test_entites.test_pieces.test_piece_s',  # ← Nouvelle pièce S
+        'tests.test_domaine.test_entites.test_pieces.test_piece_z',  # ← Nouvelle pièce Z
+        'tests.test_domaine.test_entites.test_pieces.test_piece_j',  # ← Nouvelle pièce J
+        'tests.test_domaine.test_entites.test_pieces.test_piece_l',  # ← Nouvelle pièce L
         'tests.test_domaine.test_entites.test_fabriques.test_registre_pieces',
         'tests.test_domaine.test_entites.test_fabriques.test_fabrique_pieces',
     ]

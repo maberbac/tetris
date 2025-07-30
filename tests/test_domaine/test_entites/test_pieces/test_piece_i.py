@@ -27,7 +27,7 @@ class TestPieceI(unittest.TestCase):
         - Avoir un pivot au centre
         """
         # Act : Créer une PieceI
-        piece = PieceI.creer(x_spawn=5, y_spawn=0)
+        piece = PieceI.creer(x_pivot=5, y_pivot=0)
         
         # Assert : Vérifier les propriétés
         self.assertEqual(piece.type_piece, TypePiece.I)
@@ -51,7 +51,7 @@ class TestPieceI(unittest.TestCase):
         les Entities mutent leur état.
         """
         # Arrange : Créer une PieceI
-        piece = PieceI.creer(x_spawn=5, y_spawn=0)
+        piece = PieceI.creer(x_pivot=5, y_pivot=0)
         positions_initiales = piece.positions.copy()
         
         # Act : Déplacer la pièce vers la droite et vers le bas
@@ -80,7 +80,7 @@ class TestPieceI(unittest.TestCase):
                        █
         """
         # Arrange : PieceI horizontal (position initiale)
-        piece = PieceI.creer(x_spawn=5, y_spawn=1)
+        piece = PieceI.creer(x_pivot=5, y_pivot=1)
         positions_horizontales = [
             Position(3, 1), Position(4, 1),
             Position(5, 1), Position(6, 1)
@@ -105,7 +105,7 @@ class TestPieceI(unittest.TestCase):
         Rotation inverse : vertical → horizontal
         """
         # Arrange : PieceI en position verticale
-        piece = PieceI.creer(x_spawn=5, y_spawn=1)
+        piece = PieceI.creer(x_pivot=5, y_pivot=1)
         piece.tourner()  # Passer en vertical d'abord
         
         positions_verticales = piece.positions.copy()
@@ -129,7 +129,7 @@ class TestPieceI(unittest.TestCase):
         seules les autres positions tournent autour.
         """
         # Arrange : PieceI avec pivot connu
-        piece = PieceI.creer(x_spawn=7, y_spawn=3)
+        piece = PieceI.creer(x_pivot=7, y_pivot=3)
         pivot_initial = piece.position_pivot
         self.assertEqual(pivot_initial, Position(6, 3))  # pivot = positions[1]
         

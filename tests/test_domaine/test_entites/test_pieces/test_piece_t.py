@@ -16,7 +16,7 @@ class TestPieceT(unittest.TestCase):
     
     def setUp(self):
         """Préparer les données de test."""
-        self.piece_t = PieceT.creer(x_spawn=5, y_spawn=0)
+        self.piece_t = PieceT.creer(x_pivot=5, y_pivot=0)
     
     def test_piece_t_a_type_correct(self):
         """Test : PieceT retourne le bon type."""

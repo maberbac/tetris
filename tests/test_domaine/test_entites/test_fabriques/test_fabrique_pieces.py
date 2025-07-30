@@ -50,7 +50,7 @@ class TestFabriquePieces(unittest.TestCase):
         Utile pour positionner les pièces dans le jeu.
         """
         # Act : Créer une pièce à une position spécifique
-        piece = self.fabrique.creer(TypePiece.I, x_spawn=7, y_spawn=3)
+        piece = self.fabrique.creer(TypePiece.I, x_pivot=7, y_pivot=3)
         
         # Assert : Position de spawn correcte
         # Pour PieceI, le pivot devrait être à (6, 3) avec spawn (7, 3)
@@ -71,7 +71,7 @@ class TestFabriquePieces(unittest.TestCase):
         
         # Assert : Toutes sont des instances valides
         for piece in pieces:
-            self.assertIn(piece.type_piece, [TypePiece.I, TypePiece.O, TypePiece.T, TypePiece.S])
+            self.assertIn(piece.type_piece, [TypePiece.I, TypePiece.O, TypePiece.T, TypePiece.S, TypePiece.Z, TypePiece.J, TypePiece.L])
             self.assertEqual(len(piece.positions), 4)
             self.assertIsNotNone(piece.position_pivot)
         

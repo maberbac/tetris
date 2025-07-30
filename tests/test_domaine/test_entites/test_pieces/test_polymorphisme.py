@@ -24,8 +24,8 @@ class TestPolymorphismePieces(unittest.TestCase):
         """
         # Arrange : Une PieceI et une PieceO
         pieces: list[Piece] = [
-            PieceI.creer(x_spawn=5, y_spawn=2),
-            PieceO.creer(x_spawn=5, y_spawn=2)
+            PieceI.creer(x_pivot=5, y_pivot=2),
+            PieceO.creer(x_pivot=5, y_pivot=2)
         ]
         
         # Sauvegarder positions initiales
@@ -52,8 +52,8 @@ class TestPolymorphismePieces(unittest.TestCase):
         """
         # Arrange : Différents types de pièces
         pieces: list[Piece] = [
-            PieceI.creer(x_spawn=3, y_spawn=1),
-            PieceO.creer(x_spawn=3, y_spawn=1)
+            PieceI.creer(x_pivot=3, y_pivot=1),
+            PieceO.creer(x_pivot=3, y_pivot=1)
         ]
         
         # Sauvegarder positions avant déplacement

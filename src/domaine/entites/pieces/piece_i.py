@@ -34,19 +34,19 @@ class PieceI(Piece):
         return TypePiece.I
     
     @classmethod
-    def creer(cls, x_spawn: int, y_spawn: int) -> 'PieceI':
+    def creer(cls, x_pivot: int, y_pivot: int) -> 'PieceI':
         """
         Factory method pour créer une PieceI.
         
         Args:
-            x_spawn: Position X de spawn (centre de la pièce)
-            y_spawn: Position Y de spawn
+            x_pivot: Position X du pivot
+            y_pivot: Position Y du pivot
             
         Returns:
             Nouvelle instance PieceI en position horizontale
         """
         instance = cls.__new__(cls)
-        positions_initiales = instance.obtenir_positions_initiales(x_spawn, y_spawn)
+        positions_initiales = instance.obtenir_positions_initiales(x_pivot, y_pivot)
         
         # Pivot au centre de la ligne (position 1 sur 4)
         position_pivot = positions_initiales[1]
@@ -56,24 +56,24 @@ class PieceI(Piece):
         
         return instance
     
-    def obtenir_positions_initiales(self, x_spawn: int, y_spawn: int) -> List[Position]:
+    def obtenir_positions_initiales(self, x_pivot: int, y_pivot: int) -> List[Position]:
         """
         Crée les positions initiales pour PieceI (ligne horizontale).
         
-        Format : ████ avec x_spawn au centre
+        Format : ████ avec pivot au centre
         
         Args:
-            x_spawn: Position X de spawn (centre)
-            y_spawn: Position Y de spawn
+            x_pivot: Position X du pivot
+            y_pivot: Position Y du pivot
             
         Returns:
             4 positions en ligne horizontale
         """
         return [
-            Position(x_spawn - 2, y_spawn),  # Gauche
-            Position(x_spawn - 1, y_spawn),  # Centre-gauche (pivot)  
-            Position(x_spawn, y_spawn),      # Centre-droite
-            Position(x_spawn + 1, y_spawn)   # Droite
+            Position(x_pivot - 2, y_pivot),  # [pivot.x-2, pivot.y]
+            Position(x_pivot - 1, y_pivot),  # [pivot.x-1, pivot.y] (le pivot de la pièce)  
+            Position(x_pivot, y_pivot),      # [pivot.x, pivot.y]
+            Position(x_pivot + 1, y_pivot)   # [pivot.x+1, pivot.y]
         ]
     
     def tourner(self) -> None:
@@ -108,19 +108,16 @@ class PieceI(Piece):
         Transforme la pièce en orientation verticale.
         
         Calcule 4 positions en colonne autour du pivot :
-        - pivot.y - 1
-        - pivot.y     (pivot lui-même)
-        - pivot.y + 1
-        - pivot.y + 2
+        [pivot.x, pivot.y-1], [pivot.x, pivot.y] (le pivot), [pivot.x, pivot.y+1], [pivot.x, pivot.y+2]
         """
         x_pivot = self.position_pivot.x
         y_pivot = self.position_pivot.y
         
         self.positions = [
-            Position(x_pivot, y_pivot - 1),  # Haut
-            Position(x_pivot, y_pivot),      # Pivot
-            Position(x_pivot, y_pivot + 1),  # Bas
-            Position(x_pivot, y_pivot + 2)   # Bas +1
+            Position(x_pivot, y_pivot - 1),  # [pivot.x, pivot.y-1]
+            Position(x_pivot, y_pivot),      # [pivot.x, pivot.y] (le pivot de la pièce)
+            Position(x_pivot, y_pivot + 1),  # [pivot.x, pivot.y+1]
+            Position(x_pivot, y_pivot + 2)   # [pivot.x, pivot.y+2]
         ]
     
     def _devenir_horizontal(self) -> None:
@@ -128,17 +125,14 @@ class PieceI(Piece):
         Transforme la pièce en orientation horizontale.
         
         Calcule 4 positions en ligne autour du pivot :
-        - pivot.x - 1
-        - pivot.x     (pivot lui-même)  
-        - pivot.x + 1
-        - pivot.x + 2
+        [pivot.x-1, pivot.y], [pivot.x, pivot.y] (le pivot), [pivot.x+1, pivot.y], [pivot.x+2, pivot.y]
         """
         x_pivot = self.position_pivot.x
         y_pivot = self.position_pivot.y
         
         self.positions = [
-            Position(x_pivot - 1, y_pivot),  # Gauche
-            Position(x_pivot, y_pivot),      # Pivot
-            Position(x_pivot + 1, y_pivot),  # Droite
-            Position(x_pivot + 2, y_pivot)   # Droite +1
+            Position(x_pivot - 1, y_pivot),  # [pivot.x-1, pivot.y]
+            Position(x_pivot, y_pivot),      # [pivot.x, pivot.y] (le pivot de la pièce)
+            Position(x_pivot + 1, y_pivot),  # [pivot.x+1, pivot.y]
+            Position(x_pivot + 2, y_pivot)   # [pivot.x+2, pivot.y]
         ]

@@ -20,7 +20,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_peut_etre_creee(self):
         """Test RED : Créer une PieceS avec positions initiales S horizontal."""
         # Arrange & Act
-        piece = PieceS.creer(x_spawn=5, y_spawn=0)
+        piece = PieceS.creer(x_pivot=5, y_pivot=0)
         
         # Assert - Form S horizontal (orientation par défaut)
         #  ██  ← positions (5,0) et (6,0)
@@ -37,7 +37,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_peut_se_deplacer(self):
         """Test : PieceS peut se déplacer (héritage du comportement commun)."""
         # Arrange
-        piece = PieceS.creer(x_spawn=5, y_spawn=0)
+        piece = PieceS.creer(x_pivot=5, y_pivot=0)
         positions_initiales = piece.positions.copy()
         
         # Act
@@ -56,7 +56,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_peut_tourner_horizontal_vers_vertical(self):
         """Test RED : PieceS peut tourner de horizontal vers vertical."""
         # Arrange
-        piece = PieceS.creer(x_spawn=5, y_spawn=1)
+        piece = PieceS.creer(x_pivot=5, y_pivot=1)
         
         # Act
         piece.tourner()
@@ -76,7 +76,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_peut_tourner_vertical_vers_horizontal(self):
         """Test : PieceS peut tourner de vertical vers horizontal."""
         # Arrange
-        piece = PieceS.creer(x_spawn=5, y_spawn=1)
+        piece = PieceS.creer(x_pivot=5, y_pivot=1)
         piece.tourner()  # Passage en vertical
         
         # Act
@@ -94,7 +94,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_rotation_complete_revient_a_origine(self):
         """Test : PieceS après 2 rotations revient à l'orientation d'origine."""
         # Arrange
-        piece = PieceS.creer(x_spawn=5, y_spawn=1)
+        piece = PieceS.creer(x_pivot=5, y_pivot=1)
         positions_initiales = piece.positions.copy()
         
         # Act - 2 rotations pour S (seulement 2 orientations)
@@ -107,7 +107,7 @@ class TestPieceS(unittest.TestCase):
     def test_piece_s_a_type_correct(self):
         """Test : PieceS retourne le bon type."""
         # Arrange & Act
-        piece = PieceS.creer(x_spawn=0, y_spawn=0)
+        piece = PieceS.creer(x_pivot=0, y_pivot=0)
         
         # Assert
         self.assertEqual(piece.type_piece, TypePiece.S)

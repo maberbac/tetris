@@ -2,21 +2,13 @@
 
 Un jeu de Tetris classique développé en Python avec une architecture moderne et des bonnes pratiques de développement.
 
-## 🎮 Fonctionnalités jeu de Tetris classique développé en Python avec une architecture moderne et des bonnes pratiques de développement.
-
-> 🎓 **Pour l'apprentissage** : Voir [learning/README.md](learning/README.md) pour les leçons d'architecture et patterns.ris
-
-Un jeu de Tetris classique développé en Python avec une architecture moderne et des bonnes pratiques de développement.
-
-> � **Pour l'apprentissage** : Voir [LEARNING.md](LEARNING.md) pour les leçons d'architecture et patterns.
-
 ## 🎮 Fonctionnalités
 
-- Gameplay classique de Tetris avec 7 types de pièces (tétrominos)
+- Gameplay classique de Tetris avec **les 7 tétrominos complets** (I, O, T, S, Z, J, L)
 - Rotation et déplacement des pièces avec validation de collision
-- Suppression automatique des lignes complètes
-- Système de score et progression par niveaux
-- Interface utilisateur intuitive avec Pygame
+- Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
+- Architecture hexagonale avec séparation claire des responsabilités
+- Tests complets avec approche TDD (Test-Driven Development) - 56/56 tests ✅
 
 ## 🚀 Installation et utilisation
 
@@ -44,17 +36,22 @@ python test_runner.py
 
 ## 🎲 Types de pièces
 
-Le jeu utilise les 7 tétrominos classiques :
+Le jeu a maintenant **toutes les 7 tétrominos classiques** complètement implémentées :
 
 ```
 I-piece (ligne)     O-piece (carré)     T-piece (T)
-    ████                ██                 █
-                        ██                ███
+    █                   ██                ███
+    █                   ██                 █
+    █
+    █
 
-S-piece (S)         Z-piece (Z)         J-piece (J)         L-piece (L)  
-     ██               ██                   █                   █
-    ██                 ██                 ███                 ███
+S-piece (S)         Z-piece (Z)         J-piece (J)     L-piece (L)
+     ██               ██                   █               █
+    ██                 ██                  █               █
+                                          ██               ██
 ```
+
+✅ **Toutes les pièces sont maintenant implémentées avec leurs 4 orientations** (ou 2 pour S/Z, 1 pour O)
 
 ## 🏗️ Architecture technique
 
@@ -83,26 +80,28 @@ python test_runner.py
 python -m unittest tests.test_domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
-**Couverture actuelle** : 33 tests, 100% de réussite ✅
+**Couverture actuelle** : 56 tests, 100% de réussite ✅
 
 ## 📋 État du développement
 
 ### ✅ Terminé
 - Architecture de base avec TDD
-- Pièces I, O, T, S avec rotations
+- **Toutes les 7 pièces complètes** : I, O, T, S, Z, J, L avec rotations complètes
 - Factory Pattern avec auto-enregistrement (Registry Pattern)
-- Tests complets du domaine
+- Tests complets du domaine (56 tests, 100% réussite)
+- Value Objects et Entities avec comportements métier
+- Symétrie parfaite entre pièces J et L
 
 ### 🔄 En cours  
-- Implémentation des pièces Z, J, L
-- Plateau de jeu avec détection de lignes
+- Plateau de jeu avec détection de lignes complètes
 
 ### ⏳ À venir
 - Interface utilisateur Pygame
 - Système de score et niveaux
 - Sauvegarde des scores
+- Game Loop principal
 
 ---
 
-> **Licence** : Projet éducatif - INF2020
-5. Commencez à jouer !
+> **Licence** : Projet éducatif  
+> **Status** : ✅ **7/7 pièces Tetris complètes** avec TDD et architecture hexagonale
