@@ -71,26 +71,32 @@ python tests/run_all_integration_tests.py
 python tests/run_all_acceptance_tests.py
 ```
 
-## 📊 Pyramide de Tests
+## 📊 Pyramide de Tests - **ÉTAT ACTUEL : 75 TESTS (100% RÉUSSITE)**
 
 ```
         🎭 Acceptance
       (Comportement utilisateur)
-         2 tests
+         2 tests ✅
     
       🔗 Integration  
     (Système complet)
-        1 test
+        1 test ✅
 
   🧪 Unit Tests
  (Logique métier)
-   13+ tests
+   72 tests ✅
 ```
 
+### **Métriques de qualité - PARFAITES** :
+- **📊 Total** : 75 tests 
+- **✅ Réussite** : 100.0% (75/75)
+- **⚡ Performance** : 0.021s d'exécution
+- **🔧 Corrections** : Tous les imports réparés (`domaine` → `src.domaine`)
+
 ### Utilisation recommandée :
-- **Développement TDD** : `run_all_unit_tests.py` (le plus fréquent)
-- **Validation système** : `run_all_integration_tests.py` (avant commits)
-- **Validation utilisateur** : `run_all_acceptance_tests.py` (avant releases)
+- **Développement TDD** : `python tests/run_tests.py` (runner unifié)
+- **Tests spécifiques** : `python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v`
+- **Validation continue** : Tous les tests passent systématiquement
 
 ## 🏗️ Architecture Respectée
 

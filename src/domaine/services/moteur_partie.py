@@ -164,7 +164,7 @@ class MoteurPartie:
         lignes_completes = self.plateau.obtenir_lignes_completes()
         if lignes_completes:
             nb_lignes = self.plateau.supprimer_lignes(lignes_completes)
-            self.stats.ajouter_lignes(nb_lignes)
+            self.stats.ajouter_score_selon_lignes_completees(nb_lignes)
             
             if nb_lignes == 4:
                 self.messages.append("🎉 TETRIS ! (+800 pts)")

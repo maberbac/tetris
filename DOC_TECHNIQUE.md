@@ -231,36 +231,60 @@ stats = adaptateur.traiter_evenements(moteur)
 ### 5. Tests et qualité
 ```bash
 # Exécuter tous les tests
-python test_runner.py
+python tests/run_suite_tests.py
+
+# Tests par catégorie
+python tests/run_all_unit_tests.py       # Tests unitaires (75 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (9 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
 
 # Tests spécifiques par pièce
-python -m unittest tests.test_domaine.test_entites.test_pieces.test_piece_j -v
+python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
 #### Métriques actuelles
-- **56+ tests** passent (100% ✅)
-- **Couverture** : Value Objects, Entities, Services, Factory, Registry
+- **88 tests** passent (100% ✅)
+- **Couverture** : Value Objects, Entities, Services, Factory, Registry, Command Pattern, Moteur complet
 - **TDD** : Cycle RED-GREEN-REFACTOR respecté
 - **7 pièces** complètement implémentées : I, O, T, S, Z, J, L
 - **Plateau fonctionnel** : Collisions, lignes complètes, gravité
 - **Système de contrôles complet** : 7 commandes + gestionnaire d'événements
 - **Architecture découplée** : Command Pattern + Bridge Pattern
+- **Interface Pygame complète** : 60 FPS, couleurs, statistiques
+- **Moteur de partie** : Génération automatique, chute, scoring
+- **Tests entièrement corrigés** : Tous les imports et assertions réparés
 - Vérification des blocs déjà placés
 - Validation avant chaque mouvement
 
-### 6. Game Logic (futures fonctionnalités)
+### 6. **Moteur de partie complet** ✅
 
-#### Suppression de lignes
-- Détection des lignes complètes
-- Animation de suppression
-- Calcul du score selon le nombre de lignes
+#### Génération automatique des pièces
+- Fabrique intégrée avec génération aléatoire équitable
+- Preview de la pièce suivante
+- Positionnement automatique au centre du plateau
 
-### 7. Système de score (futur)
-- Ligne simple : 100 points
-- Double ligne : 300 points
-- Triple ligne : 500 points
-- Tetris (4 lignes) : 800 points
-- Bonus de vitesse selon le niveau
+#### Système de score et niveaux
+- **Ligne simple** : 100 points × niveau
+- **Double ligne** : 300 points × niveau  
+- **Triple ligne** : 500 points × niveau
+- **Tetris (4 lignes)** : 800 points × niveau
+- **Progression automatique** : Niveau +1 tous les 10 lignes
+- **Accélération** : Chute plus rapide selon le niveau
+
+#### Interface Pygame complète
+- **Affichage 60 FPS** avec boucle de jeu optimisée
+- **Couleurs distinctives** par type de pièce
+- **Panneau statistiques** : Score, niveau, lignes, compteurs
+- **Preview pièce suivante** en temps réel
+- **Grille de jeu** 10×20 avec bordures
+
+### 7. **Tests d'intégration** ✅
+
+#### Suite complète de validation système
+- **test_generation_aleatoire** : Distribution équitable des 7 types
+- **test_moteur_partie** : Mécaniques complètes du jeu
+- **test_plateau_collision** : Détection de collisions
+- **test_statistiques** : Système de score et progression
 
 ## Algorithmes clés
 

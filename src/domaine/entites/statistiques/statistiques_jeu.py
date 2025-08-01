@@ -32,8 +32,8 @@ class StatistiquesJeu:
         self.pieces_par_type[type_piece] += 1
         self.pieces_placees += 1
     
-    def ajouter_lignes(self, nb_lignes: int) -> None:
-        """Ajoute des lignes complétées aux statistiques."""
+    def ajouter_score_selon_lignes_completees(self, nb_lignes: int) -> None:
+        """Ajoute le score aux statistiques selon le nombre de lignes complétées simultanément."""
         self.lignes_completees += nb_lignes
         
         # Calcul du score selon le nombre de lignes

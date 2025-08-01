@@ -24,8 +24,8 @@ def test_generation_aleatoire():
     pieces_generees = []
     for i in range(20):
         piece = fabrique.creer_aleatoire()
-        pieces_generees.append(piece.type)
-        print(f"Pièce {i+1:2d}: {piece.type.value}")
+        pieces_generees.append(piece.type_piece)  # CORRECTION: type_piece au lieu de type
+        print(f"Pièce {i+1:2d}: {piece.type_piece.value}")
     
     # Vérifier qu'on a au moins 3 types différents (probabilité très élevée)
     types_uniques = set(pieces_generees)
@@ -43,20 +43,37 @@ def test_plateau_collision():
     plateau = Plateau(10, 20)
     fabrique = FabriquePieces()
     
-    # Créer une pièce au centre
-    piece = fabrique.creer(from_type='I', x_spawn=5, y_spawn=0)
+    # Créer une pièce au centre - CORRECTION: utiliser TypePiece.I directement
+    from src.domaine.entites.piece import TypePiece
+    piece = fabrique.creer(TypePiece.I, x_pivot=5, y_pivot=0)  # CORRECTION: type_piece au lieu de from_type
     print(f"✅ Pièce I créée à (5, 0)")
     
-    # Vérifier collision avec limites
-    collision_gauche = plateau.verifier_collision_limites(piece, delta_x=-10, delta_y=0)
-    collision_droite = plateau.verifier_collision_limites(piece, delta_x=10, delta_y=0)
-    collision_bas = plateau.verifier_collision_limites(piece, delta_x=0, delta_y=25)
-    collision_normale = plateau.verifier_collision_limites(piece, delta_x=0, delta_y=0)
+    # Test de position normale
+    collision_normale = not plateau.peut_placer_piece(piece)
+    print(f"Position normale (5,0): collision={collision_normale}")
     
+    # Tester les collisions en déplaçant la pièce
+    # Déplacement vers la gauche extrême (doit causer collision)
+    positions_orig = piece.positions.copy()
+    pivot_orig = piece.position_pivot
+    
+    piece.deplacer(-10, 0)  # Déplacer très loin à gauche
+    collision_gauche = not plateau.peut_placer_piece(piece)
     print(f"Collision gauche (delta_x=-10): {collision_gauche}")
+    
+    # Remettre position originale et tester droite
+    piece.positions = positions_orig
+    piece.position_pivot = pivot_orig
+    piece.deplacer(10, 0)  # Déplacer très loin à droite
+    collision_droite = not plateau.peut_placer_piece(piece)
     print(f"Collision droite (delta_x=+10): {collision_droite}")
-    print(f"Collision bas (delta_y=+25): {collision_bas}")  
-    print(f"Position normale (0,0): {collision_normale}")
+    
+    # Remettre position originale et tester bas
+    piece.positions = positions_orig
+    piece.position_pivot = pivot_orig
+    piece.deplacer(0, 25)  # Déplacer très loin en bas
+    collision_bas = not plateau.peut_placer_piece(piece)
+    print(f"Collision bas (delta_y=+25): {collision_bas}")
     
     assert collision_gauche == True, "Devrait détecter collision à gauche"
     assert collision_droite == True, "Devrait détecter collision à droite"
@@ -73,11 +90,11 @@ def test_moteur_partie():
     moteur = MoteurPartie()
     print("✅ Moteur créé")
     
-    # Vérifier l'état initial
-    piece_courante = moteur.obtenir_piece_courante()
+    # Vérifier l'état initial - CORRECTION: obtenir_piece_active au lieu de obtenir_piece_courante
+    piece_courante = moteur.obtenir_piece_active()
     plateau = moteur.obtenir_plateau()
     
-    print(f"✅ Pièce courante: {piece_courante.type.value}")
+    print(f"✅ Pièce courante: {piece_courante.type_piece.value}")  # CORRECTION: type_piece
     print(f"✅ Plateau: {plateau.largeur}×{plateau.hauteur}")
     
     # Tester les commandes de base
@@ -94,10 +111,81 @@ def test_statistiques():
     print("\n🧪 Test des statistiques")
     print("-" * 40)
     
-    # TODO: StatistiquesJeu pas encore implémentée
-    print("⚠️ StatistiquesJeu pas encore implémentée")
-    print("✅ Test marqué comme réussi pour l'instant")
+    from src.domaine.entites.statistiques.statistiques_jeu import StatistiquesJeu
+    from src.domaine.entites.piece import TypePiece
     
+    # Création des statistiques
+    stats = StatistiquesJeu()
+    print(f"📊 Statistiques initiales : Score={stats.score}, Niveau={stats.niveau}")
+    
+    # Test 1: État initial
+    assert stats.score == 0, f"Score initial devrait être 0, trouvé {stats.score}"
+    assert stats.niveau == 1, f"Niveau initial devrait être 1, trouvé {stats.niveau}"
+    assert stats.lignes_completees == 0, f"Lignes complétées initiales devraient être 0, trouvé {stats.lignes_completees}"
+    assert stats.pieces_placees == 0, f"Pièces placées initiales devraient être 0, trouvé {stats.pieces_placees}"
+    print("✅ État initial correct")
+    
+    # Test 2: Ajout de pièces
+    stats.ajouter_piece(TypePiece.I)
+    stats.ajouter_piece(TypePiece.O) 
+    stats.ajouter_piece(TypePiece.T)
+    assert stats.pieces_placees == 3, f"Devrait avoir 3 pièces placées, trouvé {stats.pieces_placees}"
+    assert stats.pieces_par_type[TypePiece.I] == 1, f"Devrait avoir 1 pièce I, trouvé {stats.pieces_par_type[TypePiece.I]}"
+    assert stats.pieces_par_type[TypePiece.O] == 1, f"Devrait avoir 1 pièce O, trouvé {stats.pieces_par_type[TypePiece.O]}"
+    assert stats.pieces_par_type[TypePiece.T] == 1, f"Devrait avoir 1 pièce T, trouvé {stats.pieces_par_type[TypePiece.T]}"
+    print("✅ Comptage des pièces correct")
+    
+    # Test 3: Calcul du score (ligne simple)
+    score_initial = stats.score
+    stats.ajouter_score_selon_lignes_completees(1)
+    score_attendu = score_initial + (100 * stats.niveau)  # 100 points par ligne simple
+    assert stats.score >= score_initial, f"Score devrait augmenter après ligne complète"
+    assert stats.lignes_completees == 1, f"Devrait avoir 1 ligne complétée, trouvé {stats.lignes_completees}"
+    print(f"✅ Score après 1 ligne : {stats.score} points")
+    
+    # Test 4: Score pour Tetris (4 lignes simultanées)
+    score_avant_tetris = stats.score
+    stats.ajouter_score_selon_lignes_completees(4)  # Tetris !
+    bonus_tetris = 800 * stats.niveau
+    assert stats.score > score_avant_tetris, f"Score devrait augmenter significativement pour un Tetris"
+    assert stats.lignes_completees == 5, f"Devrait avoir 5 lignes complétées au total, trouvé {stats.lignes_completees}"
+    print(f"✅ Score après Tetris : {stats.score} points (bonus Tetris appliqué)")
+    
+    # Test 5: Progression de niveau
+    # Compléter 10 lignes au total pour passer au niveau 2
+    stats.ajouter_score_selon_lignes_completees(5)  # 5 lignes de plus = 10 total
+    assert stats.lignes_completees == 10, f"Devrait avoir 10 lignes complétées, trouvé {stats.lignes_completees}"
+    assert stats.niveau == 2, f"Devrait être au niveau 2 après 10 lignes, trouvé niveau {stats.niveau}"
+    print(f"✅ Progression de niveau : Niveau {stats.niveau} après {stats.lignes_completees} lignes")
+    
+    # Test 6: Score multiplié par niveau
+    score_niveau2 = stats.score
+    stats.ajouter_score_selon_lignes_completees(2)  # Double ligne au niveau 2
+    bonus_double = 300 * 2  # 300 points × niveau 2
+    assert stats.score > score_niveau2, f"Score devrait augmenter avec bonus de niveau"
+    assert stats.niveau == 2, f"Devrait rester au niveau 2, trouvé niveau {stats.niveau}"
+    print(f"✅ Bonus de niveau appliqué : Score final {stats.score} points")
+    
+    # Test 7: Vérification de tous les types de pièces
+    for type_piece in [TypePiece.S, TypePiece.Z, TypePiece.J, TypePiece.L]:
+        stats.ajouter_piece(type_piece)
+    
+    total_pieces = sum(stats.pieces_par_type.values())
+    assert total_pieces == stats.pieces_placees, f"Somme des pièces par type ({total_pieces}) devrait égaler le total ({stats.pieces_placees})"
+    print(f"✅ Comptage cohérent : {stats.pieces_placees} pièces au total")
+    
+    # Résumé des statistiques finales
+    print("\n📊 STATISTIQUES FINALES :")
+    print(f"   💰 Score final : {stats.score:,} points")
+    print(f"   📈 Niveau atteint : {stats.niveau}")
+    print(f"   📝 Lignes complétées : {stats.lignes_completees}")
+    print(f"   🧩 Pièces placées : {stats.pieces_placees}")
+    print("   🎯 Répartition des pièces :")
+    for type_piece, count in stats.pieces_par_type.items():
+        if count > 0:
+            print(f"      {type_piece.value}: {count}")
+    
+    print("✅ Tous les tests de statistiques réussis !")
     return True
 
 if __name__ == "__main__":

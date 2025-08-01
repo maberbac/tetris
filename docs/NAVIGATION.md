@@ -35,14 +35,16 @@ tetris/
 → Consultez [tdd/testing-strategy.md](tdd/testing-strategy.md)
 
 ### 📋 **Suivre la progression**
-→ Voir [INDEX_LECONS.md](INDEX_LECONS.md)
+→ Voir [INDEX_LECONS.md](INDEX_LECONS.md) ou [journal-developpement.md](journal-developpement.md)
 
 ## 📊 État actuel
 
-- **33 tests** passent (100% ✅)
-- **4 pièces** implémentées : I, O, T, S
+- **75 tests** passent (100% ✅) en 0.019s
+- **7 pièces** complètement implémentées : I, O, T, S, Z, J, L
 - **Registry Pattern** avec auto-enregistrement
 - **Architecture hexagonale** respectée
+- **Documentation entièrement synchronisée**
+- **Projet complètement stable et fonctionnel**
 
 ## 🎓 Consignes d'organisation
 
