@@ -30,14 +30,13 @@ class TestConfigurationControles(unittest.TestCase):
         self.assertIn("Down", mapping)
         self.assertIn("Up", mapping)
         
-        # Vérifier les touches alternatives
-        self.assertIn("q", mapping)
-        self.assertIn("d", mapping)
-        self.assertIn("s", mapping)
-        
         # Vérifier les touches spéciales
         self.assertIn("space", mapping)
         self.assertIn("Escape", mapping)
+        self.assertIn("p", mapping)
+        
+        # Vérifier qu'on a exactement 7 touches essentielles
+        self.assertEqual(len(mapping), 7)
     
     def test_mapping_defaut_est_copie(self):
         """obtenir_mapping_defaut() doit retourner une copie."""
@@ -67,13 +66,13 @@ class TestGestionnaireEvenements(unittest.TestCase):
     
     def test_initialisation_avec_mapping_personnalise(self):
         """Le gestionnaire doit accepter un mapping personnalisé."""
-        mapping_perso = {"w": ToucheClavier.HAUT, "s": ToucheClavier.BAS}
+        mapping_perso = {"w": ToucheClavier.ROTATION, "s": ToucheClavier.CHUTE_RAPIDE}
         gestionnaire = GestionnaireEvenements(mapping_perso)
         
         touches_mappees = gestionnaire.obtenir_touches_mappees()
         
-        self.assertEqual(touches_mappees["w"], ToucheClavier.HAUT)
-        self.assertEqual(touches_mappees["s"], ToucheClavier.BAS)
+        self.assertEqual(touches_mappees["w"], ToucheClavier.ROTATION)
+        self.assertEqual(touches_mappees["s"], ToucheClavier.CHUTE_RAPIDE)
         self.assertEqual(len(touches_mappees), 2)
 
 
@@ -262,11 +261,11 @@ class TestPersonnalisationMapping(unittest.TestCase):
     def test_ajout_mapping_personnalise(self):
         """On doit pouvoir ajouter un mapping personnalisé."""
         # Ajouter un nouveau mapping
-        self.gestionnaire.ajouter_mapping_touche("w", ToucheClavier.HAUT)
+        self.gestionnaire.ajouter_mapping_touche("w", ToucheClavier.ROTATION)
         
         # Vérifier qu'il est présent
         mapping = self.gestionnaire.obtenir_touches_mappees()
-        self.assertEqual(mapping["w"], ToucheClavier.HAUT)
+        self.assertEqual(mapping["w"], ToucheClavier.ROTATION)
     
     def test_suppression_mapping(self):
         """On doit pouvoir supprimer un mapping."""

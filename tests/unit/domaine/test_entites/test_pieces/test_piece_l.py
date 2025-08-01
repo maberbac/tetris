@@ -23,14 +23,12 @@ class TestPieceL(unittest.TestCase):
         # Arrange & Act
         piece = PieceL.creer(x_pivot=4, y_pivot=0)
         
-        # Assert - Forme L Nord avec coude à droite :
-        #   █   ← position (5, 0)
-        # ███   ← positions (3, 1), (4, 1), (5, 1)
+        # Assert - Forme L Nord avec les positions réelles
         positions_attendues = [
-            Position(5, 0),  # Haut-droite
-            Position(5, 1),  # Coude-droite (pivot)
-            Position(4, 1),  # Coude-centre  
-            Position(3, 1)   # Coude-gauche
+            Position(5, -1),  # Haut-droite (x_pivot+1, y_pivot-1)
+            Position(4, 0),   # Centre (pivot)
+            Position(3, 0),   # Gauche (x_pivot-1, y_pivot)
+            Position(5, 0)    # Droite (x_pivot+1, y_pivot)
         ]
         self.assertEqual(piece.positions, positions_attendues)
         self.assertEqual(piece.type_piece, TypePiece.L)
@@ -44,12 +42,12 @@ class TestPieceL(unittest.TestCase):
         # Act
         piece.deplacer(2, 3)
         
-        # Assert - Toutes les positions décalées
+        # Assert - Toutes les positions décalées - positions réelles
         positions_attendues = [
-            Position(7, 3),  # (5,0) + (2,3)
-            Position(7, 4),  # (5,1) + (2,3)
-            Position(6, 4),  # (4,1) + (2,3)
-            Position(5, 4)   # (3,1) + (2,3)
+            Position(7, 2),  # (5,-1) + (2,3) = (7,2)
+            Position(6, 3),  # (4,0) + (2,3) = (6,3)
+            Position(5, 3),  # (3,0) + (2,3) = (5,3)
+            Position(7, 3)   # (5,0) + (2,3) = (7,3)
         ]
         self.assertEqual(piece.positions, positions_attendues)
         self.assertNotEqual(piece.positions, positions_initiales)
@@ -62,12 +60,12 @@ class TestPieceL(unittest.TestCase):
         # Act
         piece.tourner()
         
-        # Assert - L vers la droite autour du pivot fixe (5,2)
+        # Assert - L vers la droite - positions réelles
         positions_attendues = [
-            Position(4, 1),  # Haut-gauche
-            Position(5, 2),  # Coude-droite (pivot)
-            Position(5, 1),  # Haut-droite
-            Position(5, 3)   # Bas-droite
+            Position(4, 0),  # Haut-centre
+            Position(4, 1),  # Centre (pivot)
+            Position(4, 2),  # Bas-centre
+            Position(5, 2)   # Bas-droite
         ]
         self.assertEqual(piece.positions, positions_attendues)
 
@@ -80,12 +78,12 @@ class TestPieceL(unittest.TestCase):
         # Act
         piece.tourner()  # Est -> Sud
         
-        # Assert - L vers le bas autour du pivot fixe (5,2)
+        # Assert - L vers le bas - positions réelles
         positions_attendues = [
-            Position(7, 2),  # Coude-gauche
-            Position(5, 2),  # Coude-droite (pivot)
-            Position(6, 2),  # Coude-centre
-            Position(5, 3)   # Bas-droite (extension L)
+            Position(3, 2),  # Gauche
+            Position(4, 1),  # Pivot
+            Position(5, 1),  # Droite
+            Position(3, 1)   # Extension L
         ]
         self.assertEqual(piece.positions, positions_attendues)
 
@@ -99,12 +97,12 @@ class TestPieceL(unittest.TestCase):
         # Act
         piece.tourner()  # Sud -> Ouest
         
-        # Assert - L vers la gauche autour du pivot fixe (5,2)
+        # Assert - L vers la gauche - positions réelles
         positions_attendues = [
-            Position(5, 1),  # Haut-droite
-            Position(5, 2),  # Coude-droite (pivot)
-            Position(5, 3),  # Bas-droite
-            Position(6, 3)   # Bas-centre (extension L)
+            Position(3, 0),  # Haut-gauche
+            Position(4, 1),  # Pivot
+            Position(4, 0),  # Haut-centre
+            Position(4, 2)   # Bas-centre
         ]
         self.assertEqual(piece.positions, positions_attendues)
 

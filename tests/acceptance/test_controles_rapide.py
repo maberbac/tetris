@@ -1,14 +1,19 @@
-"""
-Test rapide du système de contrôles
+"""import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+
+from src.domaine.services import GestionnaireEvenements, TypeEvenement
+from src.domaine.entites import Plateau, TypePiece
+from src.domaine.entites.fabriques.fabrique_pieces import FabriquePiecesapide du système de contrôles
 """
 
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from domaine.services import GestionnaireEvenements, TypeEvenement
-from domaine.entites import Plateau, TypePiece
-from domaine.entites.fabriques.fabrique_pieces import FabriquePieces
+from src.domaine.services import GestionnaireEvenements, TypeEvenement
+from src.domaine.entites import Plateau, TypePiece
+from src.domaine.entites.fabriques.fabrique_pieces import FabriquePieces
 
 
 class MoteurTest:

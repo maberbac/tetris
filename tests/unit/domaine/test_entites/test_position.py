@@ -20,7 +20,7 @@ class TestPosition(unittest.TestCase):
         Test RED : Créer une position avec x et y.
         Ce test va échouer car Position n'existe pas encore.
         """
-        from domaine.entites.position import Position
+        from src.domaine.entites.position import Position
         
         position = Position(5, 10)
         
@@ -31,7 +31,7 @@ class TestPosition(unittest.TestCase):
         """
         Test : Les positions sont immutables (Value Object).
         """
-        from domaine.entites.position import Position
+        from src.domaine.entites.position import Position
         
         position = Position(3, 7)
         
@@ -43,7 +43,7 @@ class TestPosition(unittest.TestCase):
         """
         Test : Deux positions avec mêmes coordonnées sont égales.
         """
-        from domaine.entites.position import Position
+        from src.domaine.entites.position import Position
         
         position1 = Position(2, 5)
         position2 = Position(2, 5)
@@ -57,7 +57,7 @@ class TestPosition(unittest.TestCase):
         Test : Une position peut créer une nouvelle position déplacée.
         (Immutable - retourne une nouvelle instance)
         """
-        from domaine.entites.position import Position
+        from src.domaine.entites.position import Position
         
         position_originale = Position(5, 5)
         position_deplacee = position_originale.deplacer(2, -1)
@@ -74,7 +74,7 @@ class TestPosition(unittest.TestCase):
         """
         Test : Vérifier si une position est dans des limites données.
         """
-        from domaine.entites.position import Position
+        from src.domaine.entites.position import Position
         
         position = Position(5, 8)
         

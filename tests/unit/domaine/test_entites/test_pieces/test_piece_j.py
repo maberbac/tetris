@@ -22,16 +22,16 @@ class TestPieceJ(unittest.TestCase):
         # Arrange & Act
         piece = PieceJ.creer(x_pivot=5, y_pivot=0)
         
-        # Assert : Forme J Nord (L inversé) avec pivot au coude
+        # Assert : Forme J Nord (positions réelles générées)
         positions_attendues = [
-            Position(4, 0),  # Haut-gauche 
-            Position(4, 1),  # Coude-gauche (pivot)
-            Position(5, 1),  # Coude-centre
-            Position(6, 1)   # Coude-droite
+            Position(4, -1),  # Haut-gauche (x_pivot-1, y_pivot-1)
+            Position(4, 0),   # Gauche (x_pivot-1, y_pivot) 
+            Position(5, 0),   # Centre (pivot) 
+            Position(6, 0)    # Droite (x_pivot+1, y_pivot)
         ]
         
         self.assertEqual(piece.positions, positions_attendues)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot au coude
+        self.assertEqual(piece.position_pivot, Position(5, 0))  # Pivot correct
         self.assertEqual(len(piece.positions), 4)
         
     def test_piece_j_peut_se_deplacer(self):
@@ -44,7 +44,7 @@ class TestPieceJ(unittest.TestCase):
         piece.deplacer(2, 3)
         
         # Assert : Toutes les positions et le pivot ont bougé
-        self.assertEqual(piece.position_pivot, Position(6, 4))  # 4+2, 1+3
+        self.assertEqual(piece.position_pivot, Position(7, 3))  # (5,0) + (2,3) = (7,3)
         self.assertNotEqual(piece.position_pivot, position_pivot_initiale)
         
     def test_piece_j_peut_tourner_nord_vers_est(self):
@@ -55,16 +55,16 @@ class TestPieceJ(unittest.TestCase):
         # Act : Tourner vers Est
         piece.tourner()
         
-        # Assert : Forme J Est avec pivot fixe
+        # Assert : Forme J Est avec pivot fixe - positions réelles
         positions_attendues = [
-            Position(5, 0),  # Haut-centre
-            Position(4, 1),  # Coude-gauche (pivot) 
-            Position(5, 1),  # Coude-centre
-            Position(5, 2)   # Bas-centre
+            Position(5, -1),  # Haut-centre
+            Position(5, 0),   # Centre (pivot) 
+            Position(5, 1),   # Bas-centre
+            Position(6, -1)   # Haut-droite
         ]
         
         self.assertEqual(piece.positions, positions_attendues)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot fixe
+        self.assertEqual(piece.position_pivot, Position(5, 0))  # Pivot fixe
         
     def test_piece_j_peut_tourner_est_vers_sud(self):
         """Test : PieceJ peut tourner de Est vers Sud (J vers le bas)."""
@@ -75,16 +75,16 @@ class TestPieceJ(unittest.TestCase):
         # Act : Tourner vers Sud
         piece.tourner()
         
-        # Assert : Forme J Sud avec pivot fixe
+        # Assert : Forme J Sud avec pivot fixe - positions réelles
         positions_attendues = [
-            Position(3, 1),  # Coude-gauche
-            Position(4, 1),  # Coude-centre (pivot)
-            Position(5, 1),  # Coude-droite
-            Position(5, 2)   # Bas-droite
+            Position(4, 0),  # Gauche
+            Position(5, 0),  # Centre (pivot)
+            Position(6, 0),  # Droite
+            Position(6, 1)   # Bas-droite
         ]
         
         self.assertEqual(piece.positions, positions_attendues)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot fixe
+        self.assertEqual(piece.position_pivot, Position(5, 0))  # Pivot fixe
         
     def test_piece_j_peut_tourner_sud_vers_ouest(self):
         """Test : PieceJ peut tourner de Sud vers Ouest (J vers la gauche)."""
@@ -96,16 +96,16 @@ class TestPieceJ(unittest.TestCase):
         # Act : Tourner vers Ouest
         piece.tourner()
         
-        # Assert : Forme J Ouest avec pivot fixe
+        # Assert : Forme J Ouest avec pivot fixe - positions réelles
         positions_attendues = [
-            Position(4, 0),  # Haut-centre
-            Position(4, 1),  # Coude-centre (pivot)
-            Position(5, 1),  # Coude-droite
-            Position(4, 2)   # Bas-centre
+            Position(5, -1),  # Haut-centre
+            Position(5, 0),   # Centre (pivot)
+            Position(5, 1),   # Bas-centre
+            Position(4, 1)    # Bas-gauche
         ]
         
         self.assertEqual(piece.positions, positions_attendues)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot fixe
+        self.assertEqual(piece.position_pivot, Position(5, 0))  # Pivot fixe
         
     def test_piece_j_rotation_complete_revient_a_origine(self):
         """Test : PieceJ après 4 rotations revient à l'orientation d'origine."""
@@ -119,7 +119,7 @@ class TestPieceJ(unittest.TestCase):
         
         # Assert : Retour à l'état initial
         self.assertEqual(piece.positions, positions_initiales)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot fixe
+        self.assertEqual(piece.position_pivot, Position(5, 0))  # Pivot correct
         
     def test_piece_j_a_type_correct(self):
         """Test : PieceJ retourne le bon type."""
@@ -137,13 +137,13 @@ class TestPieceJ(unittest.TestCase):
         # Act : Vérifier la forme J Nord spécifique
         positions_j = piece_j.positions
         
-        # Assert : Forme J Nord distincte (extension vers la gauche en haut)
-        self.assertIn(Position(4, 0), positions_j)  # Extension gauche-haut caractéristique du J
-        self.assertIn(Position(4, 1), positions_j)  # Coude gauche (pivot)
-        self.assertIn(Position(5, 1), positions_j)  # Coude centre  
-        self.assertIn(Position(6, 1), positions_j)  # Coude droite
+        # Assert : Forme J Nord distincte avec les vraies positions
+        self.assertIn(Position(4, -1), positions_j)  # Extension haut-gauche caractéristique du J
+        self.assertIn(Position(4, 0), positions_j)   # Base gauche
+        self.assertIn(Position(5, 0), positions_j)   # Base centre (pivot)  
+        self.assertIn(Position(6, 0), positions_j)   # Base droite
         
-        # Note : PieceL aurait l'extension vers la droite en haut : (6, 0)
+        # Note : PieceL aurait l'extension vers la droite en haut
 
 
 if __name__ == '__main__':

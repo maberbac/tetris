@@ -17,16 +17,17 @@ def main():
     
     # Charger tous nos modules de tests
     modules_tests = [
-        'tests.test_domaine.test_entites.test_position',
-        'tests.test_domaine.test_entites.test_pieces.test_piece_i',
-        'tests.test_domaine.test_entites.test_pieces.test_piece_o', 
-        'tests.test_domaine.test_entites.test_pieces.test_piece_t',
-        'tests.test_domaine.test_entites.test_pieces.test_piece_s',  # ← Nouvelle pièce S
-        'tests.test_domaine.test_entites.test_pieces.test_piece_z',  # ← Nouvelle pièce Z
-        'tests.test_domaine.test_entites.test_pieces.test_piece_j',  # ← Nouvelle pièce J
-        'tests.test_domaine.test_entites.test_pieces.test_piece_l',  # ← Nouvelle pièce L
-        'tests.test_domaine.test_entites.test_fabriques.test_registre_pieces',
-        'tests.test_domaine.test_entites.test_fabriques.test_fabrique_pieces',
+        'tests.unit.domaine.test_entites.test_position',
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_i',
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_o', 
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_t',
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_s',  # ← Nouvelle pièce S
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_z',  # ← Nouvelle pièce Z
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_j',  # ← Nouvelle pièce J
+        'tests.unit.domaine.test_entites.test_pieces.test_piece_l',  # ← Nouvelle pièce L
+        'tests.unit.domaine.test_entites.test_fabriques.test_registre_pieces',
+        'tests.unit.domaine.test_entites.test_fabriques.test_fabrique_pieces',
+        'tests.unit.domaine.services.test_gestionnaire_evenements',  # ← Tests des services
     ]
     
     for module in modules_tests:
