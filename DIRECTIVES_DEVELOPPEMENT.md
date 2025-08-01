@@ -43,6 +43,7 @@ tests/run_tests.py             # ✅ OUI !
 - **Démos** : Toujours créer les démos dans le répertoire `demo/`
 - **Tests officiels** : TOUS les tests dans le répertoire `tests/` avec sous-répertoires appropriés
 - **Fichiers temporaires** : TOUT ce que je génère pour mes besoins dans `tmp/` (scripts, .md, analyses, notes, etc.)
+- **Assets du jeu** : TOUS les médias dans le répertoire `assets/` (sons, images, musiques)
 - **Structure existante** : Respecter l'architecture hexagonale en place (`src/domaine/`, `src/interface/`)
 
 ### Structure des Répertoires
@@ -51,6 +52,12 @@ tetris/
 ├── src/                    # Code source principal
 │   ├── domaine/           # Logique métier
 │   └── interface/         # Interface utilisateur
+├── assets/                # ⭐ Médias du jeu (sons, images)
+│   ├── audio/             # Sons et musiques
+│   │   ├── music/         # Musique principale
+│   │   └── sfx/           # Effets sonores (line_clear, rotate)
+│   └── images/            # Images et textures
+│       └── backgrounds/   # Arrière-plans
 ├── demo/                  # ⭐ Démos et exemples
 ├── tests/                 # ⭐ TOUS les tests du projet
 │   ├── integration/       # Tests d'intégration
@@ -69,6 +76,13 @@ tetris/
 - 🔍 Scripts d'exploration et de validation
 - 📋 Documentation de travail
 - 🧪 Prototypes et expérimentations
+
+### Organisation des Assets `assets/`
+**Structure standardisée pour les médias du jeu :**
+- 🎵 **`audio/music/`** : Musique principale du jeu (`theme.ogg`)
+- 🔊 **`audio/sfx/`** : Effets sonores essentiels (`line_clear.wav`, `rotate.wav`)
+- 🖼️ **`images/backgrounds/`** : Arrière-plans optionnels du jeu
+- 📋 **`README.md`** : Documentation complète des assets
 
 ## 🏗️ Règles Architecturales
 

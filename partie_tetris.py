@@ -18,6 +18,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.domaine.services.moteur_partie import MoteurPartie
 from src.adapters.entree.gestionnaire_partie import GestionnairePartie
 from src.adapters.sortie.affichage_partie import AffichagePartie
+from src.adapters.sortie.audio_partie import AudioPartie
 
 
 class PartieTetris:
@@ -31,10 +32,13 @@ class PartieTetris:
     """
     
     def __init__(self):
-        # Cœur métier - Domaine
-        self.moteur = MoteurPartie()
-        
         # Adaptateurs - Infrastructure
+        self.audio = AudioPartie()
+        
+        # Cœur métier - Domaine (avec injection de dépendance audio)
+        self.moteur = MoteurPartie(audio=self.audio)
+        
+        # Autres adaptateurs
         self.affichage = AffichagePartie()
         self.gestionnaire = GestionnairePartie()
         
@@ -55,11 +59,19 @@ class PartieTetris:
         print("   🎉 Détection automatique des lignes complètes")
         print("   📊 Score et statistiques complètes")
         print("   ⏱️ Chute automatique avec accélération")
+        print("   🎵 Système audio intégré")
     
     def jouer(self):
         """Lance la partie principale."""
         # Initialiser l'affichage
         self.affichage.initialiser()
+        
+        # Démarrer la musique de fond
+        print("🎵 Démarrage de la musique...")
+        if self.moteur.demarrer_musique():
+            print("✅ Musique de fond lancée")
+        else:
+            print("⚠️ Impossible de lancer la musique (fichier manquant ?)")
         
         horloge = pygame.time.Clock()
         actif = True
@@ -100,6 +112,7 @@ class PartieTetris:
         finally:
             # Nettoyage des ressources
             self.affichage.nettoyer()
+            self.moteur.fermer()  # Nettoie l'audio
         
         # Affichage des statistiques finales
         print("\n" + "="*60)

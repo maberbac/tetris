@@ -29,13 +29,22 @@ tetris/
 │   │       ├── moteur_partie.py         # Moteur principal du jeu
 │   │       └── statistiques/   # Gestion des statistiques
 │   ├── ports/                  # 🔌 PORTS - Interfaces (contrats)
-│   │   ├── controleur_jeu.py   # Interface pour les contrôles
-│   │   └── affichage_jeu.py    # Interface pour l'affichage
+│   │   ├── sortie/             # Ports de sortie
+│   │   │   ├── affichage_jeu.py    # Interface pour l'affichage
+│   │   │   └── audio_jeu.py        # Interface pour l'audio ✅ NOUVEAU !
+│   │   └── controleur_jeu.py   # Interface pour les contrôles
 │   └── adapters/               # 🔧 ADAPTERS - Implémentations techniques
 │       ├── entree/             # Adapters d'entrée
 │       │   └── gestionnaire_partie.py  # Gestion Pygame des entrées
 │       └── sortie/             # Adapters de sortie
-│           └── affichage_partie.py     # Rendu Pygame
+│           ├── affichage_partie.py     # Rendu Pygame
+│           └── audio_partie.py         # Audio Pygame ✅ NOUVEAU !
+├── assets/                     # 🎨 MÉDIAS - Assets du jeu
+│   ├── audio/                  # Sons et musiques
+│   │   ├── music/              # Musique principale (tetris-theme.wav ✅ FONCTIONNEL !)
+│   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav)
+│   └── images/                 # Images et textures
+│       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type
 │   ├── unit/                   # Tests unitaires
 │   │   ├── domaine/            # Tests du domaine métier
@@ -44,9 +53,11 @@ tetris/
 │   │   └── interface/          # Tests de l'interface
 │   ├── integration/            # Tests d'intégration
 │   └── acceptance/             # Tests d'acceptance
+├── docs/                       # Documentation complète
+├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires
+├── demo/                       # Démonstrations et exemples
 ├── partie_tetris.py            # 🎭 ORCHESTRATEUR - Composition root (assemble tout)
-├── jouer.py                    # 🚀 Point d'entrée utilisateur
-└── run_all_unit_tests.py      # 🧪 Runner de tests unitaires
+└── jouer.py                    # 🚀 Point d'entrée utilisateur
 ```
 
 ## 🎯 Composants principaux
@@ -437,6 +448,45 @@ P                : Pause/Reprendre la partie
 - **Répétition fluide** : 200ms initial, 120ms répétition pour déplacement continu
 - **Architecture découplée** : Bridge Pattern vers Pygame
 - **Menu intégré** : Esc pour accéder au menu en cours de jeu
+
+### ⏳ Phase 2.6 - Système audio (TERMINÉE ✅)
+**Objectifs** :
+- ✅ **Port audio** avec interface AudioJeu
+- ✅ **Adapter Pygame** pour la gestion sonore
+- ✅ **Musique de fond** avec tetris-theme.wav (format compatible)
+- ✅ **Intégration architecture** hexagonale
+- ✅ **Contrôles audio** (pause/reprise intégrés)
+- ✅ **Système de fallback** automatique (OGG → WAV)
+- ✅ **Gestion d'erreurs** robuste
+
+**Réalisations** :
+- **Interface AudioJeu** : 9 méthodes pour musique et effets sonores
+- **AudioPartie Adapter** : Implémentation Pygame avec gestion des assets
+- **Intégration MoteurPartie** : Injection de dépendance pour découplage
+- **Contrôles intégrés** : Pause affecte aussi la musique (touche P)
+- **Architecture respectée** : Port/Adapter pattern pour l'audio
+- **Fallback automatique** : Tentative WAV si OGG échoue
+- **Problème résolu** : Chemin audio corrigé (4 remontées au lieu de 3)
+
+```python
+# Interface port audio
+class AudioJeu(ABC):
+    @abstractmethod
+    def jouer_musique(self, nom_fichier: str, volume: float = 0.7, boucle: bool = True): pass
+    
+    @abstractmethod  
+    def arreter_musique(self): pass
+    
+    @abstractmethod
+    def basculer_pause_musique(self): pass
+
+# Utilisation avec injection de dépendance et gestion d'erreurs
+audio = AudioPartie()
+moteur = MoteurPartie(audio=audio)
+
+# Système de fallback intégré dans l'adaptateur
+# Essaie tetris-theme.ogg, puis tetris-theme.wav automatiquement
+```
 
 ### ⏳ Phase 3 - Interface utilisateur (PROCHAINE)
 **Objectifs** :

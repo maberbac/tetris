@@ -12,6 +12,7 @@ from src.domaine.entites.piece import Piece
 from src.domaine.entites.position import Position
 from src.domaine.entites.plateau import Plateau
 from src.domaine.entites.statistiques.statistiques_jeu import StatistiquesJeu
+from src.ports.sortie.audio_jeu import AudioJeu
 
 
 class MoteurPartie:
@@ -26,7 +27,7 @@ class MoteurPartie:
     - Système de pause
     """
     
-    def __init__(self):
+    def __init__(self, audio: Optional[AudioJeu] = None):
         # Plateau principal (10x20 standard Tetris)
         self.plateau = Plateau(10, 20)
         
@@ -47,6 +48,9 @@ class MoteurPartie:
         # Statistiques
         self.stats = StatistiquesJeu()
         
+        # Système audio (port - injection de dépendance)
+        self.audio = audio
+        
         # Timer pour la chute automatique
         self.derniere_chute = time.time()
         self.intervalle_chute = 1.0  # 1 seconde au début
@@ -57,6 +61,11 @@ class MoteurPartie:
         print(f"🎮 Partie Tetris initialisée")
         print(f"📍 Plateau: {self.plateau.largeur}x{self.plateau.hauteur}")
         print(f"🎲 Types de pièces disponibles: {len(self.fabrique.obtenir_types_supportes())}")
+        
+        # Initialiser l'audio si disponible
+        if self.audio:
+            self.audio.initialiser()
+            print("🎵 Système audio initialisé")
         
         # Générer les premières pièces
         self._generer_piece_suivante()
@@ -221,7 +230,42 @@ class MoteurPartie:
     def basculer_pause(self) -> None:
         """Bascule l'état de pause."""
         self.en_pause = not self.en_pause
+        
+        # Gérer la musique en fonction de la pause
+        if self.audio:
+            if self.en_pause:
+                self.audio.mettre_en_pause_musique()
+            else:
+                self.audio.reprendre_musique()
+        
         print(f"⏸️ Pause: {'ON' if self.en_pause else 'OFF'}")
+    
+    def demarrer_musique(self) -> bool:
+        """Démarre la musique de fond du jeu."""
+        if self.audio:
+            try:
+                self.audio.jouer_musique("tetris-theme.wav", volume=0.7, boucle=True)
+                return True
+            except Exception as e:
+                print(f"❌ Erreur démarrage musique: {e}")
+                return False
+        return False
+    
+    def arreter_musique(self) -> None:
+        """Arrête la musique de fond."""
+        if self.audio:
+            self.audio.arreter_musique()
+    
+    def definir_volume_musique(self, volume: float) -> None:
+        """Définit le volume de la musique (0.0 à 1.0)."""
+        if self.audio:
+            self.audio.definir_volume_musique(volume)
+    
+    def musique_en_cours(self) -> bool:
+        """Vérifie si la musique est en cours de lecture."""
+        if self.audio:
+            return self.audio.est_musique_en_cours()
+        return False
     
     def basculer_menu(self) -> None:
         """Bascule l'affichage du menu."""
@@ -233,3 +277,9 @@ class MoteurPartie:
         messages = self.messages.copy()
         self.messages.clear()
         return messages
+    
+    def fermer(self) -> None:
+        """Ferme proprement le moteur et nettoie les ressources."""
+        if self.audio:
+            self.audio.nettoyer()
+            print("🧹 Ressources audio nettoyées")
