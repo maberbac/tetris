@@ -205,6 +205,7 @@ class GameDisplay:                   # ❌ Anglais sans justification
 - **Toujours tester avant de livrer** - Créer des tests pour valider que tout fonctionne
 - **Tests complets** - Couvrir tous les aspects : génération, plateau, moteur, statistiques
 - **Messages clairs** - Tests avec émojis et descriptions explicites
+- **Debug TDD systématique** - En cas de bug, appliquer cycle RED-GREEN-REFACTOR strict
 
 ### Structure des Tests
 ```python
@@ -298,6 +299,7 @@ def test_fonction():
 - **Documentation incomplète** - Toujours expliquer comment utiliser
 - **Documentation TDD obsolète** - Maintenir `docs/tdd/` et `docs/journal-developpement.md` à jour
 - **Mauvaise organisation** - Respecter `tests/` vs `tmp/` vs `demo/`
+- **Debug non méthodique** - En cas de bug, appliquer TDD strict : exploration → reproduction → tests → correction
 
 ### Signaux d'Alerte
 ```python

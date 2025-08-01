@@ -349,6 +349,25 @@ assert position.dans_limites(10, 20)
 5. **Patterns émergents** → Factory, Registry, Command selon besoins naturels
 6. **Résolution de problèmes** → Debug méthodique avec TDD (audio path fix)
 7. **Gestion d'erreurs** → Fallback robuste et tests de validation
+8. **Debug TDD systématique** → Correction bug descente accélérée avec cycle complet RED-GREEN-REFACTOR
+
+### Phase 11 : Debug TDD - Correction bug descente accélérée ✅
+1. **Bug critique identifié et résolu via TDD** ✅
+   - ✅ **Problème signalé** : "la decente accélérée ne fonctionne pas, il y a un crash dès qu'on appuie sur la flèche de bas"
+   - ✅ **Erreur reproduite** : `AttributeError: 'MoteurPartie' object has no attribute 'faire_descendre_piece'`
+   - ✅ **Diagnostic TDD méthodique** : Script `tmp/debug_bug_descente_acceleree.py` pour reproduction systématique
+   - ✅ **Phase RED** : Tests créés dans `tests/domaine/services/test_descente_acceleree.py` (5 tests qui échouent)
+   - ✅ **Phase GREEN** : Implémentation minimale `faire_descendre_piece()` dans `MoteurPartie`
+   - ✅ **Phase REFACTOR** : Méthode intégrée proprement avec réutilisation de `deplacer_piece_active(0, 1)`
+   - ✅ **Validation complète** : CommandeDescendre fonctionne parfaitement, plus de crash
+
+2. **Méthodologie TDD stricte appliquée** ✅
+   - ✅ **Exploration systématique** : Analyse de l'architecture des commandes existantes
+   - ✅ **Reproduction contrôlée** : Isolation du bug dans environnement de test
+   - ✅ **Tests d'abord** : Suite de tests complète avant implémentation
+   - ✅ **Cycle TDD complet** : RED → GREEN → REFACTOR avec validation à chaque étape
+   - ✅ **Tests de régression** : Prévention de réapparition du bug
+   - ✅ **Architecture respectée** : Solution intégrée harmonieusement dans le système existant
 
 ---
 

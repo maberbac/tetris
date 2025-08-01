@@ -105,6 +105,10 @@ class MoteurPartie:
             self.piece_active.position_pivot = pivot_orig
             return False
     
+    def faire_descendre_piece(self) -> bool:
+        """Fait descendre la pièce active d'une ligne si possible."""
+        return self.deplacer_piece_active(0, 1)
+    
     def tourner_piece_active(self) -> bool:
         """Fait tourner la pièce active si possible."""
         if not self.piece_active or self.en_pause or self.jeu_termine:

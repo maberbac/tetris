@@ -254,9 +254,9 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
 #### Métriques actuelles
-- **88 tests** passent (100% ✅)
-- **Couverture** : Value Objects, Entities, Services, Factory, Registry, Command Pattern, Moteur complet
-- **TDD** : Cycle RED-GREEN-REFACTOR respecté
+- **98+ tests** passent (100% ✅)
+- **Couverture** : Value Objects, Entities, Services, Factory, Registry, Command Pattern, Moteur complet, Debug TDD
+- **TDD** : Cycle RED-GREEN-REFACTOR respecté systématiquement
 - **7 pièces** complètement implémentées : I, O, T, S, Z, J, L
 - **Plateau fonctionnel** : Collisions, lignes complètes, gravité
 - **Système de contrôles complet** : 7 commandes + gestionnaire d'événements
@@ -264,6 +264,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 - **Interface Pygame complète** : 60 FPS, couleurs, statistiques
 - **Moteur de partie** : Génération automatique, chute, scoring
 - **Tests entièrement corrigés** : Tous les imports et assertions réparés
+- **Debug méthodique** : Bug descente accélérée résolu avec TDD strict
 - Vérification des blocs déjà placés
 - Validation avant chaque mouvement
 

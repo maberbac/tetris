@@ -110,10 +110,11 @@ python tests/run_all_integration_tests.py # Tests d'intégration
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
-**Couverture actuelle** : **93+ tests, 100% de réussite ✅**
-- **75+ tests unitaires** : Domaine, entités, services, audio
+**Couverture actuelle** : **98+ tests, 100% de réussite ✅**
+- **80+ tests unitaires** : Domaine, entités, services, audio, descente accélérée
 - **9 tests d'acceptance** : Scénarios utilisateur
 - **6+ tests d'intégration** : Système complet avec audio
+- **5 tests de régression** : Correction bug descente accélérée (CommandeDescendre)
 
 ## 📋 État du développement
 
@@ -134,6 +135,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - **Système audio intégré** avec musique de fond fonctionnelle
 - **Gestion d'erreurs audio** : Fallback automatique et fonctionnement sans son
 - **Organisation des fichiers** : Structure propre avec `tmp/` pour les outils de développement
+- **Debug TDD systématique** : Correction bug descente accélérée avec méthodologie stricte
 
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
