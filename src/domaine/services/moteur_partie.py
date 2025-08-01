@@ -166,28 +166,26 @@ class MoteurPartie:
         if not self.piece_active or self.en_pause or self.jeu_termine:
             return False
         
-        # Placer la pièce sur le plateau
-        self.plateau.placer_piece(self.piece_active)
+        # Opération atomique : placement + suppression immédiate au niveau plateau
+        nb_lignes_supprimees = self.plateau.placer_piece_et_supprimer_lignes(self.piece_active)
         print(f"📍 Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
         
-        # Ajouter aux statistiques
-        self.stats.ajouter_piece(self.piece_active.type_piece)
-        
-        # Vérifier les lignes complètes
-        lignes_completes = self.plateau.obtenir_lignes_completes()
-        if lignes_completes:
-            nb_lignes = self.plateau.supprimer_lignes(lignes_completes)
-            self.stats.ajouter_score_selon_lignes_completees(nb_lignes)
+        # Traitement des lignes supprimées
+        if nb_lignes_supprimees > 0:
+            self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
             
-            if nb_lignes == 4:
+            if nb_lignes_supprimees == 4:
                 self.messages.append("🎉 TETRIS ! (+800 pts)")
             else:
-                self.messages.append(f"✨ {nb_lignes} ligne(s) ! (+{100 * nb_lignes * self.stats.niveau} pts)")
+                self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
             
-            print(f"🎉 {nb_lignes} ligne(s) complétée(s) ! Score: {self.stats.score}")
+            print(f"🎉 {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
             
             # Accélérer le jeu selon le niveau
             self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)
+        
+        # Ajouter aux statistiques après traitement complet
+        self.stats.ajouter_piece(self.piece_active.type_piece)
         
         # Faire descendre la pièce suivante
         self._faire_descendre_piece_suivante()

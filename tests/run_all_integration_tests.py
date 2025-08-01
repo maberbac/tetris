@@ -36,6 +36,9 @@ def lancer_tests_integration():
         
         # Exécuter chaque fichier de test
         tous_passes = True
+        total_tests = 0
+        tests_passes = 0
+        
         for fichier in fichiers_test:
             print(f"\n🔧 Exécution de {fichier}")
             print("-" * 30)
@@ -48,16 +51,18 @@ def lancer_tests_integration():
                 
                 # Trouver toutes les fonctions de test dans le module
                 fonctions_test = [nom for nom in dir(module) if nom.startswith('test_')]
-                print(f"� Fonctions de test trouvées: {fonctions_test}")
+                print(f"🔍 Fonctions de test trouvées: {fonctions_test}")
                 
                 # Exécuter chaque fonction de test
                 for nom_fonction in fonctions_test:
                     print(f"\n▶️ Exécution de {nom_fonction}")
                     fonction = getattr(module, nom_fonction)
+                    total_tests += 1
                     try:
                         resultat = fonction()
                         if resultat is not False:  # Considérer True ou None comme succès
                             print(f"✅ {nom_fonction} - PASSÉ")
+                            tests_passes += 1
                         else:
                             print(f"❌ {nom_fonction} - ÉCHOUÉ")
                             tous_passes = False
@@ -68,6 +73,18 @@ def lancer_tests_integration():
             except Exception as e:
                 print(f"❌ Erreur lors de l'import de {fichier}: {e}")
                 tous_passes = False
+        
+        # Afficher le résumé des tests
+        if total_tests > 0:
+            print(f"\n" + "=" * 60)
+            print("🎯 RÉSUMÉ DES TESTS D'INTÉGRATION")
+            print("=" * 60)
+            print(f"Tests exécutés: {total_tests}")
+            print(f"✅ Succès: {tests_passes}")
+            print(f"❌ Échecs: {total_tests - tests_passes}")
+            if total_tests > 0:
+                taux_reussite = (tests_passes / total_tests) * 100
+                print(f"🏆 Taux de réussite: {taux_reussite:.1f}%")
         
         return tous_passes
         
@@ -82,10 +99,19 @@ def main():
     print("🎯 TESTS TETRIS - Lanceur depuis la racine")
     print("=" * 50)
     
-    if lancer_tests_integration():
-        print("\n✅ Tous les tests sont passés !")
+    succes = lancer_tests_integration()
+    
+    # Résumé final cohérent avec les autres runners
+    print("\n" + "=" * 60)
+    print("🏆 RAPPORT FINAL DES TESTS D'INTÉGRATION")
+    print("=" * 60)
+    
+    if succes:
+        print("✅ Tests d'intégration - SUCCÈS")
+        print("🎉 Tous les tests d'intégration sont passés !")
     else:
-        print("\n❌ Certains tests ont échoué.")
+        print("❌ Tests d'intégration - ÉCHEC")
+        print("⚠️ Certains tests d'intégration ont échoué.")
         sys.exit(1)
 
 if __name__ == "__main__":

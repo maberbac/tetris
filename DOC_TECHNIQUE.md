@@ -246,7 +246,7 @@ python tests/run_suite_tests.py
 
 # Tests par catégorie
 python tests/run_all_unit_tests.py       # Tests unitaires (75 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (9 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (13 tests)
 python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
 
 # Tests spécifiques par pièce
@@ -254,7 +254,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
 #### Métriques actuelles
-- **98+ tests** passent (100% ✅)
+- **92 tests** passent (100% ✅)
 - **Couverture** : Value Objects, Entities, Services, Factory, Registry, Command Pattern, Moteur complet, Debug TDD
 - **TDD** : Cycle RED-GREEN-REFACTOR respecté systématiquement
 - **7 pièces** complètement implémentées : I, O, T, S, Z, J, L

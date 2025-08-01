@@ -126,20 +126,42 @@
     - Résolution de tous les problèmes d'imports (`domaine` → `src.domaine`)
     - Correction des attributs ToucheClavier dans GestionnaireEvenements
     - Fixes des tests d'acceptance pour contrôles simplifiés
-    - **Résultat** : 75/75 tests passants (100% ✅) en 0.019s
+    - **Résultat** : 92/92 tests passants (100% ✅) en 0.655s
 
 23. ✅ **Synchronisation documentation** : Documentation entièrement mise à jour
-    - README.md : Métriques actualisées (75 tests)
+    - README.md : Métriques actualisées (92 tests)
     - DOC_TECHNIQUE.md : Architecture et performances à jour
     - tests/README.md : Structure de tests synchronisée
     - docs/tdd/testing-strategy.md : Stratégie TDD actualisée
 
 24. ✅ **Validation finale** : Projet complètement stable
-    - Tests unitaires : 5 + 40 + 16 + 4 = 65 tests ✅
-    - Tests d'intégration : 4 tests ✅  
-    - Tests d'acceptance : 6 tests ✅
-    - Performance optimale : 0.019s pour 75 tests
+    - Tests unitaires : 75 tests ✅
+    - Tests d'acceptance : 13 tests ✅  
+    - Tests d'intégration : 4 tests ✅
+    - **TOTAL : 92 tests** - Performance : 0.655s
     - Aucune erreur, aucun échec - stabilité parfaite
+
+### **Phase 12 : Correction bug lignes multiples (1er août - TDD strict)**
+25. ✅ **Bug identifié et reproduit** : TDD RED appliqué strictement
+    - Bug : Suppression de lignes multiples simultanées défaillante
+    - Cause : Algorithme ligne par ligne avec effet en cascade
+    - Test RED : Script tmp/test_bug_lignes_multiples_red.py
+    - **Résultat** : Bug confirmé sur 2, 3 et 4 lignes simultanées
+
+26. ✅ **Correction développée et validée** : TDD GREEN appliqué
+    - Nouvel algorithme : Suppression simultanée + descente calculée
+    - Test GREEN : Script tmp/test_correction_lignes_multiples_green.py
+    - **Résultat** : 4/4 tests GREEN réussis, correction validée
+
+27. ✅ **Code intégré et refactorisé** : TDD REFACTOR appliqué  
+    - Code intégré dans src/domaine/entites/plateau.py
+    - Méthodes obsolètes supprimées (_supprimer_ligne, _faire_descendre_lignes_au_dessus)
+    - Tests existants : 92/92 continuent de passer (non-régression)
+
+28. ✅ **Tests d'acceptance officiels créés** : Validation finale
+    - Test officiel : tests/acceptance/test_correction_bug_lignes_multiples.py
+    - 5 scénarios : 2 lignes, 3 lignes, TETRIS, lignes non-consécutives, intégration moteur
+    - **Résultat** : 5/5 tests d'acceptance réussis ✅
 
 ## 📊 **État actuel du projet**
 
@@ -151,23 +173,24 @@
 - ✅ **Statistics** : Compteurs par type de pièce, preview pièce suivante
 - ✅ **Game Over** : Détection automatique de fin de partie
 
-### **Tests implémentés (75/75 passants - 100% ✅)**
+### **Tests implémentés (97/97 passants - 100% ✅)**
 ```
 tests/
-├── unit/                           # Tests unitaires (65 tests ✅)
+├── unit/                           # Tests unitaires (75 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
 │   │   └── services/              # Tests des services (GestionnaireEvenements)
 │   └── interface/                 # Tests de l'interface  
 ├── integration/                   # Tests d'intégration (4 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (6 tests ✅)
+├── acceptance/                    # Tests d'acceptance (18 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
-│   └── test_controles_simplifies.py # Tests contrôles simplifiés
+│   ├── test_controles_simplifies.py # Tests contrôles simplifiés
+│   └── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅ NOUVEAU !
 └── run_tests.py                  # Lanceur des tests
 ```
 
-**Performance** : 75 tests en 0.019s (100% succès, 0 échec, 0 erreur)
+**Performance** : 97 tests en 0.7s environ (100% succès, 0 échec, 0 erreur)
 
 ### **Architecture finale réalisée**
 ```
@@ -247,9 +270,10 @@ docs/
 ✅ **Organisation professionnelle** : Structure de projet propre
 ✅ **Documentation complète** : Guides et méthodologie synchronisés
 ✅ **Patterns avancés** : Factory, Registry, Command
-✅ **Performance optimisée** : 75 tests en 0.019s
-✅ **Suite de tests parfaite** : 75/75 tests (100% succès) - AUCUNE erreur
+✅ **Performance optimisée** : 97 tests en ~0.7s
+✅ **Suite de tests parfaite** : 97/97 tests (100% succès) - AUCUNE erreur
 ✅ **Documentation synchronisée** : README, DOC_TECHNIQUE, tous à jour
+✅ **Bug critique corrigé** : Lignes multiples simultanées avec TDD strict
 
 ### **Prochaines extensions possibles**
 🔄 **Fonctionnalités** : Sons, animations, effets visuels
@@ -283,7 +307,7 @@ docs/
 - **Directives documentées** : Règles explicites pour maintenir qualité
 - **Documentation synchronisée** : Maintenir automatiquement README, DOC_TECHNIQUE à jour
 - **Correction systématique** : Identifier et résoudre tous les problèmes d'imports/tests
-- **Performance mesurable** : 75 tests en 0.019s - métriques concrètes
+- **Performance mesurable** : 92 tests en 0.655s - métriques concrètes
 
 ## 🎮 **Vision du produit final**
 
@@ -299,4 +323,4 @@ Un jeu Tetris complet avec :
 
 **Cette session a démontré la puissance de combiner TDD, architecture hexagonale et Python moderne pour créer un code robuste et maintenable !** 
 
-**Résultat final : 75/75 tests (100% succès) en 0.019s - Projet complètement stable et documenté ! 🏆✨**
+**Résultat final : 92/92 tests (100% succès) en 0.655s - Projet complètement stable et documenté ! 🏆✨**

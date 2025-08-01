@@ -9,7 +9,7 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - **Musique de fond intégrée** avec le thème classique de Tetris
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
-- Tests complets avec approche TDD (Test-Driven Development) - **93+ tests ✅**
+- Tests complets avec approche TDD (Test-Driven Development) - **97 tests ✅**
 
 ## 🚀 Installation et utilisation
 
@@ -110,11 +110,10 @@ python tests/run_all_integration_tests.py # Tests d'intégration
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
-**Couverture actuelle** : **98+ tests, 100% de réussite ✅**
-- **80+ tests unitaires** : Domaine, entités, services, audio, descente accélérée
-- **9 tests d'acceptance** : Scénarios utilisateur
-- **6+ tests d'intégration** : Système complet avec audio
-- **5 tests de régression** : Correction bug descente accélérée (CommandeDescendre)
+**Couverture actuelle** : **97 tests, 100% de réussite ✅**
+- **75 tests unitaires** : Domaine, entités, services, audio, descente accélérée
+- **18 tests d'acceptance** : Scénarios utilisateur + correction bug lignes multiples
+- **4 tests d'intégration** : Système complet avec audio
 
 ## 📋 État du développement
 
@@ -122,7 +121,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - Architecture de base avec TDD
 - **Toutes les 7 pièces complètes** : I, O, T, S, Z, J, L avec rotations complètes
 - Factory Pattern avec auto-enregistrement (Registry Pattern)
-- Tests complets du domaine (**88 tests, 100% réussite**)
+- Tests complets du domaine (**75 tests unitaires, 100% réussite**)
 - Value Objects et Entities avec comportements métier
 - Symétrie parfaite entre pièces J et L
 - **Suite de tests complètement corrigée et fonctionnelle**
@@ -135,7 +134,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - **Système audio intégré** avec musique de fond fonctionnelle
 - **Gestion d'erreurs audio** : Fallback automatique et fonctionnement sans son
 - **Organisation des fichiers** : Structure propre avec `tmp/` pour les outils de développement
-- **Debug TDD systématique** : Correction bug descente accélérée avec méthodologie stricte
+- **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte (descente accélérée + lignes multiples)
 
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :

@@ -4,10 +4,10 @@
 
 ## ✅ **PROJET TETRIS COMPLET - SUITE DE TESTS 100% FONCTIONNELLE**
 
-### 🏆 **État final des tests - 87/87 TESTS RÉUSSIS**
+### 🏆 **État final des tests - 92/92 TESTS RÉUSSIS**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 87 tests
+- **📊 Total tests** : 92 tests (75 unitaires + 13 acceptance + 4 intégration)
 - **✅ Taux de réussite** : 100.0%
 - **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques
 - **🔧 Corrections** : Tous les imports `domaine` → `src.domaine` réparés

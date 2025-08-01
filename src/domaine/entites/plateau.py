@@ -112,6 +112,35 @@ class Plateau:
         for position in piece.positions:
             self._positions_occupees.add(position)
     
+    def placer_piece_et_supprimer_lignes(self, piece: Piece) -> int:
+        """
+        Opération atomique : place une pièce et supprime immédiatement les lignes complètes.
+        Cette méthode garantit qu'aucun état intermédiaire avec lignes complètes n'est visible.
+        
+        Args:
+            piece: Pièce à placer
+            
+        Returns:
+            Nombre de lignes supprimées
+            
+        Raises:
+            ValueError: Si la pièce ne peut pas être placée
+        """
+        if not self.peut_placer_piece(piece):
+            raise ValueError("Impossible de placer la pièce à cette position")
+        
+        # Opération atomique
+        # 1. Placer la pièce
+        for position in piece.positions:
+            self._positions_occupees.add(position)
+        
+        # 2. Détecter et supprimer immédiatement les lignes complètes
+        lignes_completes = self.obtenir_lignes_completes()
+        if lignes_completes:
+            return self.supprimer_lignes(lignes_completes)
+        
+        return 0
+    
     def obtenir_lignes_completes(self) -> List[int]:
         """
         Retourne la liste des numéros de lignes complètes (y-coordonnées).
@@ -135,6 +164,10 @@ class Plateau:
         """
         Supprime les lignes spécifiées et fait descendre les lignes au-dessus.
         
+        CORRECTION BUG : Algorithme revu pour gérer correctement les lignes multiples.
+        Au lieu de traiter ligne par ligne (effet en cascade), on supprime toutes
+        les lignes d'un coup puis on fait descendre en une seule fois.
+        
         Args:
             numeros_lignes: Liste des numéros de lignes à supprimer
             
@@ -144,43 +177,31 @@ class Plateau:
         if not numeros_lignes:
             return 0
         
-        # Trier les lignes par ordre décroissant pour éviter les problèmes d'index
-        lignes_triees = sorted(numeros_lignes, reverse=True)
+        # Convertir en set pour O(1) lookup
+        lignes_a_supprimer = set(numeros_lignes)
         
-        for y_ligne in lignes_triees:
-            self._supprimer_ligne(y_ligne)
-            self._faire_descendre_lignes_au_dessus(y_ligne)
-        
-        return len(lignes_triees)
-    
-    def _supprimer_ligne(self, y_ligne: int) -> None:
-        """
-        Supprime toutes les positions occupées d'une ligne.
-        
-        Args:
-            y_ligne: Numéro de la ligne à supprimer
-        """
+        # 1. Supprimer TOUTES les lignes d'un coup (évite l'effet en cascade)
         positions_a_supprimer = {pos for pos in self._positions_occupees 
-                                if pos.y == y_ligne}
+                                if pos.y in lignes_a_supprimer}
         self._positions_occupees -= positions_a_supprimer
-    
-    def _faire_descendre_lignes_au_dessus(self, y_ligne_supprimee: int) -> None:
-        """
-        Fait descendre d'une ligne toutes les positions au-dessus de la ligne supprimée.
         
-        Args:
-            y_ligne_supprimee: Numéro de la ligne qui a été supprimée
-        """
-        positions_a_deplacer = {pos for pos in self._positions_occupees 
-                               if pos.y < y_ligne_supprimee}
+        # 2. Faire descendre les lignes restantes
+        # Pour chaque position restante, calculer de combien de lignes elle doit descendre
+        nouvelles_positions = set()
         
-        # Supprimer les anciennes positions
-        self._positions_occupees -= positions_a_deplacer
+        for pos in self._positions_occupees:
+            # Compter combien de lignes supprimées sont en-dessous de cette position
+            nb_lignes_supprimees_dessous = sum(1 for y_supp in lignes_a_supprimer 
+                                              if y_supp > pos.y)
+            
+            # Créer la nouvelle position descendue
+            nouvelle_pos = Position(pos.x, pos.y + nb_lignes_supprimees_dessous)
+            nouvelles_positions.add(nouvelle_pos)
         
-        # Ajouter les nouvelles positions (descendues d'une ligne)
-        nouvelles_positions = {Position(pos.x, pos.y + 1) 
-                              for pos in positions_a_deplacer}
-        self._positions_occupees |= nouvelles_positions
+        # 3. Remplacer toutes les positions par les nouvelles
+        self._positions_occupees = nouvelles_positions
+        
+        return len(numeros_lignes)
     
     def est_vide(self) -> bool:
         """

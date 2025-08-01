@@ -1,7 +1,12 @@
 """
-Tests pour la descente accélérée - Bug Fix TDD
-==============================================
+Tests d'Acceptance - Descente Accélérée
+=======================================
+Nature : Test d'acceptance pour correction bug utilisateur
+Scenario : L'utilisateur appuie sur la flèche bas pour descendre rapidement la pièce
+Méthode : TDD (Test-Driven Development)
+
 Suite au diagnostic : CommandeDescendre appelait faire_descendre_piece() inexistante
+Comportement attendu : La flèche bas fait descendre la pièce d'une ligne sans crash
 """
 
 import pytest

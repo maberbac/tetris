@@ -22,6 +22,8 @@ def main():
     modules_tests = [
         'tests.acceptance.test_controles_rapide',
         'tests.acceptance.test_controles_simplifies',
+        'tests.acceptance.test_descente_acceleree',
+        'tests.acceptance.test_bug_visuel_ligne_complete',
     ]
     
     print("🎭 TESTS D'ACCEPTANCE - Comportement utilisateur")
