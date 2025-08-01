@@ -53,8 +53,8 @@ class PieceL(Piece):
         instance._orientation = 0
         positions_initiales = instance.obtenir_positions_initiales(x_pivot, y_pivot)
         
-        # Pivot au coude de la pièce L (position 1 - coude-droite)
-        position_pivot = positions_initiales[1]
+        # Pivot exactement aux coordonnées spécifiées
+        position_pivot = Position(x_pivot, y_pivot)
         
         instance.positions = positions_initiales
         instance.position_pivot = position_pivot
@@ -65,22 +65,22 @@ class PieceL(Piece):
         """
         Obtenir les positions initiales pour PieceL (orientation Nord).
         
-        Configuration Nord - L classique avec coude à droite :
-          █  ← position [x_pivot+1, y_pivot]
-        ███  ← positions [x_pivot-1, y_pivot+1], [x_pivot, y_pivot+1], [x_pivot+1, y_pivot+1]
+        Configuration Nord - L classique avec pivot au centre :
+          █  ← position [x_pivot+1, y_pivot-1]
+        ███  ← positions [x_pivot-1, y_pivot], [x_pivot, y_pivot] (pivot), [x_pivot+1, y_pivot]
         
         Args:
             x_pivot: Position X du pivot
             y_pivot: Position Y du pivot
             
         Returns:
-            Positions pour L en orientation Nord avec pivot au coude
+            Positions pour L en orientation Nord avec pivot au centre
         """
         return [
-            Position(x_pivot + 1, y_pivot),      # Haut-droite
-            Position(x_pivot + 1, y_pivot + 1),  # Coude-droite (pivot)
-            Position(x_pivot, y_pivot + 1),      # Coude-centre
-            Position(x_pivot - 1, y_pivot + 1)   # Coude-gauche
+            Position(x_pivot + 1, y_pivot - 1),  # Haut-droite
+            Position(x_pivot, y_pivot),          # Pivot
+            Position(x_pivot - 1, y_pivot),      # Gauche
+            Position(x_pivot + 1, y_pivot)       # Droite
         ]
 
     @property  
@@ -110,60 +110,60 @@ class PieceL(Piece):
         """
         Passage en orientation Nord (L classique).
         
-        Configuration Nord autour du pivot fixe :
-          █  ← [pivot.x, pivot.y-1]
-        ███  ← [pivot.x-2, pivot.y], [pivot.x-1, pivot.y] et [pivot.x, pivot.y] (le pivot de la pièce)
+        Configuration Nord autour du pivot :
+          █  ← [pivot.x+1, pivot.y-1]
+        ███  ← [pivot.x-1, pivot.y], [pivot.x, pivot.y] (pivot), [pivot.x+1, pivot.y]
         """
         self.positions = [
-            Position(self.position_pivot.x, self.position_pivot.y - 1),      # Haut-droite
-            Position(self.position_pivot.x, self.position_pivot.y),          # Coude-droite (pivot)
-            Position(self.position_pivot.x - 1, self.position_pivot.y),      # Coude-centre
-            Position(self.position_pivot.x - 2, self.position_pivot.y)       # Coude-gauche
+            Position(self.position_pivot.x + 1, self.position_pivot.y - 1),  # Haut-droite
+            Position(self.position_pivot.x, self.position_pivot.y),          # Pivot
+            Position(self.position_pivot.x - 1, self.position_pivot.y),      # Gauche
+            Position(self.position_pivot.x + 1, self.position_pivot.y)       # Droite
         ]
 
     def _devenir_est(self) -> None:
         """
         Passage en orientation Est (L vers la droite).
         
-        Configuration Est autour du pivot fixe (symétrie de PieceJ) :
-        ██   ← [pivot.x-1, pivot.y-1] et [pivot.x, pivot.y-1]
-         █   ← [pivot.x, pivot.y] (le pivot de la pièce)
-         █   ← [pivot.x, pivot.y+1]
+        Configuration Est autour du pivot :
+        █   ← [pivot.x, pivot.y-1]
+        █   ← [pivot.x, pivot.y] (pivot)
+        ██  ← [pivot.x, pivot.y+1] et [pivot.x+1, pivot.y+1]
         """
         self.positions = [
-            Position(self.position_pivot.x - 1, self.position_pivot.y - 1),  # Haut-gauche
-            Position(self.position_pivot.x, self.position_pivot.y),          # Coude-droite (pivot)
-            Position(self.position_pivot.x, self.position_pivot.y - 1),      # Haut-droite
-            Position(self.position_pivot.x, self.position_pivot.y + 1)       # Bas-droite
+            Position(self.position_pivot.x, self.position_pivot.y - 1),      # Haut
+            Position(self.position_pivot.x, self.position_pivot.y),          # Pivot
+            Position(self.position_pivot.x, self.position_pivot.y + 1),      # Bas
+            Position(self.position_pivot.x + 1, self.position_pivot.y + 1)   # Bas-droite
         ]
 
     def _devenir_sud(self) -> None:
         """
         Passage en orientation Sud (L inversé).
         
-        Configuration Sud autour du pivot fixe :
-        ███  ← [pivot.x, pivot.y] (le pivot de la pièce), [pivot.x+1, pivot.y]  et [pivot.x+2, pivot.y]
-        █    ← [pivot.x+1, pivot.y+1]
+        Configuration Sud autour du pivot :
+        ███  ← [pivot.x-1, pivot.y], [pivot.x, pivot.y] (pivot), [pivot.x+1, pivot.y]
+          █  ← [pivot.x-1, pivot.y+1]
         """
         self.positions = [
-            Position(self.position_pivot.x + 2, self.position_pivot.y),      # Coude-gauche
-            Position(self.position_pivot.x, self.position_pivot.y),          # Coude-droite (pivot)
-            Position(self.position_pivot.x + 1, self.position_pivot.y),      # Coude-centre
-            Position(self.position_pivot.x, self.position_pivot.y + 1)       # Bas-droite
+            Position(self.position_pivot.x - 1, self.position_pivot.y + 1),  # Bas-gauche
+            Position(self.position_pivot.x, self.position_pivot.y),          # Pivot
+            Position(self.position_pivot.x + 1, self.position_pivot.y),      # Droite
+            Position(self.position_pivot.x - 1, self.position_pivot.y)       # Gauche
         ]
 
     def _devenir_ouest(self) -> None:
         """
         Passage en orientation Ouest (L vers la gauche).
         
-        Configuration Ouest autour du pivot fixe :
-        █    ← [pivot.x, pivot.y-1]
-        █    ← [pivot.x, pivot.y] (le pivot de la pièce)
-        ██   ← [pivot.x, pivot.y+1] et [pivot.x+1, pivot.y+1]
+        Configuration Ouest autour du pivot :
+        ██  ← [pivot.x-1, pivot.y-1] et [pivot.x, pivot.y-1]
+         █  ← [pivot.x, pivot.y] (pivot)
+         █  ← [pivot.x, pivot.y+1]
         """
         self.positions = [
-            Position(self.position_pivot.x, self.position_pivot.y - 1),      # Haut-droite
-            Position(self.position_pivot.x, self.position_pivot.y),          # Coude-droite (pivot)
-            Position(self.position_pivot.x, self.position_pivot.y + 1),      # Bas-droite
-            Position(self.position_pivot.x + 1, self.position_pivot.y + 1)   # Bas-centre
+            Position(self.position_pivot.x - 1, self.position_pivot.y - 1),  # Haut-gauche
+            Position(self.position_pivot.x, self.position_pivot.y),          # Pivot
+            Position(self.position_pivot.x, self.position_pivot.y - 1),      # Haut
+            Position(self.position_pivot.x, self.position_pivot.y + 1)       # Bas
         ]

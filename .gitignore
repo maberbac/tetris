@@ -59,6 +59,8 @@ $RECYCLE.BIN/
 *.log
 *.tmp
 temp/
+
+# Répertoire temporaire pour scripts de test/debug
 tmp/
 
 # === Jeu spécifique ===

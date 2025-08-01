@@ -28,6 +28,17 @@ Ce répertoire contient tout le matériel pédagogique pour apprendre l'architec
 4. **Entities** : Pièces mutables avec comportement
 5. **Factory Pattern** : Création centralisée
 6. **Registry Pattern** : Auto-enregistrement avec décorateurs
+7. **Command Pattern** : Système de contrôles découplé *(voir tutoriels interactifs)*
+
+### 🎮 Tutoriels interactifs Pattern Command
+- `apprentissage_pattern_command.py` - **Tutoriel étape par étape avec exemples pratiques**
+- `guide_visuel_pattern_command.py` - **Guide visuel avec diagrammes et quiz**
+
+*Exécutez depuis la racine du projet :*
+```bash
+python docs/learning/apprentissage_pattern_command.py
+python docs/learning/guide_visuel_pattern_command.py
+```
 7. **Template Method** : Héritage avec comportement commun
 
 ### 🔄 En cours d'apprentissage

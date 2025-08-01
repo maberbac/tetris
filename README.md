@@ -20,11 +20,14 @@ cd tetris
 # Installer les dépendances
 pip install pygame
 
-# Lancer le jeu (quand implémenté)
-python main.py
+# Lancer le jeu avec architecture hexagonale
+python jouer.py
+
+# Ou directement
+python partie_tetris.py
 
 # Exécuter les tests
-python test_runner.py
+python tests/run_tests.py
 ```
 
 ## 🎯 Comment jouer

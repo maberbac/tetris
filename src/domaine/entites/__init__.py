@@ -12,3 +12,9 @@ RÈGLES :
 - Aucune dépendance externe
 - Tests unitaires simples
 """
+
+from .position import Position
+from .piece import Piece, TypePiece
+from .plateau import Plateau
+
+__all__ = ['Position', 'Piece', 'TypePiece', 'Plateau']

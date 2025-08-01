@@ -1,31 +1,52 @@
 # Documentation technique - Tetris Python
 
-Documentation technique pour comprendre l'architecture et l'implémentation du jeu Tetris.
+Documentation technique pour comprendre l'architecture hexagonale et l'implémentation du jeu Tetris.
 
 ## 🏗️ Architecture du projet
 
-### Structure actuelle
+### Structure actuelle - Architecture Hexagonale
 ```
 tetris/
-├── src/                        # Code source
-│   └── domaine/                # Logique métier
-│       └── entites/            # Entités du domaine
-│           ├── position.py     # Value Object pour les coordonnées
-│           ├── piece.py        # Classe abstraite des pièces
-│           ├── pieces/         # Implémentations des pièces
-│           │   ├── piece_i.py  # Pièce ligne
-│           │   ├── piece_o.py  # Pièce carrée  
-│           │   ├── piece_t.py  # Pièce en T
-│           │   ├── piece_s.py  # Pièce en S
-│           │   ├── piece_z.py  # Pièce en Z
-│           │   ├── piece_j.py  # Pièce en J
-│           │   └── piece_l.py  # Pièce en L
-│           └── fabriques/      # Factory Pattern
-│               ├── registre_pieces.py    # Registry avec auto-enregistrement
-│               └── fabrique_pieces.py    # Factory pour créer les pièces
-├── tests/                      # Tests automatisés
-├── demo_*.py                   # Scripts de démonstration
-└── test_runner.py              # Exécuteur de tests personnalisé
+├── src/                        # Code source - Architecture hexagonale
+│   ├── domaine/                # 🎯 DOMAINE - Logique métier pure (centre de l'hexagone)
+│   │   ├── entites/            # Entités du domaine
+│   │   │   ├── position.py     # Value Object pour les coordonnées
+│   │   │   ├── piece.py        # Classe abstraite des pièces
+│   │   │   ├── plateau.py      # ✅ Grille de jeu 10×20
+│   │   │   ├── pieces/         # Implémentations des pièces
+│   │   │   │   ├── piece_i.py  # Pièce ligne
+│   │   │   │   ├── piece_o.py  # Pièce carrée  
+│   │   │   │   ├── piece_t.py  # Pièce en T
+│   │   │   │   ├── piece_s.py  # Pièce en S
+│   │   │   │   ├── piece_z.py  # Pièce en Z
+│   │   │   │   ├── piece_j.py  # Pièce en J
+│   │   │   │   └── piece_l.py  # Pièce en L ✅
+│   │   │   └── fabriques/      # Factory Pattern
+│   │   │       ├── registre_pieces.py    # Registry avec auto-enregistrement
+│   │   │       └── fabrique_pieces.py    # Factory pour créer les pièces
+│   │   └── services/           # ✅ Services métier
+│   │       ├── commandes/      # Command Pattern pour actions
+│   │       ├── moteur_partie.py         # Moteur principal du jeu
+│   │       └── statistiques/   # Gestion des statistiques
+│   ├── ports/                  # 🔌 PORTS - Interfaces (contrats)
+│   │   ├── controleur_jeu.py   # Interface pour les contrôles
+│   │   └── affichage_jeu.py    # Interface pour l'affichage
+│   └── adapters/               # 🔧 ADAPTERS - Implémentations techniques
+│       ├── entree/             # Adapters d'entrée
+│       │   └── gestionnaire_partie.py  # Gestion Pygame des entrées
+│       └── sortie/             # Adapters de sortie
+│           └── affichage_partie.py     # Rendu Pygame
+├── tests/                      # Tests organisés par type
+│   ├── unit/                   # Tests unitaires
+│   │   ├── domaine/            # Tests du domaine métier
+│   │   │   ├── entites/        # Tests des entités
+│   │   │   └── services/       # Tests des services
+│   │   └── interface/          # Tests de l'interface
+│   ├── integration/            # Tests d'intégration
+│   └── acceptance/             # Tests d'acceptance
+├── partie_tetris.py            # 🎭 ORCHESTRATEUR - Composition root (assemble tout)
+├── jouer.py                    # 🚀 Point d'entrée utilisateur
+└── run_all_unit_tests.py      # 🧪 Runner de tests unitaires
 ```
 
 ## 🎯 Composants principaux
@@ -122,7 +143,64 @@ class PieceJ(Piece):
 - **Auto-découverte** : Registry trouve automatiquement les pièces
 - **Découplage** : Factory ne connaît pas les classes concrètes
 
-### 4. Patterns d'implémentation appris
+### 4. Services - Couche logique métier
+
+#### Command Pattern - Actions de jeu
+```python
+# Commandes simplifiées (7 actions essentielles)
+CommandeDeplacerGauche()    # ← Déplacement horizontal gauche
+CommandeDeplacerDroite()    # → Déplacement horizontal droite
+CommandeTourner()           # ↑ Rotation horaire
+CommandeDescendre()         # ↓ Chute rapide (par ligne)
+CommandeChuteRapide()       # Space - Chute instantanée (jusqu'en bas)
+CommandeAfficherMenu()      # Esc - Menu en jeu
+CommandePause()             # P - Pause/Reprendre
+```
+
+**Contrôles optimisés** :
+- **Flèches directionnelles** : Contrôles principaux intuitifs
+- **Touches spéciales** : Actions de jeu (Space, Esc, P)
+- **Répétition intelligente** : Déplacement fluide (200ms initial, 120ms répétition)
+- **Mapping simplifié** : 7 touches essentielles seulement
+
+#### Gestionnaire d'événements - Input handling
+```python
+# Configuration des touches
+gestionnaire = GestionnaireEvenements()
+
+# Traitement d'un événement
+resultat = gestionnaire.traiter_evenement_clavier(
+    "Left", TypeEvenement.CLAVIER_APPUI, moteur
+)
+
+# Mapping personnalisé
+gestionnaire.ajouter_mapping_touche("w", ToucheClavier.ROTATION)
+```
+
+**Fonctionnalités** :
+- **Contrôles simplifiés** : 7 touches essentielles seulement
+- **Mapping intuitif** : Flèches + Space + Esc + P
+- **Répétition optimisée** : Délais ajustés pour le gameplay (200ms/120ms)
+- **Actions spécialisées** : Chute rapide vs chute instantanée
+- **Gestion de menu** : Esc pour ouvrir/fermer le menu en jeu
+
+#### Adaptateur Pygame - Bridge vers UI
+```python
+# Intégration avec Pygame
+adaptateur = AdaptateurPygame(gestionnaire)
+adaptateur.demarrer()
+
+# Dans la boucle de jeu
+stats = adaptateur.traiter_evenements(moteur)
+# → Conversion automatique événements Pygame → commandes
+```
+
+**Architecture** :
+- **Bridge Pattern** : Sépare abstraction (gestionnaire) de l'implémentation (Pygame)
+- **Mapping automatique** : Touches Pygame → Noms génériques
+- **Extensibilité** : Facile d'ajouter d'autres bibliothèques (tkinter, etc.)
+
+### 5. Patterns d'implémentation appris
 
 #### Registry Pattern avec décorateurs
 - **Auto-enregistrement** : `@piece_tetris(TypePiece.X)` enregistre automatiquement les classes
@@ -139,6 +217,17 @@ class PieceJ(Piece):
 - **Tests par comportement** : Création, mouvement, rotation, type
 - **Différenciation** : Tests pour distinguer les pièces similaires (S/Z, J/L)
 
+#### Command Pattern pour les contrôles
+- **Encapsulation d'actions** : Chaque input devient une commande exécutable
+- **Découplage UI/logique** : Interface indépendante de l'implémentation
+- **Extensibilité** : Nouvelles commandes sans modification du moteur
+- **Testabilité** : Chaque commande testable individuellement
+
+#### Bridge Pattern pour l'input
+- **Abstraction/Implémentation** : Gestionnaire générique + Adaptateur Pygame
+- **Mapping configurable** : Touches physiques → Touches logiques → Commandes
+- **Multi-plateforme** : Facilite l'ajout d'autres bibliothèques graphiques
+
 ### 5. Tests et qualité
 ```bash
 # Exécuter tous les tests
@@ -149,11 +238,13 @@ python -m unittest tests.test_domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
 #### Métriques actuelles
-- **56 tests** passent (100% ✅)
-- **Couverture** : Value Objects, Entities, Factory, Registry
+- **56+ tests** passent (100% ✅)
+- **Couverture** : Value Objects, Entities, Services, Factory, Registry
 - **TDD** : Cycle RED-GREEN-REFACTOR respecté
 - **7 pièces** complètement implémentées : I, O, T, S, Z, J, L
-- **Symétrie J/L** : Architecture miroir parfaite
+- **Plateau fonctionnel** : Collisions, lignes complètes, gravité
+- **Système de contrôles complet** : 7 commandes + gestionnaire d'événements
+- **Architecture découplée** : Command Pattern + Bridge Pattern
 - Vérification des blocs déjà placés
 - Validation avant chaque mouvement
 
@@ -198,7 +289,23 @@ Pour chaque ligne du bas vers le haut :
         Incrémenter le score
 ```
 
-## Configuration et constantes
+### Configuration et constantes
+
+### Contrôles de jeu
+```
+Contrôles simplifiés et intuitifs :
+
+← Flèche gauche  : Déplacer la pièce vers la gauche
+→ Flèche droite  : Déplacer la pièce vers la droite  
+↑ Flèche haut    : Tourner la pièce (rotation horaire)
+↓ Flèche bas     : Chute rapide (ligne par ligne)
+Space            : Chute instantanée (jusqu'en bas)
+Esc              : Afficher/masquer le menu en jeu
+P                : Pause/Reprendre la partie
+```
+
+**Touches répétables** : ←, →, ↓ (pour un déplacement fluide)  
+**Délais optimisés** : 200ms initial, 120ms répétition
 
 ### Dimensions
 - Largeur plateau : 10 blocs
@@ -278,14 +385,36 @@ Pour chaque ligne du bas vers le haut :
 
 **Architecture stable** : Prête pour la phase suivante 🚀
 
-### 🔄 Phase 2 - Plateau de jeu (PROCHAINE)
+### 🔄 Phase 2 - Plateau de jeu (TERMINÉE ✅)
 **Objectifs** :
-- Grille de jeu 10×20
-- Détection de collision avec le plateau
-- Placement définitif des pièces
-- Détection de lignes complètes
+- ✅ **Grille de jeu 10×20** implémentée
+- ✅ **Détection de collision** avec le plateau
+- ✅ **Placement définitif** des pièces
+- ✅ **Détection de lignes complètes** et suppression
+- ✅ **Descente automatique** des lignes supérieures
 
-### ⏳ Phase 3 - Interface utilisateur
+**Réalisations** :
+- **Plateau** : Entity avec grille 10×20, Set pour O(1) collision detection
+- **Intégration** : Compatible avec toutes les pièces existantes
+- **Ligne complète** : Algorithme de détection et suppression
+- **Gravité** : Logique de descente des blocs
+
+### 🎮 Phase 2.5 - Système de contrôles (TERMINÉE ✅)
+**Objectifs** :
+- ✅ **Command Pattern** pour les actions de jeu
+- ✅ **Gestionnaire d'événements** générique
+- ✅ **Contrôles simplifiés** (7 touches essentielles)
+- ✅ **Répétition optimisée** (délais ajustés pour le gameplay)
+- ✅ **Adaptateur Pygame** pour l'intégration
+
+**Réalisations** :
+- **7 Commandes essentielles** : Gauche, Droite, Rotation, Chute rapide, Chute instantanée, Menu, Pause
+- **Mapping intuitif** : Flèches directionnelles + Space + Esc + P
+- **Répétition fluide** : 200ms initial, 120ms répétition pour déplacement continu
+- **Architecture découplée** : Bridge Pattern vers Pygame
+- **Menu intégré** : Esc pour accéder au menu en cours de jeu
+
+### ⏳ Phase 3 - Interface utilisateur (PROCHAINE)
 **Objectifs** :
 - Interface Pygame
 - Contrôles clavier
