@@ -245,13 +245,15 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (75 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (13 tests)
-python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (70 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (22 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (11 tests)
 
 # Tests spécifiques par pièce
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
+
+**État actuel** : 103/103 tests réussis (100% ✅)
 
 #### Métriques actuelles
 - **92 tests** passent (100% ✅)

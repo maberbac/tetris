@@ -4,6 +4,12 @@ Runner pour les tests d'acceptance - Tests de comportement utilisateur.
 
 Ces tests valident que le jeu répond correctement aux actions
 de l'utilisateur et aux scénarios d'usage réels.
+
+État actuel : 22 tests d'acceptance incluant les corrections de bugs :
+- Contrôles et gameplay (20/22 ✅)
+- Corrections bug lignes multiples ✅ 
+- Corrections bug game over prématuré ✅
+- 2 échecs dans test_bug_visuel_ligne_complete (logique de suppression de lignes)
 """
 
 import unittest
@@ -24,6 +30,8 @@ def main():
         'tests.acceptance.test_controles_simplifies',
         'tests.acceptance.test_descente_acceleree',
         'tests.acceptance.test_bug_visuel_ligne_complete',
+        'tests.acceptance.test_correction_bug_lignes_multiples',      # ✅ Correction bug lignes multiples
+        'tests.acceptance.test_correction_bug_gameover_premature',    # ✅ Correction bug game over prématuré
     ]
     
     print("🎭 TESTS D'ACCEPTANCE - Comportement utilisateur")

@@ -56,7 +56,8 @@ class RegistrePieces:
         """
         cls._pieces_enregistrees[type_piece] = classe_piece
         cls._types_supportes.add(type_piece)
-        print(f"🔧 Pièce enregistrée : {type_piece.value} -> {classe_piece.__name__}")
+        # Note: Emoji remplacé par texte pour compatibilité Windows
+        print(f"[REGISTRY] Pièce enregistrée : {type_piece.value} -> {classe_piece.__name__}")
     
     @classmethod
     def obtenir_classe_piece(cls, type_piece: TypePiece) -> Type[Piece]:

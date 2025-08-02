@@ -69,7 +69,7 @@ class TestIntegrationAudio(unittest.TestCase):
         else:
             # Log pour debug mais ne fait pas échouer le test
             # (peut être dû à l'environnement de test sans audio)
-            print("⚠️ Musique non démarrée - vérifiez l'environnement audio")
+            print("[WARNING_SIGN] Musique non démarrée - vérifiez l'environnement audio")
     
     def test_moteur_gere_pause_musique_correctement(self):
         """Test que le moteur gère correctement la pause de la musique."""
@@ -116,7 +116,7 @@ class TestIntegrationAudio(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    print("🧪 Tests d'intégration - Système Audio")
+    print("[TEST] Tests d'intégration - Système Audio")
     print("=" * 50)
     
     # Configuration des tests
@@ -129,16 +129,16 @@ if __name__ == '__main__':
     # Résumé
     print("\n" + "=" * 50)
     if result.wasSuccessful():
-        print("✅ TOUS LES TESTS D'INTÉGRATION AUDIO RÉUSSIS")
-        print(f"📊 {result.testsRun} tests exécutés avec succès")
-        print("🏗️ Architecture hexagonale validée :")
+        print("[CHECK_MARK] TOUS LES TESTS D'INTÉGRATION AUDIO RÉUSSIS")
+        print(f"[CHART] {result.testsRun} tests exécutés avec succès")
+        print("[ARCHITECTURE] Architecture hexagonale validée :")
         print("   • Injection de dépendance audio ✓")
         print("   • Séparation domaine/infrastructure ✓") 
         print("   • Gestion gracieuse des cas d'erreur ✓")
         print("   • Nettoyage des ressources ✓")
     else:
-        print("❌ ÉCHECS DÉTECTÉS")
-        print(f"📊 Échecs: {len(result.failures)}")
-        print(f"📊 Erreurs: {len(result.errors)}")
+        print("[CROSS_MARK] ÉCHECS DÉTECTÉS")
+        print(f"[CHART] Échecs: {len(result.failures)}")
+        print(f"[CHART] Erreurs: {len(result.errors)}")
     
-    print("🎯 Tests TDD terminés - Phase GREEN atteinte !")
+    print("[DIRECT_HIT] Tests TDD terminés - Phase GREEN atteinte !")

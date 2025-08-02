@@ -106,9 +106,10 @@ class CommandeTournerDemoS(Commande):
         piece = moteur.obtenir_piece_active()
         plateau = moteur.obtenir_plateau()
         
-        # Sauvegarder l'état actuel
+        # Sauvegarder l'état actuel complet
         positions_originales = piece.positions.copy()
-        orientation_originale = getattr(piece, '_orientation', None)
+        pivot_original = Position(piece.position_pivot.x, piece.position_pivot.y)
+        etat_vertical_original = getattr(piece, '_est_vertical', False)
         
         # Essayer la rotation
         piece.tourner()
@@ -118,10 +119,10 @@ class CommandeTournerDemoS(Commande):
             print(f"🔄 Rotation S → {piece.positions}")
             return True
         else:
-            # Annuler la rotation
+            # Annuler la rotation COMPLÈTEMENT
             piece.positions = positions_originales
-            if orientation_originale is not None:
-                piece._orientation = orientation_originale
+            piece.position_pivot = pivot_original
+            piece._est_vertical = etat_vertical_original
             return False
 
 

@@ -38,7 +38,7 @@ class FabriquePieces:
     
     # Position de spawn par défaut (centre du plateau Tetris 10x20)
     X_SPAWN_DEFAUT = 5
-    Y_SPAWN_DEFAUT = 0
+    Y_SPAWN_DEFAUT = -3  # Zone invisible : 3 lignes au-dessus du plateau visible
     
     
     def __init__(self):

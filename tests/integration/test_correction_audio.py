@@ -101,7 +101,7 @@ class TestCorrectionAudio(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    print("🧪 Tests TDD - Validation correction audio")
+    print("[TESTS] Tests TDD - Validation correction audio")
     print("=" * 50)
     
     # Configuration des tests
@@ -114,16 +114,16 @@ if __name__ == '__main__':
     # Résumé
     print("\n" + "=" * 50)
     if result.wasSuccessful():
-        print("✅ TOUS LES TESTS DE CORRECTION AUDIO RÉUSSIS")
-        print(f"📊 {result.testsRun} tests exécutés avec succès")
-        print("🔧 Correction du chemin audio VALIDÉE")
-        print("🎵 Le système audio est maintenant opérationnel")
-        print("\n🎮 Vous pouvez lancer le jeu avec la musique:")
+        print("[CHECK_MARK] TOUS LES TESTS DE CORRECTION AUDIO RÉUSSIS")
+        print(f"[CHART] {result.testsRun} tests exécutés avec succès")
+        print("[WRENCH] Correction du chemin audio VALIDÉE")
+        print("[MUSICAL_NOTE] Le système audio est maintenant opérationnel")
+        print("\n[VIDEO_GAME] Vous pouvez lancer le jeu avec la musique:")
         print("   python partie_tetris.py")
         print("   python jouer.py")
     else:
-        print("❌ ÉCHECS DÉTECTÉS")
-        print(f"📊 Échecs: {len(result.failures)}")
-        print(f"📊 Erreurs: {len(result.errors)}")
+        print("[CROSS_MARK] ÉCHECS DÉTECTÉS")
+        print(f"[CHART] Échecs: {len(result.failures)}")
+        print(f"[CHART] Erreurs: {len(result.errors)}")
     
-    print("🎯 Tests TDD terminés !")
+    print("[DIRECT_HIT] Tests TDD terminés !")

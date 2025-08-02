@@ -163,6 +163,40 @@
     - 5 scénarios : 2 lignes, 3 lignes, TETRIS, lignes non-consécutives, intégration moteur
     - **Résultat** : 5/5 tests d'acceptance réussis ✅
 
+### **Phase 13 : Correction bug game over prématuré (1er août - TDD strict)**
+29. ✅ **Bug identifié et reproduit** : TDD RED appliqué strictement
+    - Bug : Vérification game over avant placement de pièce (conflit avec zone invisible)
+    - **Résultat** : Bug confirmé avec système Y_SPAWN_DEFAUT = -3
+
+30. ✅ **Correction développée et validée** : TDD GREEN appliqué
+    - Corrections : plateau.py (support y<0), moteur_partie.py (logique game over)
+    - **Résultat** : 4/4 tests GREEN réussis, correction validée
+
+31. ✅ **Code intégré et refactorisé** : TDD REFACTOR appliqué  
+    - Code intégré et tests PieceZ corrigés pour zone invisible
+    - Tests existants : 103/103 continuent de passer (non-régression)
+
+32. ✅ **Tests d'acceptance officiels créés** : Validation finale
+    - Test officiel : tests/acceptance/test_correction_bug_gameover_premature.py
+    - **Résultat** : 4/4 tests d'acceptance game over réussis ✅
+
+### **Phase 14 : Correction pivot pièce S et mise à jour documentation (1er août)**
+33. ✅ **Analyse détaillée pivot pièce S** : Investigation approfondie avec scripts de debug
+    - Scripts créés : tmp/debug_pivot_piece_s.py, tmp/debug_orientations_piece_s.py
+    - **Résultat** : Confirmation que le pivot fonctionne parfaitement dans l'implémentation
+
+34. ✅ **Correction commande rotation démonstration** : Problème identifié dans demo_s_avec_plateau.py
+    - Problème : Restauration incomplète d'état après rotation échouée
+    - **Résultat** : CommandeTournerDemoS corrigée avec restauration complète (pivot + état interne)
+
+35. ✅ **Tests de fabrique corrigés** : Synchronisation avec conventions Y de spawn
+    - Problème : Tests attendaient pivot à y_pivot au lieu de y_pivot - 1
+    - **Résultat** : 75/75 tests unitaires passent (100% ✅)
+
+36. ✅ **Documentation mise à jour** : Synchronisation des métriques et corrections
+    - README.md : Métriques actualisées (108 tests)
+    - Journal développement : Correction pivot pièce S documentée
+
 ## 📊 **État actuel du projet**
 
 ### **Jeu Tetris COMPLET ET FONCTIONNEL ✅**
@@ -171,9 +205,10 @@
 - ✅ **Mécanique complète** : Génération aléatoire, collisions, lignes complètes
 - ✅ **Système de score** : Points par lignes, niveaux, accélération
 - ✅ **Statistics** : Compteurs par type de pièce, preview pièce suivante
-- ✅ **Game Over** : Détection automatique de fin de partie
+- ✅ **Game Over** : Détection automatique correcte avec zone invisible
+- ✅ **Zone invisible** : Système de spawn réaliste (Y_SPAWN_DEFAUT = -3)
 
-### **Tests implémentés (97/97 passants - 100% ✅)**
+### **Tests implémentés (108 tests - 97%+ passants ✅)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (75 tests ✅)
@@ -181,16 +216,17 @@ tests/
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
 │   │   └── services/              # Tests des services (GestionnaireEvenements)
 │   └── interface/                 # Tests de l'interface  
-├── integration/                   # Tests d'intégration (4 tests ✅)
+├── integration/                   # Tests d'intégration (11 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (18 tests ✅)
+├── acceptance/                    # Tests d'acceptance (22 tests - 20/22 ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
-│   └── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅ NOUVEAU !
+│   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
+│   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 └── run_tests.py                  # Lanceur des tests
 ```
 
-**Performance** : 97 tests en 0.7s environ (100% succès, 0 échec, 0 erreur)
+**Performance** : 108 tests en 0.6s environ (97%+ succès, corrections en cours pour lignes complètes)
 
 ### **Architecture finale réalisée**
 ```

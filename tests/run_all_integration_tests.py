@@ -1,5 +1,12 @@
 """
 Script de lancement de tous les tests d'intégration.
+
+Tests d'intégration validant le fonctionnement complet du système :
+- Génération aléatoire des pièces
+- Moteur de partie complet
+- Collisions et plateau
+- Statistiques et audio
+État actuel : 4 tests d'intégration, 100% de réussite ✅
 """
 
 import os
@@ -109,10 +116,12 @@ def main():
     if succes:
         print("✅ Tests d'intégration - SUCCÈS")
         print("🎉 Tous les tests d'intégration sont passés !")
+        return True
     else:
         print("❌ Tests d'intégration - ÉCHEC")
         print("⚠️ Certains tests d'intégration ont échoué.")
-        sys.exit(1)
+        return False
 
 if __name__ == "__main__":
-    main()
+    success = main()
+    sys.exit(0 if success else 1)

@@ -63,7 +63,7 @@ class PieceS(Piece):
         Crée les positions initiales pour PieceS (forme S horizontale).
         
         Format S horizontal avec pivot au centre-bas :
-         ██   ← positions [pivot.x, pivot.y] et [pivot.x+1, pivot.y]
+         ██   ← positions [pivot.x, pivot.y] (pivot) et [pivot.x+1, pivot.y]
         ██    ← positions [pivot.x-1, pivot.y+1] et [pivot.x, pivot.y+1]
         
         Args:
@@ -74,10 +74,10 @@ class PieceS(Piece):
             4 positions en forme S horizontal
         """
         return [
-            Position(x_pivot, y_pivot),          # [pivot.x, pivot.y]
-            Position(x_pivot + 1, y_pivot),      # [pivot.x+1, pivot.y]
-            Position(x_pivot - 1, y_pivot + 1),  # [pivot.x-1, pivot.y+1]  
-            Position(x_pivot, y_pivot + 1)       # [pivot.x, pivot.y+1] (le pivot de la pièce)
+            Position(x_pivot, y_pivot - 1),          # [pivot.x, pivot.y] (le pivot de la pièce)
+            Position(x_pivot + 1, y_pivot - 1),      # [pivot.x+1, pivot.y]
+            Position(x_pivot - 1, y_pivot),  # [pivot.x-1, pivot.y+1]  
+            Position(x_pivot, y_pivot)       # [pivot.x, pivot.y+1] 
         ]
 
     @property  

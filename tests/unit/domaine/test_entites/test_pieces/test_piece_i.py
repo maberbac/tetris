@@ -33,15 +33,15 @@ class TestPieceI(unittest.TestCase):
         self.assertEqual(piece.type_piece, TypePiece.I)
         self.assertEqual(len(piece.positions), 4)
         
-        # Positions attendues : ligne horizontale centrée sur x=5
+        # Positions attendues : ligne horizontale centrée sur x=5 (zone invisible y=-1)
         positions_attendues = [
-            Position(3, 0), Position(4, 0), 
-            Position(5, 0), Position(6, 0)
+            Position(3, -1), Position(4, -1), 
+            Position(5, -1), Position(6, -1)
         ]
         self.assertEqual(piece.positions, positions_attendues)
         
         # Pivot au centre de la ligne
-        self.assertEqual(piece.position_pivot, Position(4, 0))
+        self.assertEqual(piece.position_pivot, Position(4, -1))
     
     def test_piece_i_peut_se_deplacer(self):
         """
@@ -59,11 +59,11 @@ class TestPieceI(unittest.TestCase):
         
         # Assert : Vérifier que l'Entity a muté (même objet, nouvelles positions)
         positions_attendues = [
-            Position(4, 2), Position(5, 2),
-            Position(6, 2), Position(7, 2)
+            Position(4, 1), Position(5, 1),
+            Position(6, 1), Position(7, 1)
         ]
         self.assertEqual(piece.positions, positions_attendues)
-        self.assertEqual(piece.position_pivot, Position(5, 2))
+        self.assertEqual(piece.position_pivot, Position(5, 1))
         
         # Vérifier que les positions ont bien changé (Entity behavior)
         self.assertNotEqual(piece.positions, positions_initiales)
@@ -79,24 +79,24 @@ class TestPieceI(unittest.TestCase):
                        █
                        █
         """
-        # Arrange : PieceI horizontal (position initiale)
+        # Arrange : PieceI horizontal (position initiale avec zone invisible)
         piece = PieceI.creer(x_pivot=5, y_pivot=1)
         positions_horizontales = [
-            Position(3, 1), Position(4, 1),
-            Position(5, 1), Position(6, 1)
+            Position(3, 0), Position(4, 0),
+            Position(5, 0), Position(6, 0)
         ]
         self.assertEqual(piece.positions, positions_horizontales)
         
         # Act : Rotation vers vertical
         piece.tourner()
         
-        # Assert : Maintenant en vertical autour du pivot (4, 1)
+        # Assert : Maintenant en vertical autour du pivot (4, 0)
         positions_verticales = [
-            Position(4, 0), Position(4, 1),
-            Position(4, 2), Position(4, 3)
+            Position(4, -1), Position(4, 0),
+            Position(4, 1), Position(4, 2)
         ]
         self.assertEqual(piece.positions, positions_verticales)
-        self.assertEqual(piece.position_pivot, Position(4, 1))  # Pivot inchangé
+        self.assertEqual(piece.position_pivot, Position(4, 0))  # Pivot inchangé
     
     def test_piece_i_peut_tourner_vertical_vers_horizontal(self):
         """
@@ -113,10 +113,10 @@ class TestPieceI(unittest.TestCase):
         # Act : Rotation retour vers horizontal  
         piece.tourner()
         
-        # Assert : Retour à l'horizontal
+        # Assert : Retour à l'horizontal (zone invisible)
         positions_horizontales = [
-            Position(3, 1), Position(4, 1),
-            Position(5, 1), Position(6, 1)
+            Position(3, 0), Position(4, 0),
+            Position(5, 0), Position(6, 0)
         ]
         self.assertEqual(piece.positions, positions_horizontales)
         self.assertNotEqual(piece.positions, positions_verticales)
@@ -128,10 +128,10 @@ class TestPieceI(unittest.TestCase):
         Le pivot est le centre de rotation et ne doit jamais bouger,
         seules les autres positions tournent autour.
         """
-        # Arrange : PieceI avec pivot connu
+        # Arrange : PieceI avec pivot connu (zone invisible)
         piece = PieceI.creer(x_pivot=7, y_pivot=3)
         pivot_initial = piece.position_pivot
-        self.assertEqual(pivot_initial, Position(6, 3))  # pivot = positions[1]
+        self.assertEqual(pivot_initial, Position(6, 2))  # pivot = positions[1] avec zone invisible
         
         # Act & Assert : Plusieurs rotations, pivot inchangé
         for _ in range(4):  # 4 rotations = cycle complet

@@ -74,13 +74,22 @@ class Plateau:
         """
         Vérifie si une position est libre (dans les limites et non occupée).
         
+        CORRECTION ZONE INVISIBLE : Permet les positions y négatives (zone invisible)
+        pour que les pièces puissent spawn au-dessus du plateau visible.
+        
         Args:
             position: Position à vérifier
             
         Returns:
             True si la position est libre, False sinon
         """
-        return (self.est_position_valide(position) and 
+        # Zone invisible : Permettre y négatif, mais vérifier les limites x et y positif
+        position_valide_avec_zone_invisible = (
+            0 <= position.x < self.largeur and  # X toujours dans les limites
+            position.y < self.hauteur           # Y peut être négatif (zone invisible)
+        )
+        
+        return (position_valide_avec_zone_invisible and 
                 position not in self._positions_occupees)
     
     def peut_placer_piece(self, piece: Piece) -> bool:

@@ -15,7 +15,7 @@ from partie_tetris import MoteurPartie
 
 def test_generation_aleatoire():
     """Test de la génération aléatoire des pièces."""
-    print("🧪 Test de génération aléatoire des pièces")
+    print("[TEST] Test de génération aléatoire des pièces")
     print("-" * 40)
     
     fabrique = FabriquePieces()
@@ -29,15 +29,15 @@ def test_generation_aleatoire():
     
     # Vérifier qu'on a au moins 3 types différents (probabilité très élevée)
     types_uniques = set(pieces_generees)
-    print(f"\n📊 Types uniques générés: {len(types_uniques)}/7")
-    print(f"✅ Types: {[t.value for t in types_uniques]}")
+    print(f"\n[CHART] Types uniques générés: {len(types_uniques)}/7")
+    print(f"[CHECK_MARK] Types: {[t.value for t in types_uniques]}")
     
     assert len(types_uniques) >= 3, f"Pas assez de variété: {len(types_uniques)} types"
     return True
 
 def test_plateau_collision():
     """Test des collisions avec le plateau."""
-    print("\n🧪 Test des collisions avec le plateau")  
+    print("\n[TEST] Test des collisions avec le plateau")  
     print("-" * 40)
     
     plateau = Plateau(10, 20)
@@ -46,7 +46,7 @@ def test_plateau_collision():
     # Créer une pièce au centre - CORRECTION: utiliser TypePiece.I directement
     from src.domaine.entites.piece import TypePiece
     piece = fabrique.creer(TypePiece.I, x_pivot=5, y_pivot=0)  # CORRECTION: type_piece au lieu de from_type
-    print(f"✅ Pièce I créée à (5, 0)")
+    print(f"[CHECK_MARK] Pièce I créée à (5, 0)")
     
     # Test de position normale
     collision_normale = not plateau.peut_placer_piece(piece)
@@ -84,31 +84,31 @@ def test_plateau_collision():
 
 def test_moteur_partie():
     """Test des fonctionnalités de base du moteur."""
-    print("\n🧪 Test du moteur de partie")
+    print("\n[TEST] Test du moteur de partie")
     print("-" * 40)
     
     moteur = MoteurPartie()
-    print("✅ Moteur créé")
+    print("[CHECK_MARK] Moteur créé")
     
     # Vérifier l'état initial - CORRECTION: obtenir_piece_active au lieu de obtenir_piece_courante
     piece_courante = moteur.obtenir_piece_active()
     plateau = moteur.obtenir_plateau()
     
-    print(f"✅ Pièce courante: {piece_courante.type_piece.value}")  # CORRECTION: type_piece
-    print(f"✅ Plateau: {plateau.largeur}×{plateau.hauteur}")
+    print(f"[CHECK_MARK] Pièce courante: {piece_courante.type_piece.value}")  # CORRECTION: type_piece
+    print(f"[CHECK_MARK] Plateau: {plateau.largeur}×{plateau.hauteur}")
     
     # Tester les commandes de base
     # (On ne peut pas vraiment tester sans interface complète)
     
     # Vérifier les statistiques
     stats = moteur.obtenir_statistiques()
-    print(f"📊 Stats initiales - Score: {stats.score}, Niveau: {stats.niveau}")
+    print(f"[CHART] Stats initiales - Score: {stats.score}, Niveau: {stats.niveau}")
     
     return True
 
 def test_statistiques():
     """Test du système de statistiques."""
-    print("\n🧪 Test des statistiques")
+    print("\n[TEST] Test des statistiques")
     print("-" * 40)
     
     from src.domaine.entites.statistiques.statistiques_jeu import StatistiquesJeu
@@ -116,14 +116,14 @@ def test_statistiques():
     
     # Création des statistiques
     stats = StatistiquesJeu()
-    print(f"📊 Statistiques initiales : Score={stats.score}, Niveau={stats.niveau}")
+    print(f"[CHART] Statistiques initiales : Score={stats.score}, Niveau={stats.niveau}")
     
     # Test 1: État initial
     assert stats.score == 0, f"Score initial devrait être 0, trouvé {stats.score}"
     assert stats.niveau == 1, f"Niveau initial devrait être 1, trouvé {stats.niveau}"
     assert stats.lignes_completees == 0, f"Lignes complétées initiales devraient être 0, trouvé {stats.lignes_completees}"
     assert stats.pieces_placees == 0, f"Pièces placées initiales devraient être 0, trouvé {stats.pieces_placees}"
-    print("✅ État initial correct")
+    print("[CHECK_MARK] État initial correct")
     
     # Test 2: Ajout de pièces
     stats.ajouter_piece(TypePiece.I)
@@ -133,7 +133,7 @@ def test_statistiques():
     assert stats.pieces_par_type[TypePiece.I] == 1, f"Devrait avoir 1 pièce I, trouvé {stats.pieces_par_type[TypePiece.I]}"
     assert stats.pieces_par_type[TypePiece.O] == 1, f"Devrait avoir 1 pièce O, trouvé {stats.pieces_par_type[TypePiece.O]}"
     assert stats.pieces_par_type[TypePiece.T] == 1, f"Devrait avoir 1 pièce T, trouvé {stats.pieces_par_type[TypePiece.T]}"
-    print("✅ Comptage des pièces correct")
+    print("[CHECK_MARK] Comptage des pièces correct")
     
     # Test 3: Calcul du score (ligne simple)
     score_initial = stats.score
@@ -141,7 +141,7 @@ def test_statistiques():
     score_attendu = score_initial + (100 * stats.niveau)  # 100 points par ligne simple
     assert stats.score >= score_initial, f"Score devrait augmenter après ligne complète"
     assert stats.lignes_completees == 1, f"Devrait avoir 1 ligne complétée, trouvé {stats.lignes_completees}"
-    print(f"✅ Score après 1 ligne : {stats.score} points")
+    print(f"[CHECK_MARK] Score après 1 ligne : {stats.score} points")
     
     # Test 4: Score pour Tetris (4 lignes simultanées)
     score_avant_tetris = stats.score
@@ -149,14 +149,14 @@ def test_statistiques():
     bonus_tetris = 800 * stats.niveau
     assert stats.score > score_avant_tetris, f"Score devrait augmenter significativement pour un Tetris"
     assert stats.lignes_completees == 5, f"Devrait avoir 5 lignes complétées au total, trouvé {stats.lignes_completees}"
-    print(f"✅ Score après Tetris : {stats.score} points (bonus Tetris appliqué)")
+    print(f"[CHECK_MARK] Score après Tetris : {stats.score} points (bonus Tetris appliqué)")
     
     # Test 5: Progression de niveau
     # Compléter 10 lignes au total pour passer au niveau 2
     stats.ajouter_score_selon_lignes_completees(5)  # 5 lignes de plus = 10 total
     assert stats.lignes_completees == 10, f"Devrait avoir 10 lignes complétées, trouvé {stats.lignes_completees}"
     assert stats.niveau == 2, f"Devrait être au niveau 2 après 10 lignes, trouvé niveau {stats.niveau}"
-    print(f"✅ Progression de niveau : Niveau {stats.niveau} après {stats.lignes_completees} lignes")
+    print(f"[CHECK_MARK] Progression de niveau : Niveau {stats.niveau} après {stats.lignes_completees} lignes")
     
     # Test 6: Score multiplié par niveau
     score_niveau2 = stats.score
@@ -164,7 +164,7 @@ def test_statistiques():
     bonus_double = 300 * 2  # 300 points × niveau 2
     assert stats.score > score_niveau2, f"Score devrait augmenter avec bonus de niveau"
     assert stats.niveau == 2, f"Devrait rester au niveau 2, trouvé niveau {stats.niveau}"
-    print(f"✅ Bonus de niveau appliqué : Score final {stats.score} points")
+    print(f"[CHECK_MARK] Bonus de niveau appliqué : Score final {stats.score} points")
     
     # Test 7: Vérification de tous les types de pièces
     for type_piece in [TypePiece.S, TypePiece.Z, TypePiece.J, TypePiece.L]:
@@ -172,25 +172,25 @@ def test_statistiques():
     
     total_pieces = sum(stats.pieces_par_type.values())
     assert total_pieces == stats.pieces_placees, f"Somme des pièces par type ({total_pieces}) devrait égaler le total ({stats.pieces_placees})"
-    print(f"✅ Comptage cohérent : {stats.pieces_placees} pièces au total")
+    print(f"[CHECK_MARK] Comptage cohérent : {stats.pieces_placees} pièces au total")
     
     # Résumé des statistiques finales
-    print("\n📊 STATISTIQUES FINALES :")
-    print(f"   💰 Score final : {stats.score:,} points")
-    print(f"   📈 Niveau atteint : {stats.niveau}")
-    print(f"   📝 Lignes complétées : {stats.lignes_completees}")
-    print(f"   🧩 Pièces placées : {stats.pieces_placees}")
-    print("   🎯 Répartition des pièces :")
+    print("\n[CHART] STATISTIQUES FINALES :")
+    print(f"   [MONEY] Score final : {stats.score:,} points")
+    print(f"   [CHART] Niveau atteint : {stats.niveau}")
+    print(f"   [MEMO] Lignes complétées : {stats.lignes_completees}")
+    print(f"   [PUZZLE] Pièces placées : {stats.pieces_placees}")
+    print("   [DIRECT_HIT] Répartition des pièces :")
     for type_piece, count in stats.pieces_par_type.items():
         if count > 0:
             print(f"      {type_piece.value}: {count}")
     
-    print("✅ Tous les tests de statistiques réussis !")
+    print("[CHECK_MARK] Tous les tests de statistiques réussis !")
     return True
 
 if __name__ == "__main__":
     """Exécuter tous les tests d'intégration."""
-    print("🎮 TESTS D'INTÉGRATION - PARTIE COMPLÈTE")
+    print("[VIDEO_GAME] TESTS D'INTÉGRATION - PARTIE COMPLÈTE")
     print("=" * 50)
     
     tests = [
@@ -205,27 +205,27 @@ if __name__ == "__main__":
         try:
             resultat = test()
             resultats.append(resultat)
-            print("✅ Test réussi\n")
+            print("[CHECK_MARK] Test réussi\n")
         except Exception as e:
-            print(f"❌ Test échoué: {e}\n")
+            print(f"[CROSS_MARK] Test échoué: {e}\n")
             resultats.append(False)
     
     # Résumé
     print("=" * 50)
-    print("📊 RÉSUMÉ DES TESTS D'INTÉGRATION")
+    print("[CHART] RÉSUMÉ DES TESTS D'INTÉGRATION")
     print("=" * 50)
     
     for i, (test, resultat) in enumerate(zip(tests, resultats)):
-        status = "✅ RÉUSSI" if resultat else "❌ ÉCHOUÉ"
+        status = "[CHECK_MARK] RÉUSSI" if resultat else "[CROSS_MARK] ÉCHOUÉ"
         print(f"{i+1}. {test.__name__}: {status}")
     
     reussis = sum(resultats)
     total = len(resultats)
     pourcentage = (reussis / total) * 100
     
-    print(f"\n🎯 BILAN: {reussis}/{total} tests réussis ({pourcentage:.1f}%)")
+    print(f"\n[DIRECT_HIT] BILAN: {reussis}/{total} tests réussis ({pourcentage:.1f}%)")
     
     if pourcentage == 100:
-        print("🏆 TOUS LES TESTS D'INTÉGRATION RÉUSSIS !")
+        print("[TROPHY] TOUS LES TESTS D'INTÉGRATION RÉUSSIS !")
     else:
-        print("⚠️ Certains tests nécessitent des corrections")
+        print("[WARNING_SIGN] Certains tests nécessitent des corrections")

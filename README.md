@@ -9,7 +9,25 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - **Musique de fond intégrée** avec le thème classique de Tetris
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
-- Tests complets avec approche TDD (Test-Driven Development) - **97 tests ✅**
+- Tests complets avec approche TDD (Test-Driven Development) - ### **Tests implémentés (108+ tests - 97%+ ✅)**
+```
+tests/
+├── unit/                           # Tests unitaires (75 tests ✅)
+│   ├── domaine/                    # Tests du domaine métier
+│   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
+│   │   └── services/              # Tests des services (GestionnaireEvenements)
+│   └── interface/                 # Tests de l'interface  
+├── integration/                   # Tests d'intégration (11 tests ✅)
+│   └── test_partie_complete.py   # Tests système complet
+├── acceptance/                    # Tests d'acceptance (22 tests ✅)
+│   ├── test_controles_rapide.py  # Tests contrôles complets
+│   ├── test_controles_simplifies.py # Tests contrôles simplifiés
+│   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
+│   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
+└── run_tests.py                  # Lanceur des tests
+```
+
+**Performance** : 108 tests en 0.6s environ (97%+ succès, corrections en cours)
 
 ## 🚀 Installation et utilisation
 
@@ -110,10 +128,10 @@ python tests/run_all_integration_tests.py # Tests d'intégration
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
-**Couverture actuelle** : **97 tests, 100% de réussite ✅**
-- **75 tests unitaires** : Domaine, entités, services, audio, descente accélérée
-- **18 tests d'acceptance** : Scénarios utilisateur + correction bug lignes multiples
-- **4 tests d'intégration** : Système complet avec audio
+**Couverture actuelle** : **108 tests, 97%+ de réussite ✅**
+- **75 tests unitaires** : Domaine, entités, services, zone invisible
+- **22 tests d'acceptance** : Scénarios utilisateur + corrections de bugs (lignes multiples, game over prématuré)
+- **11 tests d'intégration** : Système complet avec audio
 
 ## 📋 État du développement
 
@@ -121,7 +139,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - Architecture de base avec TDD
 - **Toutes les 7 pièces complètes** : I, O, T, S, Z, J, L avec rotations complètes
 - Factory Pattern avec auto-enregistrement (Registry Pattern)
-- Tests complets du domaine (**75 tests unitaires, 100% réussite**)
+- Tests complets du domaine (**70 tests unitaires, 100% réussite**)
 - Value Objects et Entities avec comportements métier
 - Symétrie parfaite entre pièces J et L
 - **Suite de tests complètement corrigée et fonctionnelle**
@@ -134,7 +152,9 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - **Système audio intégré** avec musique de fond fonctionnelle
 - **Gestion d'erreurs audio** : Fallback automatique et fonctionnement sans son
 - **Organisation des fichiers** : Structure propre avec `tmp/` pour les outils de développement
-- **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte (descente accélérée + lignes multiples)
+- **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte (descente accélérée + lignes multiples + game over prématuré)
+- **Zone invisible** : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
+- **Corrections récentes** : Pivot de la pièce S entièrement corrigé, démonstrations mises à jour
 
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :

@@ -70,10 +70,10 @@ class PieceI(Piece):
             4 positions en ligne horizontale
         """
         return [
-            Position(x_pivot - 2, y_pivot),  # [pivot.x-2, pivot.y]
-            Position(x_pivot - 1, y_pivot),  # [pivot.x-1, pivot.y] (le pivot de la pièce)  
-            Position(x_pivot, y_pivot),      # [pivot.x, pivot.y]
-            Position(x_pivot + 1, y_pivot)   # [pivot.x+1, pivot.y]
+            Position(x_pivot - 2, y_pivot - 1),  # [pivot.x-2, pivot.y]
+            Position(x_pivot - 1, y_pivot - 1),  # [pivot.x-1, pivot.y] (le pivot de la pièce)  
+            Position(x_pivot, y_pivot - 1),      # [pivot.x, pivot.y]
+            Position(x_pivot + 1, y_pivot - 1)   # [pivot.x+1, pivot.y]
         ]
     
     def tourner(self) -> None:

@@ -53,8 +53,8 @@ class TestFabriquePieces(unittest.TestCase):
         piece = self.fabrique.creer(TypePiece.I, x_pivot=7, y_pivot=3)
         
         # Assert : Position de spawn correcte
-        # Pour PieceI, le pivot devrait être à (6, 3) avec spawn (7, 3)
-        self.assertEqual(piece.position_pivot, Position(6, 3))
+        # Pour PieceI, le pivot devrait être à (6, 2) avec spawn (7, 3) car les positions sont à y_pivot - 1
+        self.assertEqual(piece.position_pivot, Position(6, 2))
         
         # Vérifier qu'au moins une position contient le spawn
         positions_x = [pos.x for pos in piece.positions]
@@ -85,14 +85,15 @@ class TestFabriquePieces(unittest.TestCase):
         """
         Test : La fabrique utilise une position de spawn par défaut sensée.
         
-        Pour Tetris, la position par défaut devrait être au centre-haut.
+        Pour Tetris, la position par défaut devrait être au centre-haut dans la zone invisible.
         """
         # Act : Créer sans spécifier position
         piece = self.fabrique.creer(TypePiece.I)
         
-        # Assert : Position par défaut (centre du plateau Tetris)
-        # Tetris standard : largeur 10, spawn au centre = x=5
-        self.assertEqual(piece.position_pivot, Position(4, 0))  # PieceI pivot
+        # Assert : Position par défaut dans la zone invisible (Y_SPAWN_DEFAUT = -3)  
+        # Tetris standard : largeur 10, spawn au centre = x=5, zone invisible = y=-3
+        # PieceI pivot sera à (4, -4) car les positions sont à y_pivot - 1
+        self.assertEqual(piece.position_pivot, Position(4, -4))  # PieceI pivot en zone invisible
 
 
 if __name__ == '__main__':

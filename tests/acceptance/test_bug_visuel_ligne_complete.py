@@ -37,9 +37,11 @@ class TestBugVisuelLigneComplete(unittest.TestCase):
             pos = Position(x, 19)
             plateau._positions_occupees.add(pos)
         
-        # Créer une pièce O qui va compléter la ligne en (8,18) -> positions (8,18), (9,18), (8,19), (9,19)
+        # Créer une pièce O qui va compléter la ligne 19
+        # La pièce O en (8,19) donne les positions: (8,18), (9,18), (8,19), (9,19)
+        # Cela complète la ligne 19 avec (8,19) et (9,19)
         from src.domaine.entites.pieces.piece_o import PieceO
-        piece_o = PieceO.creer(8, 18)  # Carré 2x2 qui complétera la ligne 19
+        piece_o = PieceO.creer(8, 19)  # Carré 2x2 qui complétera la ligne 19
         
         # Forcer la pièce dans le moteur
         self.moteur.piece_active = piece_o
@@ -58,8 +60,11 @@ class TestBugVisuelLigneComplete(unittest.TestCase):
         
         # Vérifier que la ligne a bien été supprimée
         positions_apres = len(plateau.positions_occupees)
-        # positions_avant (8) + piece_o (4) - ligne_supprimee (10) = positions_avant - 6
-        self.assertEqual(positions_apres, positions_avant - 6,
+        # positions_avant (8) + piece_o_partie_non_supprimee (2 positions sur ligne 18) - ligne_supprimee (10)
+        # = 8 + 2 - 10 = 0, mais les positions de la ligne 18 restent après suppression
+        # Il reste seulement les 2 positions de la pièce O qui étaient sur ligne 18
+        positions_attendues = 2  # Seulement les 2 positions de la pièce O sur ligne 18: (8,18), (9,18)
+        self.assertEqual(positions_apres, positions_attendues,
                        "La ligne complète devrait être supprimée immédiatement")
     
     def test_etat_plateau_coherent_apres_placement(self):
@@ -132,16 +137,18 @@ class TestBugVisuelLigneComplete(unittest.TestCase):
         # Arrange
         plateau = self.moteur.obtenir_plateau()
         
-        # Créer une ligne presque complète
+        # Créer une ligne presque complète - 8 cellules sur 10
         for x in range(8):  # 8 cellules sur 10
             pos = Position(x, 19)
             plateau._positions_occupees.add(pos)
         
-        # Créer une pièce O qui va compléter la ligne quand placée en (8, 18)
+        # Créer une pièce O qui va compléter la ligne quand placée en (8, 19)
+        # La pièce O en (8,19) occupe (8,18), (9,18), (8,19), (9,19)
+        # Les positions (8,19) et (9,19) complètent la ligne 19
         from src.domaine.entites.pieces.piece_o import PieceO
-        piece_o = PieceO.creer(8, 18)  # Carré 2x2 qui complétera la ligne 19
+        piece_o = PieceO.creer(8, 19)  # Carré 2x2 qui complétera la ligne 19
         
-        # Act : Utiliser la nouvelle méthode atomique
+        # Act : Utiliser la méthode atomique directement sur le plateau
         nb_lignes_supprimees = plateau.placer_piece_et_supprimer_lignes(piece_o)
         
         # Assert : Vérifier qu'aucune ligne complète n'est visible après l'opération atomique

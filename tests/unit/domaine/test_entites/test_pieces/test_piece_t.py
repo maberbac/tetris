@@ -23,39 +23,39 @@ class TestPieceT(unittest.TestCase):
         self.assertEqual(self.piece_t.type_piece, TypePiece.T)
     
     def test_piece_t_positions_initiales_orientation_nord(self):
-        """Test : PieceT a les bonnes positions initiales (orientation Nord - T inversé)."""
+        """Test : PieceT a les bonnes positions initiales (orientation Nord - T inversé, zone invisible)."""
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(4, 0),  # Gauche du centre
-            Position(5, 0),  # Centre
-            Position(6, 0),  # Droite du centre  
-            Position(5, 1)   # En bas du centre
+            Position(4, -1),  # Gauche du centre (zone invisible)
+            Position(5, -1),  # Centre (zone invisible)
+            Position(6, -1),  # Droite du centre (zone invisible)
+            Position(5, 0)    # En bas du centre
         ]
         self.assertEqual(positions, positions_attendues)
     
     
     def test_piece_t_peut_tourner_vers_est(self):
-        """Test : PieceT peut tourner vers l'Est (T vers la droite)."""
+        """Test : PieceT peut tourner vers l'Est (T vers la droite, zone invisible)."""
         self.piece_t.tourner()
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(5, -1), # En haut du centre
-            Position(5, 0),  # Centre
-            Position(5, 1),  # En bas du centre
-            Position(4, 0)   # À gauche du centre
+            Position(5, -2), # En haut du centre (zone invisible)
+            Position(5, -1), # Centre (zone invisible)
+            Position(5, 0),  # En bas du centre
+            Position(4, -1)  # À gauche du centre (zone invisible)
         ]
         self.assertEqual(positions, positions_attendues)
     
     def test_piece_t_peut_tourner_vers_sud(self):
-        """Test : PieceT peut tourner vers le Sud (T normal)."""
+        """Test : PieceT peut tourner vers le Sud (T normal, zone invisible)."""
         self.piece_t.tourner()  # Nord -> Est
         self.piece_t.tourner()  # Est -> Sud
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(4, 0),  # Gauche du centre
-            Position(5, 0),  # Centre
-            Position(6, 0),  # Droite du centre
-            Position(5, -1)  # En haut du centre
+            Position(4, -1), # Gauche du centre (zone invisible)
+            Position(5, -1), # Centre (zone invisible)
+            Position(6, -1), # Droite du centre (zone invisible)
+            Position(5, -2)  # En haut du centre (zone invisible)
         ]
         self.assertEqual(positions, positions_attendues)
     
@@ -66,10 +66,10 @@ class TestPieceT(unittest.TestCase):
         self.piece_t.tourner()  # Sud -> Ouest
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(5, -1), # En haut du centre
-            Position(5, 0),  # Centre
-            Position(5, 1),  # En bas du centre
-            Position(6, 0)   # À droite du centre
+            Position(5, -2), # En haut du centre (zone invisible)
+            Position(5, -1), # Centre (zone invisible)
+            Position(5, 0),  # En bas du centre
+            Position(6, -1)  # À droite du centre (zone invisible)
         ]
         self.assertEqual(positions, positions_attendues)
     

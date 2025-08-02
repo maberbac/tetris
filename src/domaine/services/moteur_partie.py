@@ -19,7 +19,7 @@ class MoteurPartie:
     """
     Moteur principal de la partie de Tetris.
     
-    🎯 FONCTIONNALITÉS :
+    [TARGET] FONCTIONNALITÉS :
     - Plateau refactorisé 10x20
     - Génération aléatoire des pièces
     - Détection automatique des lignes complètes
@@ -58,14 +58,14 @@ class MoteurPartie:
         # Messages à afficher
         self.messages = []
         
-        print(f"🎮 Partie Tetris initialisée")
-        print(f"📍 Plateau: {self.plateau.largeur}x{self.plateau.hauteur}")
-        print(f"🎲 Types de pièces disponibles: {len(self.fabrique.obtenir_types_supportes())}")
+        print(f"[GAME] Partie Tetris initialisée")
+        print(f"[ROUND_PUSHPIN] Plateau: {self.plateau.largeur}x{self.plateau.hauteur}")
+        print(f"[DICE] Types de pièces disponibles: {len(self.fabrique.obtenir_types_supportes())}")
         
         # Initialiser l'audio si disponible
         if self.audio:
             self.audio.initialiser()
-            print("🎵 Système audio initialisé")
+            print("[MUSIC] Système audio initialisé")
         
         # Générer les premières pièces
         self._generer_piece_suivante()
@@ -97,7 +97,7 @@ class MoteurPartie:
         
         # Vérifier si c'est valide
         if self.plateau.peut_placer_piece(self.piece_active):
-            print(f"📍 Déplacement réussi: {self.piece_active.type_piece.value} → {self.piece_active.positions}")
+            print(f"[ROUND_PUSHPIN] Déplacement réussi: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             return True
         else:
             # Annuler le déplacement
@@ -123,7 +123,7 @@ class MoteurPartie:
         
         # Vérifier si c'est valide
         if self.plateau.peut_placer_piece(self.piece_active):
-            print(f"🔄 Rotation réussie: {self.piece_active.type_piece.value} → {self.piece_active.positions}")
+            print(f"[ROTATE] Rotation réussie: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             return True
         else:
             # Annuler la rotation
@@ -155,7 +155,7 @@ class MoteurPartie:
                 break
         
         if nb_lignes > 0:
-            print(f"🚀 Chute rapide: {nb_lignes} lignes → {self.piece_active.positions}")
+            print(f"[FAST_DROP] Chute rapide: {nb_lignes} lignes -> {self.piece_active.positions}")
             # Ajouter des points pour la chute rapide
             self.stats.score += nb_lignes * self.stats.niveau
         
@@ -168,18 +168,18 @@ class MoteurPartie:
         
         # Opération atomique : placement + suppression immédiate au niveau plateau
         nb_lignes_supprimees = self.plateau.placer_piece_et_supprimer_lignes(self.piece_active)
-        print(f"📍 Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
+        print(f"[ROUND_PUSHPIN] Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
         
         # Traitement des lignes supprimées
         if nb_lignes_supprimees > 0:
             self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
             
             if nb_lignes_supprimees == 4:
-                self.messages.append("🎉 TETRIS ! (+800 pts)")
+                self.messages.append("[PARTY] TETRIS ! (+800 pts)")
             else:
                 self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
             
-            print(f"🎉 {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
+            print(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
             
             # Accélérer le jeu selon le niveau
             self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)
@@ -193,7 +193,12 @@ class MoteurPartie:
         return True
     
     def mettre_a_jour_chute_automatique(self) -> None:
-        """Met à jour la chute automatique des pièces."""
+        """
+        Met à jour la chute automatique des pièces.
+        
+        CORRECTION BUG GAME OVER : Vérifie si une pièce qui vient de spawn
+        ne peut absolument pas bouger (= game over).
+        """
         if self.en_pause or self.jeu_termine or not self.piece_active:
             return
         
@@ -202,7 +207,18 @@ class MoteurPartie:
         if temps_actuel - self.derniere_chute >= self.intervalle_chute:
             # Essayer de faire descendre la pièce
             if not self.deplacer_piece_active(0, 1):
-                # La pièce ne peut plus descendre, la placer
+                # La pièce ne peut plus descendre
+                
+                # CORRECTION : Vérifier si c'est un game over (pièce bloquée dès le spawn)
+                # Une pièce en zone invisible qui ne peut pas descendre = game over
+                if any(pos.y < 0 for pos in self.piece_active.positions):
+                    # Pièce encore en zone invisible et ne peut pas descendre = Game Over
+                    self.jeu_termine = True
+                    self.messages.append("💀 GAME OVER !")
+                    print("💀 GAME OVER ! La pièce ne peut pas descendre de la zone invisible.")
+                    return
+                
+                # Sinon, placement normal
                 self.placer_piece_et_generer_nouvelle()
             
             self.derniere_chute = temps_actuel
@@ -210,21 +226,23 @@ class MoteurPartie:
     def _generer_piece_suivante(self) -> None:
         """Génère la prochaine pièce aléatoire."""
         self.piece_suivante = self.fabrique.creer_aleatoire(x_pivot=5, y_pivot=1)
-        print(f"🎲 Prochaine pièce générée: {self.piece_suivante.type_piece.value}")
+        print(f"[DICE] Prochaine pièce générée: {self.piece_suivante.type_piece.value}")
     
     def _faire_descendre_piece_suivante(self) -> None:
-        """Fait descendre la pièce suivante comme pièce active."""
+        """
+        Fait descendre la pièce suivante comme pièce active.
+        
+        CORRECTION BUG : Game over vérifié par la logique de chute naturelle,
+        pas immédiatement au spawn. Une pièce en zone invisible doit pouvoir
+        essayer de descendre avant d'être déclarée game over.
+        """
         if self.piece_suivante:
             self.piece_active = self.piece_suivante
+            print(f"[DOWN_ARROW] Nouvelle pièce active: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             
-            # Vérifier si la nouvelle pièce peut être placée (game over)
-            if not self.plateau.peut_placer_piece(self.piece_active):
-                self.jeu_termine = True
-                self.messages.append("💀 GAME OVER !")
-                print("💀 GAME OVER ! La pièce ne peut pas être placée.")
-                return
-            
-            print(f"⬇️ Nouvelle pièce active: {self.piece_active.type_piece.value} → {self.piece_active.positions}")
+            # CORRECTION : Pas de vérification game over immédiate
+            # La pièce va naturellement essayer de descendre via mettre_a_jour_chute_automatique()
+            # Si elle ne peut pas bouger du tout, ALORS game over sera déclaré
         
         # Générer la suivante
         self._generer_piece_suivante()
@@ -240,7 +258,7 @@ class MoteurPartie:
             else:
                 self.audio.reprendre_musique()
         
-        print(f"⏸️ Pause: {'ON' if self.en_pause else 'OFF'}")
+        print(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
     
     def demarrer_musique(self) -> bool:
         """Démarre la musique de fond du jeu."""
@@ -284,4 +302,4 @@ class MoteurPartie:
         """Ferme proprement le moteur et nettoie les ressources."""
         if self.audio:
             self.audio.nettoyer()
-            print("🧹 Ressources audio nettoyées")
+            print("[CLEANUP] Ressources audio nettoyées")

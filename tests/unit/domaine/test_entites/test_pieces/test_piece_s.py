@@ -22,14 +22,14 @@ class TestPieceS(unittest.TestCase):
         # Arrange & Act
         piece = PieceS.creer(x_pivot=5, y_pivot=0)
         
-        # Assert - Form S horizontal (orientation par défaut)
-        #  ██  ← positions (5,0) et (6,0)
-        # ██   ← positions (4,1) et (5,1)
+        # Assert - Form S horizontal (orientation par défaut, zone invisible)
+        #  ██  ← positions (5,-1) et (6,-1) (zone invisible)
+        # ██   ← positions (4,0) et (5,0)
         positions_attendues = [
-            Position(5, 0),  # Centre-haut
-            Position(6, 0),  # Droite-haut  
-            Position(4, 1),  # Gauche-bas
-            Position(5, 1)   # Centre-bas (pivot)
+            Position(5, -1), # Centre-haut (zone invisible)
+            Position(6, -1), # Droite-haut (zone invisible)
+            Position(4, 0),  # Gauche-bas
+            Position(5, 0)   # Centre-bas (pivot)
         ]
         self.assertEqual(piece.positions, positions_attendues)
         self.assertEqual(piece.type_piece, TypePiece.S)
@@ -43,33 +43,33 @@ class TestPieceS(unittest.TestCase):
         # Act
         piece.deplacer(2, 3)
         
-        # Assert - Toutes les positions décalées
+        # Assert - Toutes les positions décalées depuis zone invisible
         positions_attendues = [
-            Position(7, 3),  # (5,0) + (2,3)
-            Position(8, 3),  # (6,0) + (2,3)
-            Position(6, 4),  # (4,1) + (2,3)  
-            Position(7, 4)   # (5,1) + (2,3)
+            Position(7, 2),  # (5,-1) + (2,3)
+            Position(8, 2),  # (6,-1) + (2,3)
+            Position(6, 3),  # (4,0) + (2,3)  
+            Position(7, 3)   # (5,0) + (2,3)
         ]
         self.assertEqual(piece.positions, positions_attendues)
         self.assertNotEqual(piece.positions, positions_initiales)
 
     def test_piece_s_peut_tourner_horizontal_vers_vertical(self):
-        """Test RED : PieceS peut tourner de horizontal vers vertical."""
+        """Test RED : PieceS peut tourner de horizontal vers vertical (zone invisible)."""
         # Arrange
         piece = PieceS.creer(x_pivot=5, y_pivot=1)
         
         # Act
         piece.tourner()
         
-        # Assert - Form S vertical autour du pivot (5,2)
-        # █    ← position (5,1)
-        # ██   ← positions (5,2) et (6,2)  
-        #  █   ← position (6,3)
+        # Assert - Form S vertical autour du pivot (5,1) avec zone invisible
+        # █    ← position (5,0)
+        # ██   ← positions (5,1) et (6,1)  
+        #  █   ← position (6,2)
         positions_attendues = [
-            Position(5, 1),  # Haut
-            Position(5, 2),  # Centre (pivot)
-            Position(6, 2),  # Centre-droite
-            Position(6, 3)   # Bas-droite
+            Position(5, 0),  # Haut
+            Position(5, 1),  # Centre (pivot)
+            Position(6, 1),  # Centre-droite
+            Position(6, 2)   # Bas-droite
         ]
         self.assertEqual(piece.positions, positions_attendues)
 
@@ -82,12 +82,12 @@ class TestPieceS(unittest.TestCase):
         # Act
         piece.tourner()  # Retour en horizontal
         
-        # Assert - Retour à la forme horizontale
+        # Assert - Retour à la forme horizontale (zone invisible)
         positions_attendues = [
-            Position(5, 1),  # Centre-haut  
-            Position(6, 1),  # Droite-haut
-            Position(4, 2),  # Gauche-bas
-            Position(5, 2)   # Centre-bas (pivot)
+            Position(5, 0),  # Centre-haut (zone invisible)
+            Position(6, 0),  # Droite-haut (zone invisible)
+            Position(4, 1),  # Gauche-bas
+            Position(5, 1)   # Centre-bas (pivot)
         ]
         self.assertEqual(piece.positions, positions_attendues)
 

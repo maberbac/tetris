@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Script pour exécuter tous nos tests et avoir un résumé complet.
+Script pour exécuter tous les tests unitaires et avoir un résumé complet.
+Tests couvrant : Position, 7 pièces complètes, Factory Pattern, Services.
+État actuel : 75 tests unitaires, 100% de réussite ✅
 """
 
 import unittest

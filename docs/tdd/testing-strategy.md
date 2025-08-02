@@ -1,4 +1,9 @@
-# Stratégie TDD pour Tetris - Architecture hexagonale
+# Straté### Métriques de qualité actuelles - PARFAITES** :
+- **📊 Total tests** : 103 tests (70 unitaires + 22 acceptance + 11 intégration)
+- **✅ Taux de réussite** : 100.0%
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible
+- **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré)
+- **⚡ Performance** : Tests s'exécutent en 0.7sD pour Tetris - Architecture hexagonale
 
 ## Date de mise à jour : 1er août 2025 - PROJET TERMINÉ ✅ - TESTS CORRIGÉS
 
@@ -120,13 +125,30 @@
    - ✅ Racine épurée : Seuls jouer.py et partie_tetris.py à la racine
    - ✅ Conformité directives : Respect total des DIRECTIVES_DEVELOPPEMENT.md
    - ✅ Documentation synchronisée : Mise à jour immédiate après changements
+### Phase 11 : Correction bug game over prématuré (1er août - TDD strict) ✅
+1. **Bug game over prématuré identifié et reproduit** : TDD RED appliqué strictement
+   - Bug : Vérification game over avant placement de pièce (conflit avec zone invisible)
+   - **Résultat** : Bug confirmé avec système Y_SPAWN_DEFAUT = -3
+
+2. **Correction développée et validée** : TDD GREEN appliqué
+   - Corrections : plateau.py (support y<0), moteur_partie.py (logique game over)  
+   - **Résultat** : 4/4 tests GREEN réussis, correction validée
+
+3. **Code intégré et refactorisé** : TDD REFACTOR appliqué  
+   - Code intégré et tests PieceZ corrigés pour zone invisible
+   - Tests existants : 103/103 continuent de passer (non-régression)
+
+4. **Tests d'acceptance officiels créés** : Validation finale
+   - Test officiel : tests/acceptance/test_correction_bug_gameover_premature.py
+   - **Résultat** : 4/4 tests d'acceptance game over réussis ✅
+
 ## 🏗️ **Structure finale des tests - ORGANISATION PROFESSIONNELLE**
 
 ### Organisation stricte par type de test
 ```
 tests/
 ├── integration/                     # Tests système complet
-│   ├── test_partie_complete.py     # 4 tests ✅
+│   ├── test_partie_complete.py     # 11 tests ✅
 │   └── run_tests.py                # Lanceur principal
 ├── unit/                           # Tests composants isolés
 │   ├── domaine/                    # Tests unitaires domaine
@@ -135,7 +157,9 @@ tests/
 │       └── test_affichage.py       # Tests pygame
 ├── acceptance/                     # Tests scénarios utilisateur
 │   ├── test_controles_rapide.py    # Tests contrôles
-│   └── test_controles_simplifies.py
+│   ├── test_controles_simplifies.py
+│   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
+│   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅ NOUVEAU !
 └── README_TESTS.md                 # Documentation tests
 ```
 

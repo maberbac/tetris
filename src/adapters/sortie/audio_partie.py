@@ -50,10 +50,10 @@ class AudioPartie(AudioJeu):
                 pygame.mixer.init()
             
             self._initialise = True
-            print("🎵 Système audio initialisé avec succès")
+            print("[AUDIO] Système audio initialisé avec succès")
             
         except pygame.error as e:
-            print(f"❌ Erreur lors de l'initialisation audio: {e}")
+            print(f"[ERROR] Erreur lors de l'initialisation audio: {e}")
             self._initialise = False
     
     def jouer_musique(self, chemin_fichier: str, volume: float = 0.7, boucle: bool = True) -> None:
@@ -77,7 +77,7 @@ class AudioPartie(AudioJeu):
             chemin_complet = Path(__file__).parent.parent.parent.parent / "assets" / "audio" / "music" / chemin_fichier
             
             if not chemin_complet.exists():
-                print(f"❌ Fichier audio introuvable: {chemin_complet}")
+                print(f"[ERROR] Fichier audio introuvable: {chemin_complet}")
                 return
             
             # Charger et jouer la musique
@@ -91,10 +91,10 @@ class AudioPartie(AudioJeu):
             pygame.mixer.music.play(loops)
             
             self._musique_chargee = True
-            print(f"🎵 Musique lancée: {chemin_complet.name}")
+            print(f"[MUSIC] Musique lancée: {chemin_complet.name}")
             
         except pygame.error as e:
-            print(f"❌ Erreur lecture musique: {e}")
+            print(f"[ERROR] Erreur lecture musique: {e}")
             print(f"💡 Conseil: Le fichier {chemin_fichier} pourrait être corrompu")
             print("   Essayez avec un fichier WAV ou un autre fichier OGG")
             
@@ -111,29 +111,29 @@ class AudioPartie(AudioJeu):
                         loops = -1 if boucle else 0
                         pygame.mixer.music.play(loops)
                         self._musique_chargee = True
-                        print(f"✅ Fallback réussi: {fallback_path.name}")
+                        print(f"[CHECK_MARK] Fallback réussi: {fallback_path.name}")
                     except pygame.error as e2:
-                        print(f"❌ Fallback échoué aussi: {e2}")
+                        print(f"[ERROR] Fallback échoué aussi: {e2}")
         except Exception as e:
-            print(f"❌ Erreur inattendue lors de la lecture de la musique: {e}")
+            print(f"[ERROR] Erreur inattendue lors de la lecture de la musique: {e}")
     
     def arreter_musique(self) -> None:
         """Arrête complètement la musique de fond."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.stop()
-            print("🔇 Musique arrêtée")
+            print("[MUTE] Musique arrêtée")
     
     def mettre_en_pause_musique(self) -> None:
         """Met la musique en pause (peut être reprise)."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.pause()
-            print("⏸️ Musique mise en pause")
+            print("[PAUSE] Musique mise en pause")
     
     def reprendre_musique(self) -> None:
         """Reprend la musique après une pause."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.unpause()
-            print("▶️ Musique reprise")
+            print("[PLAY] Musique reprise")
     
     def definir_volume_musique(self, volume: float) -> None:
         """
@@ -147,7 +147,7 @@ class AudioPartie(AudioJeu):
         
         if self._initialise:
             pygame.mixer.music.set_volume(self._volume_musique)
-            print(f"🔊 Volume musique: {int(self._volume_musique * 100)}%")
+            print(f"[VOLUME] Volume musique: {int(self._volume_musique * 100)}%")
     
     def jouer_effet_sonore(self, chemin_fichier: str) -> bool:
         """
@@ -171,18 +171,18 @@ class AudioPartie(AudioJeu):
             chemin_complet = Path(__file__).parent.parent.parent / chemin_fichier
             
             if not chemin_complet.exists():
-                print(f"❌ Fichier effet sonore introuvable: {chemin_complet}")
+                print(f"[ERROR] Fichier effet sonore introuvable: {chemin_complet}")
                 return False
             
             # Charger et jouer l'effet sonore
             effet = pygame.mixer.Sound(str(chemin_complet))
             effet.play()
             
-            print(f"🔊 Effet sonore joué: {chemin_complet.name}")
+            print(f"[VOLUME] Effet sonore joué: {chemin_complet.name}")
             return True
             
         except pygame.error as e:
-            print(f"❌ Erreur lors de la lecture de l'effet sonore: {e}")
+            print(f"[ERROR] Erreur lors de la lecture de l'effet sonore: {e}")
             return False
     
     def est_musique_en_cours(self) -> bool:
@@ -204,4 +204,4 @@ class AudioPartie(AudioJeu):
             pygame.mixer.quit()
             self._initialise = False
             self._musique_chargee = False
-            print("🧹 Système audio nettoyé")
+            print("[CLEANUP] Système audio nettoyé")
