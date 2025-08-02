@@ -44,6 +44,16 @@ class AudioJeu(ABC):
         pass
     
     @abstractmethod
+    def basculer_mute_musique(self) -> bool:
+        """
+        Bascule entre mute et unmute de la musique.
+        
+        Returns:
+            bool: True si la musique est maintenant mutée, False sinon
+        """
+        pass
+    
+    @abstractmethod
     def definir_volume_musique(self, volume: float) -> None:
         """
         Définit le volume de la musique.

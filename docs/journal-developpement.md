@@ -210,30 +210,52 @@
     - Documentation mise à jour : README.md, DOC_TECHNIQUE.md, testing-strategy.md, journal-developpement.md
     - **Résultat** : Documentation entièrement cohérente avec l'état final du projet
 
+### **Phase 16 : Implémentation fonctionnalité mute/unmute (2 août - TDD strict)**
+40. ✅ **Implémentation CommandeBasculerMute** : Développement TDD de la commande de basculement audio
+    - Développement : Commande avec gestion d'erreurs, feedback utilisateur, intégration moteur
+    - **Résultat** : 7/7 tests unitaires réussis pour CommandeBasculerMute
+
+41. ✅ **Extension AudioPartie avec mute** : Ajout fonctionnalité mute/unmute à l'adaptateur audio
+    - Développement : Sauvegarde/restauration volume, état mute persistant, gestion pygame
+    - **Résultat** : 9/9 tests unitaires réussis pour AudioPartie mute
+
+42. ✅ **Tests d'acceptance mute/unmute** : Création de tests utilisateur pour la fonctionnalité
+    - Développement : 8 tests couvrant tous les scénarios (basculement, erreurs, feedback)
+    - **Résultat** : 8/8 tests d'acceptance réussis
+
+43. ✅ **Intégration gestionnaire événements** : Ajout touche M au mapping des contrôles
+    - Développement : Ajout MUTE au mapping, correction TypeEvenement.CLAVIER_MAINTENU
+    - **Résultat** : Suite complète 131/131 tests (100% ✅)
+
+44. ✅ **Documentation synchronisée mute** : Mise à jour complète pour fonctionnalité mute/unmute
+    - Documentation mise à jour : README.md (contrôles + audio), DOC_TECHNIQUE.md (commandes), testing-strategy.md (métriques)
+    - **Résultat** : Documentation entièrement cohérente avec la nouvelle fonctionnalité mute ✅
+
 ## 📊 **État actuel du projet**
 
 ### **Jeu Tetris COMPLET ET FONCTIONNEL ✅**
 - ✅ **Interface graphique** : Pygame 60 FPS avec couleurs distinctives
-- ✅ **Contrôles complets** : Flèches, rotation, chute rapide/instantanée, pause
+- ✅ **Contrôles complets** : Flèches, rotation, chute rapide/instantanée, pause, mute/unmute
 - ✅ **Mécanique complète** : Génération aléatoire, collisions, lignes complètes
 - ✅ **Système de score** : Points par lignes, niveaux, accélération
 - ✅ **Statistics** : Compteurs par type de pièce, preview pièce suivante
 - ✅ **Game Over** : Détection automatique correcte avec zone invisible
 - ✅ **Zone invisible** : Système de spawn réaliste (Y_SPAWN_DEFAUT = -3)
 
-### **Tests implémentés (101 tests - 100% passants ✅)**
+### **Tests implémentés (131 tests - 100% passants ✅)**
 ```
 tests/
-├── unit/                           # Tests unitaires (75 tests ✅)
+├── unit/                           # Tests unitaires (92 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
-│   │   └── services/              # Tests des services (GestionnaireEvenements)
-│   └── interface/                 # Tests de l'interface  
+│   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
+│   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute)
 ├── integration/                   # Tests d'intégration (4 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (22 tests ✅)
+├── acceptance/                    # Tests d'acceptance (35 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
+│   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅ NOUVEAU !
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 └── run_tests.py                  # Lanceur des tests

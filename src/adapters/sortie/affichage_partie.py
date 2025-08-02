@@ -243,7 +243,8 @@ class AffichagePartie(AffichageJeu):
             "Haut          : Rotation",
             "Bas           : Chute rapide",
             "Espace        : Chute instantanée",
-            "P             : Pause",
+            "P             : Pause/Reprendre",
+            "M             : Mute/Unmute",
             "ESC           : Menu/Quitter"
         ]
         

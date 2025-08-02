@@ -5,11 +5,13 @@ Runner pour les tests unitaires - Tests de composants isolés.
 Ces tests valident le comportement individuel de chaque composant
 en isolation complète (domaine, entités, services).
 
-État actuel : 75 tests unitaires, 100% de réussite ✅
+État actuel : 92 tests unitaires, 100% de réussite ✅
 - Position (Value Object) : 5 tests ✅
 - 7 pièces complètes (I, O, T, S, Z, J, L) : 42 tests ✅
 - Factory Pattern et Registry : 8 tests ✅
-- Services et gestionnaires : 20 tests ✅
+- Services et gestionnaires : 22 tests ✅ (incluant nouvelle fonctionnalité mute)
+- Adaptateurs (audio avec mute) : 9 tests ✅
+- Nouvelle fonctionnalité mute/unmute : 16 tests ✅ (commande + adaptateur + gestionnaire)
 """
 
 import unittest
@@ -37,6 +39,8 @@ def main():
         'tests.unit.domaine.test_entites.test_fabriques.test_registre_pieces',
         'tests.unit.domaine.test_entites.test_fabriques.test_fabrique_pieces',
         'tests.unit.domaine.services.test_gestionnaire_evenements',  # ← Tests des services
+        'tests.unit.domaine.services.test_commande_mute',  # ← Tests nouvelle commande mute
+        'tests.unit.adapters.test_audio_partie_mute',  # ← Tests adaptateur audio avec mute
     ]
     
     for module in modules_tests:

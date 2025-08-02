@@ -16,7 +16,7 @@ from typing import Dict, Optional, List, Callable
 from .commandes import (
     Commande, CommandeDeplacerGauche, CommandeDeplacerDroite,
     CommandeDescendre, CommandeChuteRapide, CommandeTourner,
-    CommandePause, CommandeAfficherMenu, MoteurJeu
+    CommandePause, CommandeAfficherMenu, CommandeBasculerMute, MoteurJeu
 )
 
 
@@ -40,6 +40,7 @@ class ToucheClavier(Enum):
     CHUTE_INSTANTANEE = "chute_instantanee"  # Space - Chute jusqu'en bas
     MENU = "menu"                 # Esc - Afficher le menu en jeu
     PAUSE = "pause"               # P - Pause/Reprendre
+    MUTE = "mute"                 # M - Basculer mute/unmute musique
 
 
 class ConfigurationControles:
@@ -61,6 +62,7 @@ class ConfigurationControles:
         "space": ToucheClavier.CHUTE_INSTANTANEE,  # Space - Chute instantanée
         "Escape": ToucheClavier.MENU,              # Esc - Menu en jeu
         "p": ToucheClavier.PAUSE,                  # P - Pause/Reprendre
+        "m": ToucheClavier.MUTE,                   # M - Mute/Unmute musique
     }
     
     @classmethod
@@ -108,6 +110,7 @@ class GestionnaireEvenements:
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapide(),
             ToucheClavier.MENU: CommandeAfficherMenu(),
             ToucheClavier.PAUSE: CommandePause(),
+            ToucheClavier.MUTE: CommandeBasculerMute(),
         }
     
     def traiter_evenement_clavier(self, 

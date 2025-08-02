@@ -3,10 +3,10 @@ Script principal pour exécuter la suite complète de tests Tetris.
 Exécute tous les types de tests dans l'ordre optimal.
 
 État actuel du projet :
-- 75 tests unitaires : Domaine, entités, services, zone invisible (100% ✅)
-- 22 tests d'acceptance : Scénarios utilisateur + corrections de bugs (100% ✅)
+- 92 tests unitaires : Domaine, entités, services, zone invisible, mute/unmute (100% ✅)
+- 35 tests d'acceptance : Scénarios utilisateur + corrections de bugs + fonctionnalité mute (100% ✅)
 - 4 tests d'intégration : Système complet avec audio (100% ✅)
-Total : 101 tests, 101/101 réussis (100% ✅)
+Total : 131 tests, 131/131 réussis (100% ✅)
 """
 
 import os

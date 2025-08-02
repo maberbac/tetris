@@ -7,16 +7,17 @@
 
 ## Date de mise à jour : 2 août 2025 - PROJET TERMINÉ ✅ - SUITE COMPLÈTE 100% RÉUSSIE
 
-## ✅ **PROJET TETRIS COMPLET - SUITE DE TESTS 101/101 RÉUSSIS**
+## ✅ **PROJET TETRIS COMPLET - SUITE DE TESTS 131/131 RÉUSSIS**
 
-### 🏆 **État final des tests - 101/101 TESTS RÉUSSIS**
+### 🏆 **État final des tests - 131/131 TESTS RÉUSSIS**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 101 tests (75 unitaires + 22 acceptance + 4 intégration)
+- **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute
 - **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré + cohérence pièces S/Z)
-- **⚡ Performance** : Tests s'exécutent en 0.66s
+- **🆕 Nouvelles fonctionnalités** : Mute/unmute audio intégré avec tests complets
+- **⚡ Performance** : Tests s'exécutent en 0.68s
 
 ### Phase 1 : Value Objects du domaine ✅
 1. **Position (Value Object)** - 5 tests passants
@@ -125,22 +126,26 @@
    - ✅ Racine épurée : Seuls jouer.py et partie_tetris.py à la racine
    - ✅ Conformité directives : Respect total des DIRECTIVES_DEVELOPPEMENT.md
    - ✅ Documentation synchronisée : Mise à jour immédiate après changements
-### Phase 12 : Correction cohérence pièces S et Z (2 août - TDD strict) ✅
-1. **Modification coordonnées pièces S et Z** : Harmonisation des positions de spawn
-   - Modification : Pièces S et Z utilisent maintenant y-1 au lieu de y-2 dans obtenir_positions_initiales
-   - **Résultat** : Cohérence améliorée entre les deux pièces similaires
+### Phase 13 : Implémentation fonctionnalité mute/unmute (2 août - TDD strict) ✅
+1. **Commande de basculement mute** : Développement TDD de CommandeBasculerMute
+   - Implémentation : Commande avec gestion d'erreurs et feedback utilisateur
+   - **Résultat** : 7/7 tests unitaires pour la commande
 
-2. **Correction tests unitaires** : TDD GREEN appliqué
-   - Corrections : Tous les tests de la pièce Z ajustés aux nouvelles coordonnées
-   - **Résultat** : 4/4 tests pièce Z corrigés et passants
+2. **Adaptateur audio mute** : Extension de AudioPartie avec fonctionnalité mute
+   - Implémentation : Sauvegarde/restauration volume, état mute persistant
+   - **Résultat** : 9/9 tests unitaires pour l'adaptateur audio
 
-3. **Validation complète** : TDD REFACTOR appliqué  
-   - Tests existants : 101/101 continuent de passer (non-régression totale)
-   - **Résultat** : Suite de tests 100% fonctionnelle
+3. **Tests d'acceptance mute** : Scénarios utilisateur pour la fonctionnalité
+   - Implémentation : 8 tests couvrant tous les cas d'usage mute/unmute
+   - **Résultat** : 8/8 tests d'acceptance réussis
 
-4. **Documentation synchronisée** : Mise à jour finale
+4. **Intégration gestionnaire événements** : Ajout touche M au mapping
+   - Correction : TypeEvenement.CLAVIER_MAINTIEN → CLAVIER_MAINTENU
+   - **Résultat** : Suite complète 131/131 tests (100% ✅)
+
+5. **Documentation synchronisée** : Mise à jour complète de la documentation
    - Documentation : README.md, DOC_TECHNIQUE.md, testing-strategy.md actualisés
-   - **Résultat** : Documentation cohérente avec l'état actuel du projet ✅
+   - **Résultat** : Documentation cohérente avec fonctionnalité mute ✅
 
 ## 🏗️ **Structure finale des tests - ORGANISATION PROFESSIONNELLE**
 
@@ -152,12 +157,14 @@ tests/
 │   └── run_tests.py                # Lanceur principal
 ├── unit/                           # Tests composants isolés
 │   ├── domaine/                    # Tests unitaires domaine
-│   │   └── test_entites/           # Position, Pièces, Plateau
-│   └── interface/                  # Tests unitaires interface
-│       └── test_affichage.py       # Tests pygame
+│   │   ├── entites/                # Position, Pièces, Plateau
+│   │   └── services/               # GestionnaireEvenements, Commandes (mute/unmute)
+│   └── adapters/                   # Tests unitaires adaptateurs
+│       └── test_audio_partie_mute.py # Tests audio avec mute/unmute ✅
 ├── acceptance/                     # Tests scénarios utilisateur
 │   ├── test_controles_rapide.py    # Tests contrôles
 │   ├── test_controles_simplifies.py
+│   ├── test_fonctionnalite_mute.py # Tests mute/unmute utilisateur ✅ NOUVEAU !
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   └── test_masquage_zone_invisible.py # Tests zone invisible masquée ✅

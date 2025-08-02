@@ -29,6 +29,7 @@ def convertir_touche_pygame(touche_pygame: int) -> str:
         pygame.K_SPACE: "space",
         pygame.K_ESCAPE: "Escape",
         pygame.K_p: "p",
+        pygame.K_m: "m",
         pygame.K_RETURN: "Return"
     }
     return mapping_pygame.get(touche_pygame, "")
@@ -40,7 +41,7 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
     def _creer_commandes(self):
         """Crée le mapping des commandes pour la partie."""
         from src.domaine.services.commandes import (
-            CommandeDescendre, CommandePause, CommandeAfficherMenu
+            CommandeDescendre, CommandePause, CommandeAfficherMenu, CommandeBasculerMute
         )
         
         return {
@@ -51,6 +52,7 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapidePartie(),
             ToucheClavier.MENU: CommandeAfficherMenu(),
             ToucheClavier.PAUSE: CommandePause(),
+            ToucheClavier.MUTE: CommandeBasculerMute(),
         }
     
     def traiter_evenements(self, moteur: 'MoteurPartie', temps_actuel: float) -> bool:

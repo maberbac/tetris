@@ -27,6 +27,8 @@ class AudioPartie(AudioJeu):
         self._initialise = False
         self._musique_chargee = False
         self._volume_musique = 0.7  # Volume par défaut à 70%
+        self._mute = False  # État de mute
+        self._volume_avant_mute = 0.7  # Volume à restaurer après unmute
         
     def initialiser(self) -> None:
         """
@@ -134,6 +136,31 @@ class AudioPartie(AudioJeu):
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.unpause()
             print("[PLAY] Musique reprise")
+    
+    def basculer_mute_musique(self) -> bool:
+        """
+        Bascule entre mute et unmute de la musique.
+        
+        Returns:
+            bool: True si la musique est maintenant mutée, False sinon
+        """
+        if not self._initialise:
+            return False
+            
+        if self._mute:
+            # Unmute : restaurer le volume précédent
+            self._mute = False
+            self._volume_musique = self._volume_avant_mute
+            pygame.mixer.music.set_volume(self._volume_musique)
+            print(f"[UNMUTE] Musique réactivée - Volume: {int(self._volume_musique * 100)}%")
+        else:
+            # Mute : sauvegarder le volume actuel et mettre à 0
+            self._volume_avant_mute = self._volume_musique
+            self._mute = True
+            pygame.mixer.music.set_volume(0.0)
+            print("[MUTE] Musique désactivée")
+            
+        return self._mute
     
     def definir_volume_musique(self, volume: float) -> None:
         """

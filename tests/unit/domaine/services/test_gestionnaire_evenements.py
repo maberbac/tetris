@@ -34,9 +34,10 @@ class TestConfigurationControles(unittest.TestCase):
         self.assertIn("space", mapping)
         self.assertIn("Escape", mapping)
         self.assertIn("p", mapping)
+        self.assertIn("m", mapping)
         
-        # Vérifier qu'on a exactement 7 touches essentielles
-        self.assertEqual(len(mapping), 7)
+        # Vérifier qu'on a exactement 8 touches essentielles (incluant mute)
+        self.assertEqual(len(mapping), 8)
     
     def test_mapping_defaut_est_copie(self):
         """obtenir_mapping_defaut() doit retourner une copie."""
@@ -131,6 +132,20 @@ class TestTraitementEvenements(unittest.TestCase):
         
         self.assertTrue(resultat)
         self.piece_mock.tourner.assert_called_once()
+    
+    def test_traitement_appui_touche_mute(self):
+        """L'appui de la touche mute doit basculer le mute de l'audio."""
+        # Mock pour le système audio
+        self.moteur.obtenir_audio = Mock()
+        audio_mock = Mock()
+        self.moteur.obtenir_audio.return_value = audio_mock
+        
+        resultat = self.gestionnaire.traiter_evenement_clavier(
+            "m", TypeEvenement.CLAVIER_APPUI, self.moteur
+        )
+        
+        self.assertTrue(resultat)
+        audio_mock.basculer_mute_musique.assert_called_once()
     
     def test_traitement_touche_inconnue(self):
         """Une touche inconnue ne doit pas être traitée."""

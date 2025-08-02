@@ -198,6 +198,32 @@ class CommandeAfficherMenu(Commande):
         return True
 
 
+class CommandeBasculerMute(Commande):
+    """Commande pour basculer le mute/unmute de la musique."""
+    
+    def execute(self, moteur: MoteurJeu) -> bool:
+        """Bascule l'état mute/unmute de la musique."""
+        try:
+            audio = moteur.obtenir_audio()
+            if audio is None:
+                print("❌ Audio non disponible")
+                return False
+            
+            est_mute = audio.basculer_mute_musique()
+            
+            # Feedback utilisateur
+            if est_mute:
+                print("🔇 Musique désactivée")
+            else:
+                print("🔊 Musique réactivée")
+                
+            return True
+            
+        except Exception as e:
+            print(f"❌ Erreur audio: {e}")
+            return False
+
+
 class CommandeQuitter(Commande):
     """Commande pour quitter le jeu."""
     

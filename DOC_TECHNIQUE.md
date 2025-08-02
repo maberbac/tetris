@@ -158,7 +158,7 @@ class PieceJ(Piece):
 
 #### Command Pattern - Actions de jeu
 ```python
-# Commandes simplifiées (7 actions essentielles)
+# Commandes complètes (8 actions essentielles)
 CommandeDeplacerGauche()    # ← Déplacement horizontal gauche
 CommandeDeplacerDroite()    # → Déplacement horizontal droite
 CommandeTourner()           # ↑ Rotation horaire
@@ -166,13 +166,15 @@ CommandeDescendre()         # ↓ Chute rapide (par ligne)
 CommandeChuteRapide()       # Space - Chute instantanée (jusqu'en bas)
 CommandeAfficherMenu()      # Esc - Menu en jeu
 CommandePause()             # P - Pause/Reprendre
+CommandeBasculerMute()      # M - Mute/Unmute audio ✅ NOUVEAU !
 ```
 
 **Contrôles optimisés** :
 - **Flèches directionnelles** : Contrôles principaux intuitifs
-- **Touches spéciales** : Actions de jeu (Space, Esc, P)
+- **Touches spéciales** : Actions de jeu (Space, Esc, P, M)
 - **Répétition intelligente** : Déplacement fluide (200ms initial, 120ms répétition)
-- **Mapping simplifié** : 7 touches essentielles seulement
+- **Mute non-répétable** : La touche M ne se répète pas automatiquement
+- **Mapping complet** : 8 touches essentielles (ajout mute/unmute)
 
 #### Gestionnaire d'événements - Input handling
 ```python
@@ -189,11 +191,12 @@ gestionnaire.ajouter_mapping_touche("w", ToucheClavier.ROTATION)
 ```
 
 **Fonctionnalités** :
-- **Contrôles simplifiés** : 7 touches essentielles seulement
-- **Mapping intuitif** : Flèches + Space + Esc + P
+- **Contrôles complets** : 8 touches essentielles (ajout mute/unmute)
+- **Mapping intuitif** : Flèches + Space + Esc + P + M
 - **Répétition optimisée** : Délais ajustés pour le gameplay (200ms/120ms)
 - **Actions spécialisées** : Chute rapide vs chute instantanée
 - **Gestion de menu** : Esc pour ouvrir/fermer le menu en jeu
+- **Contrôle audio** : M pour basculer mute/unmute (sans répétition)
 
 #### Adaptateur Pygame - Bridge vers UI
 ```python
@@ -245,7 +248,9 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (75 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (92 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (35 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
 python tests/run_all_acceptance_tests.py # Tests d'acceptance (22 tests)
 python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
 ```
