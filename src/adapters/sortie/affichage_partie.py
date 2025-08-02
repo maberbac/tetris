@@ -38,7 +38,7 @@ class AffichagePartie(AffichageJeu):
         self.hauteur_jeu = self.hauteur_plateau * self.taille_cellule
         
         # Interface complète avec panneaux latéraux
-        self.largeur_interface = 200  # Panel droit pour stats/preview
+        self.largeur_interface = 320  # Panel droit pour stats/preview (élargi pour les contrôles)
         largeur_totale = self.largeur_jeu + self.largeur_interface + 3 * self.marge
         hauteur_totale = self.hauteur_jeu + 2 * self.marge + 60  # Space pour titre
         
@@ -75,6 +75,13 @@ class AffichagePartie(AffichageJeu):
         self.police_normale = pygame.font.Font(None, 24)
         self.police_petite = pygame.font.Font(None, 18)
         
+        # Police monospace pour l'alignement des contrôles
+        try:
+            self.police_monospace = pygame.font.SysFont('consolas,courier,monospace', 16)
+        except:
+            # Fallback si aucune police monospace n'est trouvée
+            self.police_monospace = pygame.font.Font(None, 18)
+        
         # Zones de rendu
         self.zone_jeu_x = self.marge
         self.zone_jeu_y = self.marge + 40
@@ -92,7 +99,7 @@ class AffichagePartie(AffichageJeu):
         self.ecran.fill(self.noir)
         
         # Titre
-        titre = "TETRIS - Partie Complète"
+        titre = "                 TETRIS"
         texte_titre = self.police_titre.render(titre, True, self.blanc)
         self.ecran.blit(texte_titre, (self.marge, 5))
         
@@ -195,7 +202,7 @@ class AffichagePartie(AffichageJeu):
             return
         
         x = self.zone_interface_x
-        y = self.zone_jeu_y + 280
+        y = self.zone_jeu_y + 300  # Augmenté de 280 à 300 pour plus d'espace
         
         # Titre
         titre = self.police_normale.render("SUIVANTE", True, self.blanc)
@@ -225,23 +232,23 @@ class AffichagePartie(AffichageJeu):
     def _dessiner_controles(self) -> None:
         """Dessine l'aide des contrôles."""
         x = self.zone_interface_x
-        y = self.zone_jeu_y + 380
+        y = self.zone_jeu_y + 420  # Augmenté de 400 à 420 pour plus d'espace avec la pièce suivante
         
-        titre = self.police_normale.render("CONTRÔLES", True, self.blanc)
+        titre = self.police_normale.render("CONTROLES", True, self.blanc)
         self.ecran.blit(titre, (x, y))
         y += 25
         
         controles = [
-            "← → : Déplacer",
-            "↑ : Rotation",
-            "↓ : Chute rapide",
-            "Space : Chute instant.",
-            "P : Pause",
-            "ESC : Menu/Quitter"
+            "Droite/Gauche : Déplacer",
+            "Haut          : Rotation",
+            "Bas           : Chute rapide",
+            "Espace        : Chute instantanée",
+            "P             : Pause",
+            "ESC           : Menu/Quitter"
         ]
         
         for controle in controles:
-            rendu = self.police_petite.render(controle, True, self.blanc)
+            rendu = self.police_monospace.render(controle, True, self.blanc)
             self.ecran.blit(rendu, (x, y))
             y += 16
     
