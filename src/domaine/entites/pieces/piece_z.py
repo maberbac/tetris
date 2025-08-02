@@ -74,10 +74,10 @@ class PieceZ(Piece):
             4 positions en forme Z horizontal
         """
         return [
-            Position(x_pivot - 1, y_pivot - 2),      # [pivot.x-1, pivot.y]
-            Position(x_pivot, y_pivot - 2),          # [pivot.x, pivot.y] (le pivot de la pièce)
-            Position(x_pivot, y_pivot - 1),      # [pivot.x, pivot.y+1]
-            Position(x_pivot + 1, y_pivot - 1)   # [pivot.x+1, pivot.y+1]
+            Position(x_pivot - 1, y_pivot - 1),     # [pivot.x-1, pivot.y]
+            Position(x_pivot, y_pivot - 1),         # [pivot.x, pivot.y] (le pivot de la pièce)
+            Position(x_pivot, y_pivot),         # [pivot.x, pivot.y+1]
+            Position(x_pivot + 1, y_pivot)      # [pivot.x+1, pivot.y+1]
         ]
 
     @property  

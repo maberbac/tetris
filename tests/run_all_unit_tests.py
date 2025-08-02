@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-Script pour exécuter tous les tests unitaires et avoir un résumé complet.
-Tests couvrant : Position, 7 pièces complètes, Factory Pattern, Services.
+Runner pour les tests unitaires - Tests de composants isolés.
+
+Ces tests valident le comportement individuel de chaque composant
+en isolation complète (domaine, entités, services).
+
 État actuel : 75 tests unitaires, 100% de réussite ✅
+- Position (Value Object) : 5 tests ✅
+- 7 pièces complètes (I, O, T, S, Z, J, L) : 42 tests ✅
+- Factory Pattern et Registry : 8 tests ✅
+- Services et gestionnaires : 20 tests ✅
 """
 
 import unittest

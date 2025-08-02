@@ -201,6 +201,26 @@ class GameDisplay:                   # ❌ Anglais sans justification
 - **Scripts temporaires** : TOUT ce que je génère pour mes besoins dans `tmp/`
 - **AUCUN test à la racine** - Tous les tests doivent être dans `tests/`
 
+### 🎯 RÈGLE OBLIGATOIRE - Scripts de Tests Standards
+
+**TOUJOURS utiliser ces 4 scripts officiels pour lancer les tests :**
+
+```bash
+# Tests unitaires (composants isolés)
+python tests/run_all_unit_tests.py
+
+# Tests d'acceptance (scénarios utilisateur) 
+python tests/run_all_acceptance_tests.py
+
+# Tests d'intégration (composants ensemble)
+python tests/run_all_integration_tests.py
+
+# Suite complète (tous les tests)
+python tests/run_suite_tests.py
+```
+
+**Interdiction de créer d'autres scripts de tests** - Ces 4 scripts suffisent pour tous les besoins.
+
 ### Validation Obligatoire
 - **Toujours tester avant de livrer** - Créer des tests pour valider que tout fonctionne
 - **Tests complets** - Couvrir tous les aspects : génération, plateau, moteur, statistiques

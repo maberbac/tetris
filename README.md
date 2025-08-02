@@ -6,10 +6,11 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 
 - Gameplay classique de Tetris avec **les 7 tétrominos complets** (I, O, T, S, Z, J, L)
 - Rotation et déplacement des pièces avec validation de collision
+- **Zone invisible masquée** : Seules les parties visibles des pièces (y ≥ 0) sont affichées pour une expérience utilisateur propre
 - **Musique de fond intégrée** avec le thème classique de Tetris
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
-- Tests complets avec approche TDD (Test-Driven Development) - ### **Tests implémentés (108+ tests - 97%+ ✅)**
+- Tests complets avec approche TDD (Test-Driven Development) - ### **Tests implémentés (101 tests - 100% ✅)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (75 tests ✅)
@@ -17,7 +18,7 @@ tests/
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
 │   │   └── services/              # Tests des services (GestionnaireEvenements)
 │   └── interface/                 # Tests de l'interface  
-├── integration/                   # Tests d'intégration (11 tests ✅)
+├── integration/                   # Tests d'intégration (4 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
 ├── acceptance/                    # Tests d'acceptance (22 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
@@ -27,7 +28,7 @@ tests/
 └── run_tests.py                  # Lanceur des tests
 ```
 
-**Performance** : 108 tests en 0.6s environ (97%+ succès, corrections en cours)
+**Performance** : 101 tests en 0.66s environ (100% succès - Suite complète validée ✅)
 
 ## 🚀 Installation et utilisation
 
@@ -128,10 +129,10 @@ python tests/run_all_integration_tests.py # Tests d'intégration
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
-**Couverture actuelle** : **108 tests, 97%+ de réussite ✅**
+**Couverture actuelle** : **101 tests, 100% de réussite ✅**
 - **75 tests unitaires** : Domaine, entités, services, zone invisible
 - **22 tests d'acceptance** : Scénarios utilisateur + corrections de bugs (lignes multiples, game over prématuré)
-- **11 tests d'intégration** : Système complet avec audio
+- **4 tests d'intégration** : Système complet avec audio
 
 ## 📋 État du développement
 
@@ -145,6 +146,7 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - **Suite de tests complètement corrigée et fonctionnelle**
 - **Plateau de jeu complet** avec détection de lignes complètes
 - **Interface utilisateur Pygame complète** avec affichage 60 FPS
+- **Zone invisible masquée** : Affichage propre avec masquage des positions y < 0
 - **Système de score et niveaux fonctionnel**
 - **Command Pattern** pour les contrôles
 - **Architecture hexagonale** respectée
@@ -154,11 +156,12 @@ python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 - **Organisation des fichiers** : Structure propre avec `tmp/` pour les outils de développement
 - **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte (descente accélérée + lignes multiples + game over prématuré)
 - **Zone invisible** : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
-- **Corrections récentes** : Pivot de la pièce S entièrement corrigé, démonstrations mises à jour
+- **Corrections récentes** : Corrections des pièces S et Z pour cohérence des coordonnées (y-1 au lieu de y-2)
+- **Suite de tests complète** : 101/101 tests passent (100% réussite) après corrections
 
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
-- ✅ **Interface graphique** : Affichage Pygame avec couleurs
+- ✅ **Interface graphique** : Affichage Pygame avec couleurs et masquage zone invisible
 - ✅ **Contrôles** : 7 commandes (flèches, espace, esc, p)
 - ✅ **Gameplay** : Chute des pièces, rotations, lignes complètes
 - ✅ **Scoring** : Système de points et progression de niveaux

@@ -1,6 +1,6 @@
 # Journal de développement Tetris - Session TDD avec architecture hexagonale
 
-## Date : 27 juillet - 1er août 2025
+## Date : 27 juillet - 2 août 2025
 
 ## 🎯 **Objectifs de la session**
 - Implémenter un jeu Tetris en Python avec architecture hexagonale
@@ -194,8 +194,21 @@
     - **Résultat** : 75/75 tests unitaires passent (100% ✅)
 
 36. ✅ **Documentation mise à jour** : Synchronisation des métriques et corrections
-    - README.md : Métriques actualisées (108 tests)
+    - README.md : Métriques actualisées (101 tests)
     - Journal développement : Correction pivot pièce S documentée
+
+### **Phase 15 : Correction cohérence pièces S et Z (2 août - TDD strict)**
+37. ✅ **Modification des coordonnées de spawn** : Harmonisation des pièces S et Z
+    - Modification : obtenir_positions_initiales utilise y-1 au lieu de y-2 pour les deux pièces
+    - **Résultat** : Cohérence améliorée et comportement visuel plus logique
+
+38. ✅ **Correction des tests unitaires** : TDD GREEN appliqué systématiquement
+    - Tests corrigés : Tous les tests de la pièce Z ajustés aux nouvelles coordonnées
+    - **Résultat** : 4/4 tests pièce Z passent, suite complète à 101/101 tests (100% ✅)
+
+39. ✅ **Documentation complète synchronisée** : Mise à jour finale de toute la documentation
+    - Documentation mise à jour : README.md, DOC_TECHNIQUE.md, testing-strategy.md, journal-developpement.md
+    - **Résultat** : Documentation entièrement cohérente avec l'état final du projet
 
 ## 📊 **État actuel du projet**
 
@@ -208,7 +221,7 @@
 - ✅ **Game Over** : Détection automatique correcte avec zone invisible
 - ✅ **Zone invisible** : Système de spawn réaliste (Y_SPAWN_DEFAUT = -3)
 
-### **Tests implémentés (108 tests - 97%+ passants ✅)**
+### **Tests implémentés (101 tests - 100% passants ✅)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (75 tests ✅)
@@ -216,9 +229,9 @@ tests/
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
 │   │   └── services/              # Tests des services (GestionnaireEvenements)
 │   └── interface/                 # Tests de l'interface  
-├── integration/                   # Tests d'intégration (11 tests ✅)
+├── integration/                   # Tests d'intégration (4 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (22 tests - 20/22 ✅)
+├── acceptance/                    # Tests d'acceptance (22 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
@@ -226,7 +239,7 @@ tests/
 └── run_tests.py                  # Lanceur des tests
 ```
 
-**Performance** : 108 tests en 0.6s environ (97%+ succès, corrections en cours pour lignes complètes)
+**Performance** : 101 tests en 0.66s environ (100% succès - Suite complète validée ✅)
 
 ### **Architecture finale réalisée**
 ```

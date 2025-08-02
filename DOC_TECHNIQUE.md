@@ -37,7 +37,7 @@ tetris/
 │       ├── entree/             # Adapters d'entrée
 │       │   └── gestionnaire_partie.py  # Gestion Pygame des entrées
 │       └── sortie/             # Adapters de sortie
-│           ├── affichage_partie.py     # Rendu Pygame
+│           ├── affichage_partie.py     # Rendu Pygame avec masquage zone invisible ✅
 │           └── audio_partie.py         # Audio Pygame ✅ NOUVEAU !
 ├── assets/                     # 🎨 MÉDIAS - Assets du jeu
 │   ├── audio/                  # Sons et musiques
@@ -245,8 +245,15 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (70 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (75 tests)
 python tests/run_all_acceptance_tests.py # Tests d'acceptance (22 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
+```
+
+**Métriques actuelles** : **101 tests, 100% de réussite ✅**
+- **Architecture hexagonale** : Complètement implémentée
+- **Couverture TDD** : Toutes les fonctionnalités testées
+- **Corrections récentes** : Pièces S et Z harmonisées (positions y-1)
 python tests/run_all_integration_tests.py # Tests d'intégration (11 tests)
 
 # Tests spécifiques par pièce
@@ -495,5 +502,29 @@ moteur = MoteurPartie(audio=audio)
 **Objectifs** :
 - Interface Pygame
 - Contrôles clavier
-- Affichage graphique
+- Affichage graphique avec masquage zone invisible
 - Game loop principal
+
+## 🎨 Améliorations d'Interface
+
+### Masquage de la Zone Invisible
+**Problème résolu** : Les pièces étaient visibles dans la zone de spawn (y < 0), créant un affichage peu réaliste.
+
+**Solution implémentée** :
+```python
+# Dans AffichagePartie._dessiner_piece_active()
+for pos in moteur.piece_active.positions:
+    if pos.y >= 0:  # Masquage de la zone invisible
+        # Afficher seulement les positions visibles
+        self._dessiner_position(pos, couleur)
+```
+
+**Avantages** :
+- ✅ **Expérience utilisateur propre** : Seules les parties visibles des pièces sont affichées
+- ✅ **Réalisme accru** : Simulation correcte de la zone invisible du Tetris
+- ✅ **Spawn naturel** : Les pièces apparaissent progressivement depuis le haut
+- ✅ **Compatibilité** : Fonctionne avec toutes les pièces et orientations
+
+**Tests** :
+- `tests/acceptance/test_masquage_zone_invisible.py` : Validation complète
+- `demo/demo_masquage_zone_invisible.py` : Démonstration visuelle

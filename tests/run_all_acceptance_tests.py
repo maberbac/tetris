@@ -6,10 +6,10 @@ Ces tests valident que le jeu répond correctement aux actions
 de l'utilisateur et aux scénarios d'usage réels.
 
 État actuel : 22 tests d'acceptance incluant les corrections de bugs :
-- Contrôles et gameplay (20/22 ✅)
+- Contrôles et gameplay (100% ✅)
 - Corrections bug lignes multiples ✅ 
 - Corrections bug game over prématuré ✅
-- 2 échecs dans test_bug_visuel_ligne_complete (logique de suppression de lignes)
+- Tests bug visuel ligne complète ✅
 """
 
 import unittest

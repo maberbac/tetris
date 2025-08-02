@@ -1,12 +1,15 @@
+#!/usr/bin/env python3
 """
-Script de lancement de tous les tests d'intégration.
+Runner pour les tests d'intégration - Tests de composants ensemble.
 
-Tests d'intégration validant le fonctionnement complet du système :
-- Génération aléatoire des pièces
-- Moteur de partie complet
-- Collisions et plateau
-- Statistiques et audio
+Ces tests valident le fonctionnement complet du système avec 
+plusieurs composants fonctionnant ensemble (moteur + plateau + factory).
+
 État actuel : 4 tests d'intégration, 100% de réussite ✅
+- Génération aléatoire des pièces ✅
+- Moteur de partie complet ✅
+- Collisions et plateau ✅
+- Statistiques et score ✅
 """
 
 import os

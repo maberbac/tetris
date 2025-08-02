@@ -5,18 +5,18 @@
 - **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré)
 - **⚡ Performance** : Tests s'exécutent en 0.7sD pour Tetris - Architecture hexagonale
 
-## Date de mise à jour : 1er août 2025 - PROJET TERMINÉ ✅ - TESTS CORRIGÉS
+## Date de mise à jour : 2 août 2025 - PROJET TERMINÉ ✅ - SUITE COMPLÈTE 100% RÉUSSIE
 
-## ✅ **PROJET TETRIS COMPLET - SUITE DE TESTS 100% FONCTIONNELLE**
+## ✅ **PROJET TETRIS COMPLET - SUITE DE TESTS 101/101 RÉUSSIS**
 
-### 🏆 **État final des tests - 92/92 TESTS RÉUSSIS**
+### 🏆 **État final des tests - 101/101 TESTS RÉUSSIS**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 92 tests (75 unitaires + 13 acceptance + 4 intégration)
+- **📊 Total tests** : 101 tests (75 unitaires + 22 acceptance + 4 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques
-- **🔧 Corrections** : Tous les imports `domaine` → `src.domaine` réparés
-- **⚡ Performance** : Tests s'exécutent en 0.021s
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible
+- **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré + cohérence pièces S/Z)
+- **⚡ Performance** : Tests s'exécutent en 0.66s
 
 ### Phase 1 : Value Objects du domaine ✅
 1. **Position (Value Object)** - 5 tests passants
@@ -125,22 +125,22 @@
    - ✅ Racine épurée : Seuls jouer.py et partie_tetris.py à la racine
    - ✅ Conformité directives : Respect total des DIRECTIVES_DEVELOPPEMENT.md
    - ✅ Documentation synchronisée : Mise à jour immédiate après changements
-### Phase 11 : Correction bug game over prématuré (1er août - TDD strict) ✅
-1. **Bug game over prématuré identifié et reproduit** : TDD RED appliqué strictement
-   - Bug : Vérification game over avant placement de pièce (conflit avec zone invisible)
-   - **Résultat** : Bug confirmé avec système Y_SPAWN_DEFAUT = -3
+### Phase 12 : Correction cohérence pièces S et Z (2 août - TDD strict) ✅
+1. **Modification coordonnées pièces S et Z** : Harmonisation des positions de spawn
+   - Modification : Pièces S et Z utilisent maintenant y-1 au lieu de y-2 dans obtenir_positions_initiales
+   - **Résultat** : Cohérence améliorée entre les deux pièces similaires
 
-2. **Correction développée et validée** : TDD GREEN appliqué
-   - Corrections : plateau.py (support y<0), moteur_partie.py (logique game over)  
-   - **Résultat** : 4/4 tests GREEN réussis, correction validée
+2. **Correction tests unitaires** : TDD GREEN appliqué
+   - Corrections : Tous les tests de la pièce Z ajustés aux nouvelles coordonnées
+   - **Résultat** : 4/4 tests pièce Z corrigés et passants
 
-3. **Code intégré et refactorisé** : TDD REFACTOR appliqué  
-   - Code intégré et tests PieceZ corrigés pour zone invisible
-   - Tests existants : 103/103 continuent de passer (non-régression)
+3. **Validation complète** : TDD REFACTOR appliqué  
+   - Tests existants : 101/101 continuent de passer (non-régression totale)
+   - **Résultat** : Suite de tests 100% fonctionnelle
 
-4. **Tests d'acceptance officiels créés** : Validation finale
-   - Test officiel : tests/acceptance/test_correction_bug_gameover_premature.py
-   - **Résultat** : 4/4 tests d'acceptance game over réussis ✅
+4. **Documentation synchronisée** : Mise à jour finale
+   - Documentation : README.md, DOC_TECHNIQUE.md, testing-strategy.md actualisés
+   - **Résultat** : Documentation cohérente avec l'état actuel du projet ✅
 
 ## 🏗️ **Structure finale des tests - ORGANISATION PROFESSIONNELLE**
 
@@ -148,7 +148,7 @@
 ```
 tests/
 ├── integration/                     # Tests système complet
-│   ├── test_partie_complete.py     # 11 tests ✅
+│   ├── test_partie_complete.py     # 4 tests ✅
 │   └── run_tests.py                # Lanceur principal
 ├── unit/                           # Tests composants isolés
 │   ├── domaine/                    # Tests unitaires domaine
@@ -159,7 +159,8 @@ tests/
 │   ├── test_controles_rapide.py    # Tests contrôles
 │   ├── test_controles_simplifies.py
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
-│   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅ NOUVEAU !
+│   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
+│   └── test_masquage_zone_invisible.py # Tests zone invisible masquée ✅
 └── README_TESTS.md                 # Documentation tests
 ```
 

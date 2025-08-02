@@ -129,13 +129,14 @@ class AffichagePartie(AffichageJeu):
                 pygame.draw.rect(self.ecran, self.gris_fonce, rect)
                 pygame.draw.rect(self.ecran, self.gris, rect, 1)
         
-        # Pièces placées
+        # Pièces placées (masquer la zone invisible)
         for position in moteur.plateau.positions_occupees:
-            x = self.zone_jeu_x + position.x * self.taille_cellule
-            y = self.zone_jeu_y + position.y * self.taille_cellule
-            rect = pygame.Rect(x, y, self.taille_cellule, self.taille_cellule)
-            pygame.draw.rect(self.ecran, self.gris_place, rect)
-            pygame.draw.rect(self.ecran, self.blanc, rect, 2)
+            if position.y >= 0:  # Masquage de la zone invisible pour les pièces placées
+                x = self.zone_jeu_x + position.x * self.taille_cellule
+                y = self.zone_jeu_y + position.y * self.taille_cellule
+                rect = pygame.Rect(x, y, self.taille_cellule, self.taille_cellule)
+                pygame.draw.rect(self.ecran, self.gris_place, rect)
+                pygame.draw.rect(self.ecran, self.blanc, rect, 2)
     
     def _dessiner_piece_active(self, moteur: 'MoteurPartie') -> None:
         """Dessine la pièce actuellement contrôlée."""
@@ -144,12 +145,14 @@ class AffichagePartie(AffichageJeu):
         
         couleur = self.couleurs_pieces.get(moteur.piece_active.type_piece, self.blanc)
         
+        # Ne dessiner que les positions visibles (y >= 0) pour masquer la zone invisible
         for pos in moteur.piece_active.positions:
-            x = self.zone_jeu_x + pos.x * self.taille_cellule
-            y = self.zone_jeu_y + pos.y * self.taille_cellule
-            rect = pygame.Rect(x, y, self.taille_cellule, self.taille_cellule)
-            pygame.draw.rect(self.ecran, couleur, rect)
-            pygame.draw.rect(self.ecran, self.blanc, rect, 2)
+            if pos.y >= 0:  # Masquage de la zone invisible
+                x = self.zone_jeu_x + pos.x * self.taille_cellule
+                y = self.zone_jeu_y + pos.y * self.taille_cellule
+                rect = pygame.Rect(x, y, self.taille_cellule, self.taille_cellule)
+                pygame.draw.rect(self.ecran, couleur, rect)
+                pygame.draw.rect(self.ecran, self.blanc, rect, 2)
     
     def _dessiner_statistiques(self, moteur: 'MoteurPartie') -> None:
         """Dessine les statistiques de la partie."""

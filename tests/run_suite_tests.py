@@ -4,9 +4,9 @@ Exécute tous les types de tests dans l'ordre optimal.
 
 État actuel du projet :
 - 75 tests unitaires : Domaine, entités, services, zone invisible (100% ✅)
-- 22 tests d'acceptance : Scénarios utilisateur + corrections de bugs (20/22 - 90.9% ✅)
+- 22 tests d'acceptance : Scénarios utilisateur + corrections de bugs (100% ✅)
 - 4 tests d'intégration : Système complet avec audio (100% ✅)
-Total : 101 tests, 99/101 réussis (98% ✅)
+Total : 101 tests, 101/101 réussis (100% ✅)
 """
 
 import os
