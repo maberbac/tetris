@@ -26,6 +26,7 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
         
         # Configuration du moteur avec système audio
         self.moteur_mock.obtenir_audio.return_value = self.audio_mock
+        self.moteur_mock.tourner_piece_active.return_value = True
         
         # Configuration par défaut : audio non mute
         self.audio_mock.basculer_mute_musique.return_value = True  # Premier appel = mute
@@ -177,7 +178,7 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
         # Then : Tous les contrôles fonctionnent
         self.assertEqual(resultats, [True, True, True])
         piece_mock.deplacer.assert_called_once_with(-1, 0)
-        piece_mock.tourner.assert_called_once()
+        self.moteur_mock.tourner_piece_active.assert_called_once()
         self.audio_mock.basculer_mute_musique.assert_called_once()
 
 

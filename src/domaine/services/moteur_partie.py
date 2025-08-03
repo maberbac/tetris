@@ -114,9 +114,13 @@ class MoteurPartie:
         if not self.piece_active or self.en_pause or self.jeu_termine:
             return False
         
-        # Sauvegarder l'état
+        # Sauvegarder l'état complet
         positions_orig = self.piece_active.positions.copy()
         orientation_orig = getattr(self.piece_active, '_orientation', None)
+        est_vertical_orig = getattr(self.piece_active, '_est_vertical', None)  # Pour pièces S/Z
+        position_pivot_orig = getattr(self.piece_active, 'position_pivot', None)  # Pour pièces T/J/L/I
+        x_pivot_absolu_orig = getattr(self.piece_active, '_x_pivot_absolu', None)  # Pour pièce T
+        y_pivot_absolu_orig = getattr(self.piece_active, '_y_pivot_absolu', None)  # Pour pièce T
         
         # Essayer la rotation
         self.piece_active.tourner()
@@ -124,12 +128,25 @@ class MoteurPartie:
         # Vérifier si c'est valide
         if self.plateau.peut_placer_piece(self.piece_active):
             print(f"[ROTATE] Rotation réussie: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
+            
+            # Jouer le son de rotation si audio disponible
+            if self.audio:
+                self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=1.0)
+            
             return True
         else:
-            # Annuler la rotation
+            # Annuler la rotation complètement - RESTAURATION COMPLÈTE
             self.piece_active.positions = positions_orig
             if orientation_orig is not None:
                 self.piece_active._orientation = orientation_orig
+            if est_vertical_orig is not None:
+                self.piece_active._est_vertical = est_vertical_orig  # Restaurer état S/Z
+            if position_pivot_orig is not None:
+                self.piece_active.position_pivot = position_pivot_orig  # Restaurer pivot T/J/L/I
+            if x_pivot_absolu_orig is not None:
+                self.piece_active._x_pivot_absolu = x_pivot_absolu_orig  # Restaurer coord absolue T
+            if y_pivot_absolu_orig is not None:
+                self.piece_active._y_pivot_absolu = y_pivot_absolu_orig  # Restaurer coord absolue T
             return False
     
     def chute_rapide(self) -> bool:

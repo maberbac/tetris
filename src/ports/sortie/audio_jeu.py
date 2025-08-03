@@ -64,13 +64,13 @@ class AudioJeu(ABC):
         pass
     
     @abstractmethod
-    def jouer_effet_sonore(self, chemin_fichier: str, volume: float = 0.8) -> None:
+    def jouer_effet_sonore(self, chemin_fichier: str, volume: float = 1.0) -> None:
         """
         Joue un effet sonore.
         
         Args:
             chemin_fichier: Chemin vers le fichier audio
-            volume: Volume de l'effet (0.0 à 1.0)
+            volume: Volume de l'effet (0.0 à 1.0) - Par défaut 100%
         """
         pass
     

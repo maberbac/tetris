@@ -39,6 +39,10 @@ class MoteurTest:
         print("  💫 Pièce descendue d'une ligne")
         return True
     
+    def tourner_piece_active(self):
+        """Simule la rotation avec retour de succès."""
+        return True
+    
     def placer_piece_definitivement(self):
         print("  📍 Pièce placée définitivement")
     

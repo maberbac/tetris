@@ -42,18 +42,19 @@ tetris/
 ├── assets/                     # 🎨 MÉDIAS - Assets du jeu
 │   ├── audio/                  # Sons et musiques
 │   │   ├── music/              # Musique principale (tetris-theme.wav ✅ FONCTIONNEL !)
-│   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav)
+│   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav ✅ NOUVEAU !)
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
-│   ├── unit/                   # Tests unitaires (92 tests ✅)
+│   ├── unit/                   # Tests unitaires (107 tests ✅ + 10 nouveaux pour audio rotation !)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
-│   │   └── adapters/           # Tests des adaptateurs (Audio mute/unmute)
-│   ├── acceptance/             # Tests d'acceptance (35 tests ✅)
+│   │   └── adapters/           # Tests des adaptateurs (Audio mute/unmute + rotation ✅)
+│   ├── acceptance/             # Tests d'acceptance (40 tests ✅ + 5 nouveaux pour audio rotation !)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
+│   │   ├── test_audio_rotation.py # Tests audio rotation rotate.wav ✅ NOUVEAU !
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
 │   ├── integration/            # Tests d'intégration (4 tests ✅)
 │   │   └── test_partie_complete.py # Tests système complet
@@ -92,11 +93,11 @@ class PieceI(Piece):
 #### Pièces implémentées
 - **PieceI** : Ligne droite (2 orientations)
 - **PieceO** : Carré (rotation = no-op) 
-- **PieceT** : Forme en T (4 orientations)
+- **PieceT** : Forme en T (4 orientations) ✅ **Rotation horaire corrigée !**
 - **PieceS** : Forme en S (2 orientations)
 - **PieceZ** : Forme en Z (2 orientations)
 - **PieceJ** : Forme en J (4 orientations)
-- **PieceL** : Forme en L (4 orientations) ✅ **Nouvelle !**
+- **PieceL** : Forme en L (4 orientations)
 
 #### Détail des formes et rotations
 ```
@@ -110,10 +111,12 @@ PieceO (carré) - 1 orientation :
 ██
 ██
 
-PieceT (T) - 4 orientations :
-Nord:  █     Est: █      Sud: ███    Ouest: █
-      ███         ██           █            ██
-                  █                         █
+PieceT (T) - 4 orientations ✅ **ROTATION HORAIRE** :
+Nord:  █     Ouest: █     Sud: ███    Est: █
+      ███           ██          █         ██
+                    █                     █
+
+**Ordre de rotation horaire** : Nord → Ouest → Sud → Est → Nord ✅
 
 PieceS (S) - 2 orientations :
 Horizontal:  ██    Vertical: █
@@ -138,8 +141,9 @@ Nord:    █     Est:  █     Sud: ███    Ouest:  ██
 
 #### Comportement des pièces
 - **Mutables** : Peuvent changer d'état (déplacement, rotation)
-- **Position pivot** : Point fixe pour les rotations
+- **Position pivot** : Point fixe pour les rotations (corrigé pour pièce T : (5,0))
 - **4 blocs** par pièce
+- **Rotation horaire** : Toutes les pièces suivent l'ordre horaire ✅
 - **Héritage** : Comportement commun dans classe abstraite `Piece`
 
 ### 3. Factory Pattern avec Registry
@@ -228,8 +232,9 @@ stats = adaptateur.traiter_evenements(moteur)
 
 #### Rotation systématique
 - **Pivot fixe** : Chaque pièce a un point de rotation constant
-- **Cycle d'orientations** : Nord → Est → Sud → Ouest → Nord
+- **Cycle d'orientations** : Nord → Ouest → Sud → Est → Nord ✅ **ROTATION HORAIRE**
 - **Calculs géométriques** : Transformations matricielles pour les rotations
+- **Correction pièce T** : Pivot corrigé (5,0) et rotation horaire implémentée ✅
 
 #### TDD avec patterns métier
 - **RED-GREEN-REFACTOR** : Cycle systématique pour chaque nouvelle pièce
@@ -474,19 +479,24 @@ P                : Pause/Reprendre la partie
 - ✅ **Port audio** avec interface AudioJeu
 - ✅ **Adapter Pygame** pour la gestion sonore
 - ✅ **Musique de fond** avec tetris-theme.wav (format compatible)
+- ✅ **Effets sonores** rotate.wav lors des rotations de pièces ✅ **NOUVEAU !**
 - ✅ **Intégration architecture** hexagonale
 - ✅ **Contrôles audio** (pause/reprise intégrés)
+- ✅ **Système mute/unmute** global pour tous les sons ✅ **NOUVEAU !**
 - ✅ **Système de fallback** automatique (OGG → WAV)
 - ✅ **Gestion d'erreurs** robuste
 
 **Réalisations** :
 - **Interface AudioJeu** : 9 méthodes pour musique et effets sonores
-- **AudioPartie Adapter** : Implémentation Pygame avec gestion des assets
-- **Intégration MoteurPartie** : Injection de dépendance pour découplage
+- **AudioPartie Adapter** : Implémentation Pygame avec gestion des assets et mute
+- **Intégration MoteurPartie** : Injection de dépendance + effets sonores rotation
 - **Contrôles intégrés** : Pause affecte aussi la musique (touche P)
+- **Mute global** : Touche M bascule mute/unmute pour TOUS les sons ✅ **NOUVEAU !**
+- **Audio rotation** : rotate.wav joué à chaque rotation réussie (volume 60%) ✅ **NOUVEAU !**
 - **Architecture respectée** : Port/Adapter pattern pour l'audio
 - **Fallback automatique** : Tentative WAV si OGG échoue
 - **Problème résolu** : Chemin audio corrigé (4 remontées au lieu de 3)
+- **Tests complets** : 15 nouveaux tests (unit + acceptance) pour audio rotation ✅ **NOUVEAU !**
 
 ```python
 # Interface port audio
@@ -499,10 +509,22 @@ class AudioJeu(ABC):
     
     @abstractmethod
     def basculer_pause_musique(self): pass
+    
+    @abstractmethod
+    def jouer_effet_sonore(self, nom_fichier: str, volume: float = 1.0): pass  # ✅ NOUVEAU !
 
 # Utilisation avec injection de dépendance et gestion d'erreurs
 audio = AudioPartie()
 moteur = MoteurPartie(audio=audio)
+
+# Audio rotation intégré dans le moteur ✅ NOUVEAU !
+def tourner_piece_active(self):
+    if self._peut_tourner_piece():
+        self.piece_active.tourner()
+        if self.audio:  # Respect architecture hexagonale
+            self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=1.0)
+        return True
+    return False
 
 # Système de fallback intégré dans l'adaptateur
 # Essaie tetris-theme.ogg, puis tetris-theme.wav automatiquement

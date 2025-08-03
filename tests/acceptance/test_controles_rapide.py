@@ -31,6 +31,10 @@ class MoteurTest:
     def faire_descendre_piece(self):
         return True
     
+    def tourner_piece_active(self):
+        """Simule la rotation avec retour de succès."""
+        return True
+    
     def placer_piece_definitivement(self):
         pass
     

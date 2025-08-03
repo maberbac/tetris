@@ -131,7 +131,7 @@ class TestTraitementEvenements(unittest.TestCase):
         )
         
         self.assertTrue(resultat)
-        self.piece_mock.tourner.assert_called_once()
+        self.moteur.tourner_piece_active.assert_called_once()
     
     def test_traitement_appui_touche_mute(self):
         """L'appui de la touche mute doit basculer le mute de l'audio."""

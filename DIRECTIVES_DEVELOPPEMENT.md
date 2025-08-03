@@ -84,6 +84,23 @@ tetris/
 - 🖼️ **`images/backgrounds/`** : Arrière-plans optionnels du jeu
 - 📋 **`README.md`** : Documentation complète des assets
 
+### 🔊 RÈGLE AUDIO - Volume des Effets Sonores
+**OBLIGATION : Tous les effets sonores dans `assets/audio/sfx/` doivent être joués à 100% de volume par défaut.**
+
+```python
+# ✅ CORRECT - Volume 100% par défaut pour les effets sonores
+self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav")  # Volume 1.0 par défaut
+self.audio.jouer_effet_sonore("assets/audio/sfx/line_clear.wav")  # Volume 1.0 par défaut
+
+# ✅ CORRECT - Volume personnalisé uniquement si spécifié explicitement
+self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=0.8)  # Volume réduit si nécessaire
+
+# ❌ INCORRECT - Ne pas spécifier de volume inférieur sans justification
+self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=0.6)  # Trop faible sans raison
+```
+
+**Justification** : Les effets sonores doivent être audibles et percutants pour améliorer l'expérience utilisateur. Le volume 100% assure une excellente perception des événements du jeu.
+
 ## 🏗️ Règles Architecturales
 
 ### Réutilisation Obligatoire

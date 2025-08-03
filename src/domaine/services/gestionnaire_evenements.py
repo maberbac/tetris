@@ -15,7 +15,7 @@ from enum import Enum
 from typing import Dict, Optional, List, Callable
 from .commandes import (
     Commande, CommandeDeplacerGauche, CommandeDeplacerDroite,
-    CommandeDescendre, CommandeChuteRapide, CommandeTourner,
+    CommandeDescendre, CommandeChuteRapide, CommandeTournerPartie,
     CommandePause, CommandeAfficherMenu, CommandeBasculerMute, MoteurJeu
 )
 
@@ -105,7 +105,7 @@ class GestionnaireEvenements:
         return {
             ToucheClavier.GAUCHE: CommandeDeplacerGauche(),
             ToucheClavier.DROITE: CommandeDeplacerDroite(),
-            ToucheClavier.ROTATION: CommandeTourner(), 
+            ToucheClavier.ROTATION: CommandeTournerPartie(), 
             ToucheClavier.CHUTE_RAPIDE: CommandeDescendre(),
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapide(),
             ToucheClavier.MENU: CommandeAfficherMenu(),

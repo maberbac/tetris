@@ -23,53 +23,53 @@ class TestPieceT(unittest.TestCase):
         self.assertEqual(self.piece_t.type_piece, TypePiece.T)
     
     def test_piece_t_positions_initiales_orientation_nord(self):
-        """Test : PieceT a les bonnes positions initiales (orientation Nord - T inversé, zone invisible)."""
+        """Test : PieceT a les bonnes positions initiales (orientation Nord - T normal, zone invisible)."""
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(4, -1),  # Gauche du centre (zone invisible)
-            Position(5, -1),  # Centre (zone invisible)
-            Position(6, -1),  # Droite du centre (zone invisible)
-            Position(5, 0)    # En bas du centre
+            Position(4, 0),  # Gauche du centre (zone invisible)
+            Position(5, 0),  # Centre (zone invisible)
+            Position(6, 0),  # Droite du centre (zone invisible)
+            Position(5, -1)    # En haut du centre (branche vers le haut)
         ]
         self.assertEqual(positions, positions_attendues)
     
     
-    def test_piece_t_peut_tourner_vers_est(self):
-        """Test : PieceT peut tourner vers l'Est (T vers la droite, zone invisible)."""
-        self.piece_t.tourner()
+    def test_piece_t_peut_tourner_vers_ouest(self):
+        """Test : PieceT peut tourner vers l'Ouest (T vers la gauche, zone invisible) - ROTATION HORAIRE."""
+        self.piece_t.tourner()  # Nord → Ouest (sens horaire)
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(5, -2), # En haut du centre (zone invisible)
-            Position(5, -1), # Centre (zone invisible)
-            Position(5, 0),  # En bas du centre
-            Position(4, -1)  # À gauche du centre (zone invisible)
+            Position(5, -1), # En haut du centre (zone invisible)
+            Position(5, 0), # Centre (zone invisible)
+            Position(5, 1),  # En bas du centre
+            Position(6, 0)  # À droite du centre (zone invisible) - Branche vers la droite
         ]
         self.assertEqual(positions, positions_attendues)
     
     def test_piece_t_peut_tourner_vers_sud(self):
-        """Test : PieceT peut tourner vers le Sud (T normal, zone invisible)."""
+        """Test : PieceT peut tourner vers le Sud (T inversé, zone invisible)."""
         self.piece_t.tourner()  # Nord -> Est
         self.piece_t.tourner()  # Est -> Sud
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(4, -1), # Gauche du centre (zone invisible)
-            Position(5, -1), # Centre (zone invisible)
-            Position(6, -1), # Droite du centre (zone invisible)
-            Position(5, -2)  # En haut du centre (zone invisible)
+            Position(4, 0), # Gauche du centre (zone invisible)
+            Position(5, 0), # Centre (zone invisible)
+            Position(6, 0), # Droite du centre (zone invisible)
+            Position(5, 1)  # En bas du centre (branche vers le bas)
         ]
         self.assertEqual(positions, positions_attendues)
     
-    def test_piece_t_peut_tourner_vers_ouest(self):
-        """Test : PieceT peut tourner vers l'Ouest (T vers la gauche)."""
-        self.piece_t.tourner()  # Nord -> Est
-        self.piece_t.tourner()  # Est -> Sud  
-        self.piece_t.tourner()  # Sud -> Ouest
+    def test_piece_t_peut_tourner_vers_est(self):
+        """Test : PieceT peut tourner vers l'Est (T vers la droite) - ROTATION HORAIRE."""
+        self.piece_t.tourner()  # Nord -> Ouest
+        self.piece_t.tourner()  # Ouest -> Sud  
+        self.piece_t.tourner()  # Sud -> Est
         positions = self.piece_t.positions
         positions_attendues = [
-            Position(5, -2), # En haut du centre (zone invisible)
-            Position(5, -1), # Centre (zone invisible)
-            Position(5, 0),  # En bas du centre
-            Position(6, -1)  # À droite du centre (zone invisible)
+            Position(5, -1), # En haut du centre (zone invisible)
+            Position(5, 0), # Centre (zone invisible)
+            Position(5, 1),  # En bas du centre
+            Position(4, 0)  # À gauche du centre (zone invisible) - Branche vers la gauche
         ]
         self.assertEqual(positions, positions_attendues)
     

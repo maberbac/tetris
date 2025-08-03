@@ -27,7 +27,7 @@ class AudioPartie(AudioJeu):
         self._initialise = False
         self._musique_chargee = False
         self._volume_musique = 0.7  # Volume par défaut à 70%
-        self._mute = False  # État de mute
+        self._est_mute = False  # État de mute
         self._volume_avant_mute = 0.7  # Volume à restaurer après unmute
         
     def initialiser(self) -> None:
@@ -147,20 +147,20 @@ class AudioPartie(AudioJeu):
         if not self._initialise:
             return False
             
-        if self._mute:
+        if self._est_mute:
             # Unmute : restaurer le volume précédent
-            self._mute = False
+            self._est_mute = False
             self._volume_musique = self._volume_avant_mute
             pygame.mixer.music.set_volume(self._volume_musique)
             print(f"[UNMUTE] Musique réactivée - Volume: {int(self._volume_musique * 100)}%")
         else:
             # Mute : sauvegarder le volume actuel et mettre à 0
             self._volume_avant_mute = self._volume_musique
-            self._mute = True
+            self._est_mute = True
             pygame.mixer.music.set_volume(0.0)
             print("[MUTE] Musique désactivée")
             
-        return self._mute
+        return self._est_mute
     
     def definir_volume_musique(self, volume: float) -> None:
         """
@@ -176,12 +176,13 @@ class AudioPartie(AudioJeu):
             pygame.mixer.music.set_volume(self._volume_musique)
             print(f"[VOLUME] Volume musique: {int(self._volume_musique * 100)}%")
     
-    def jouer_effet_sonore(self, chemin_fichier: str) -> bool:
+    def jouer_effet_sonore(self, chemin_fichier: str, volume: float = 1.0) -> bool:
         """
         Joue un effet sonore ponctuel.
         
         Args:
             chemin_fichier: Chemin vers le fichier audio de l'effet
+            volume: Volume de l'effet (0.0 à 1.0) - Par défaut 100%
             
         Returns:
             True si l'effet a été joué avec succès, False sinon
@@ -194,8 +195,8 @@ class AudioPartie(AudioJeu):
             
         try:
             # Construire le chemin absolu
-            # audio_partie.py est dans src/adapters/sortie/, donc 3 remontées pour la racine
-            chemin_complet = Path(__file__).parent.parent.parent / chemin_fichier
+            # audio_partie.py est dans src/adapters/sortie/, donc 4 remontées pour la racine
+            chemin_complet = Path(__file__).parent.parent.parent.parent / chemin_fichier
             
             if not chemin_complet.exists():
                 print(f"[ERROR] Fichier effet sonore introuvable: {chemin_complet}")
@@ -203,9 +204,15 @@ class AudioPartie(AudioJeu):
             
             # Charger et jouer l'effet sonore
             effet = pygame.mixer.Sound(str(chemin_complet))
+            
+            # Respecter le mute : si musique est mutée, muter les effets aussi
+            volume_effectif = volume if not self._est_mute else 0.0
+            effet.set_volume(volume_effectif)
+            
             effet.play()
             
-            print(f"[VOLUME] Effet sonore joué: {chemin_complet.name}")
+            status_mute = " (MUTE)" if self._est_mute else ""
+            print(f"[SFX] Effet sonore joué: {chemin_complet.name} - Volume: {int(volume_effectif * 100)}%{status_mute}")
             return True
             
         except pygame.error as e:

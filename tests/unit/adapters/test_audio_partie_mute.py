@@ -44,14 +44,14 @@ class TestAudioPartieMute(unittest.TestCase):
     def test_audio_demarre_non_mute_par_defaut(self):
         """L'audio doit démarrer en mode non-mute par défaut."""
         # L'état initial doit être non-mute
-        self.assertFalse(self.audio._mute)
+        self.assertFalse(self.audio._est_mute)
         # Le volume avant mute est initialisé au volume par défaut
         self.assertEqual(self.audio._volume_avant_mute, 0.7)
     
     def test_basculer_mute_musique_vers_mute(self):
         """Basculer vers mute doit sauvegarder le volume et mettre à 0."""
         # Given : Audio non-mute avec volume initial
-        self.audio._mute = False
+        self.audio._est_mute = False
         self.audio._volume_musique = 0.7  # Volume courant
         
         # Mock pour get_volume (pas utilisé dans l'implémentation actuelle)
@@ -62,14 +62,14 @@ class TestAudioPartieMute(unittest.TestCase):
         
         # Then : Volume sauvegardé et mis à 0, état mute activé
         self.assertTrue(resultat)  # Retourne True = maintenant mute
-        self.assertTrue(self.audio._mute)
+        self.assertTrue(self.audio._est_mute)
         self.assertEqual(self.audio._volume_avant_mute, 0.7)  # Volume sauvegardé
         self.pygame_mock.mixer.music.set_volume.assert_called_with(0.0)
     
     def test_basculer_mute_musique_vers_unmute(self):
         """Basculer vers unmute doit restaurer le volume sauvegardé."""
         # Given : Audio en mode mute avec volume sauvegardé
-        self.audio._mute = True
+        self.audio._est_mute = True
         volume_sauvegarde = 0.7
         self.audio._volume_avant_mute = volume_sauvegarde
         
@@ -78,7 +78,7 @@ class TestAudioPartieMute(unittest.TestCase):
         
         # Then : Volume restauré, état mute désactivé
         self.assertFalse(resultat)  # Retourne False = maintenant unmute
-        self.assertFalse(self.audio._mute)
+        self.assertFalse(self.audio._est_mute)
         # Le volume courant doit être restauré
         self.assertEqual(self.audio._volume_musique, volume_sauvegarde)
         self.pygame_mock.mixer.music.set_volume.assert_called_with(volume_sauvegarde)
@@ -112,12 +112,12 @@ class TestAudioPartieMute(unittest.TestCase):
         
         # Then : Opération échoue car système non initialisé
         self.assertFalse(resultat)
-        self.assertFalse(self.audio._mute)  # État inchangé
+        self.assertFalse(self.audio._est_mute)  # État inchangé
     
     def test_demarrer_musique_respecte_etat_mute(self):
         """Démarrer une musique puis appliquer mute fonctionne correctement."""
         # Given : Mode mute activé
-        self.audio._mute = True
+        self.audio._est_mute = True
         self.audio._volume_avant_mute = 0.8
         
         # When : Démarrage d'une musique puis application du mute
@@ -125,7 +125,7 @@ class TestAudioPartieMute(unittest.TestCase):
             self.audio.jouer_musique("test.wav")
             
             # Puis un deuxième appel à set_volume pour appliquer le mute si nécessaire
-            if self.audio._mute:
+            if self.audio._est_mute:
                 self.audio.definir_volume_musique(0.0)
             
             # Then : Le volume final doit être 0 (mute activé)

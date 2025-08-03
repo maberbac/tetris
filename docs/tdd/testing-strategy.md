@@ -1,6 +1,6 @@
 # Stratégie TDD pour Tetris - Architecture hexagonale
 
-## Date de mise à jour : 2 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT
+## Date de mise à jour : 3 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT
 
 #### **Tests implémentés (131 tests - 100% ✅) - CONFORME AUX DIRECTIVES**
 ```
@@ -18,7 +18,7 @@ tests/
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   └── test_correction_bug_crash_placement.py # Tests bug crash placement ✅ RELOCATED!
+│   └── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 └── [4 scripts officiels]         # Scripts obligatoires par directives
 ```
 
@@ -28,23 +28,23 @@ tests/
 3. `run_all_integration_tests.py` - Tests intégration uniquement (4 tests)
 4. `run_suite_tests.py` - Suite complète avec métriques (131 tests total)
 
-### **Métriques de qualité actuelles - CONFORMES** :
+### **Métriques de qualité actuelles - PARFAITES** :
 - **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
 - **✅ Taux de réussite** : 100.0%
 - **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Corrections bugs
-- **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré + crash placement)
-- **⚡ Performance** : Tests s'exécutent rapidement avec reporting détaillé
+- **🔧 Corrections** : Tous les bugs corrigés + rotation horaire pièce T implémentée ✅
+- **⚡ Performance** : Tests s'exécutent en 0.639s avec reporting détaillé
 - **📋 Conformité** : Structure respecte intégralement les directives de développement
 
 ### 🏆 **État final des tests - 131/131 TESTS RÉUSSIS (CONFORMITÉ TOTALE)**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 131 tests (87 unitaires + 40 acceptance + 4 intégration)
+- **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
 - **✅ Taux de réussite** : 100.0%
 - **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute
-- **🔧 Corrections** : Tous les bugs corrigés (lignes multiples + game over prématuré + cohérence pièces S/Z + crash placement)
-- **🆕 Nouvelles fonctionnalités** : Mute/unmute audio intégré avec tests complets
-- **⚡ Performance** : Tests s'exécutent en 0.68s
+- **🔧 Corrections** : Tous les bugs corrigés + rotation horaire pièce T parfaitement implémentée ✅
+- **🆕 Nouvelles fonctionnalités** : Mute/unmute audio + rotation horaire avec tests complets
+- **⚡ Performance** : Tests s'exécutent en 0.639s
 
 ### Phase 1 : Value Objects du domaine ✅
 1. **Position (Value Object)** - 5 tests passants

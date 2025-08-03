@@ -94,16 +94,17 @@ class PartieTetris:
             while actif:
                 temps_actuel = time.time()
                 
+                # Mise à jour du jeu - CHUTE AUTOMATIQUE D'ABORD
+                if not self.moteur.en_pause and not self.moteur.jeu_termine:
+                    # Chute automatique AVANT les événements utilisateur
+                    self.moteur.mettre_a_jour_chute_automatique()
+                
                 # Traiter les événements via l'adaptateur d'entrée
                 actif = self.gestionnaire.traiter_evenements(self.moteur, temps_actuel)
                 
-                # Mise à jour du jeu
+                # Répétition des touches (après les événements principaux)
                 if not self.moteur.en_pause and not self.moteur.jeu_termine:
-                    # Répétition des touches
                     self.gestionnaire.mettre_a_jour_repetitions(self.moteur, temps_actuel)
-                    
-                    # Chute automatique
-                    self.moteur.mettre_a_jour_chute_automatique()
                 
                 # Affichage via l'adaptateur de sortie
                 self.affichage.dessiner(self.moteur)
