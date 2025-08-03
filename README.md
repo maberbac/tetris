@@ -15,7 +15,7 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 tests/
 ├── unit/                           # Tests unitaires (92 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
-│   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory)
+│   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute)
 ├── integration/                   # Tests d'intégration (4 tests ✅)
@@ -23,10 +23,11 @@ tests/
 ├── acceptance/                    # Tests d'acceptance (35 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
-│   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅ NOUVEAU !
+│   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
-│   └── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-└── run_tests.py                  # Lanceur des tests
+│   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
+│   └── test_correction_bug_crash_placement.py # Tests bug crash placement ✅
+└── [4 scripts officiels]          # Scripts de lancement obligatoires
 ```
 
 **Performance** : 131 tests en 0.68s environ (100% succès - Suite complète validée ✅)
@@ -118,23 +119,32 @@ tetris/
 
 ## 🧪 Tests
 
-Le projet utilise une approche **TDD** (Test-Driven Development) :
+Le projet utilise une approche **TDD** (Test-Driven Development) avec respect strict des directives :
 
 ```bash
-# Tous les tests
+# SCRIPTS OFFICIELS OBLIGATOIRES (selon directives)
+
+# Tests unitaires (composants isolés)
+python tests/run_all_unit_tests.py
+
+# Tests d'acceptance (scénarios utilisateur) 
+python tests/run_all_acceptance_tests.py
+
+# Tests d'intégration (composants ensemble)
+python tests/run_all_integration_tests.py
+
+# Suite complète (tous les tests)
 python tests/run_suite_tests.py
-
-# Tests spécifiques par catégorie  
-python tests/run_all_unit_tests.py       # Tests unitaires
-python tests/run_all_acceptance_tests.py # Tests d'acceptance
-python tests/run_all_integration_tests.py # Tests d'intégration
-
-# Tests unitaires spécifiques
-python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_t -v
 ```
 
+**Organisation conforme aux directives** :
+- **Structure stricte** : `tests/unit/`, `tests/acceptance/`, `tests/integration/`
+- **4 scripts officiels** : Exactement ceux spécifiés dans les directives
+- **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
+- **AUCUN test à la racine** : Règle absolue respectée
+
 **Couverture actuelle** : **131 tests, 100% de réussite ✅**
-- **92 tests unitaires** : Domaine, entités, services, zone invisible, mute/unmute
+- **92 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
 - **35 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute
 - **4 tests d'intégration** : Système complet avec audio
 

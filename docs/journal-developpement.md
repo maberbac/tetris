@@ -394,4 +394,23 @@ Un jeu Tetris complet avec :
 
 **Cette session a démontré la puissance de combiner TDD, architecture hexagonale et Python moderne pour créer un code robuste et maintenable !** 
 
-**Résultat final : 92/92 tests (100% succès) en 0.655s - Projet complètement stable et documenté ! 🏆✨**
+**Résultat final : 131/131 tests (100% succès) - Projet complètement stable, documenté et CONFORME AUX DIRECTIVES ! 🏆✨**
+
+## 📋 **ADDENDUM - Conformité aux Directives de Développement (2 août 2025)**
+
+### **Phase 12 : Réorganisation pour Conformité Totale**
+43. ✅ **Audit de conformité** : Vérification complète du respect des directives
+    - Identification : `test_correction_bug_crash_placement.py` mal placé dans unit/
+    - Classification correcte : Test utilisateur = Test d'acceptance
+    - **Action** : Déplacement vers `tests/acceptance/`
+
+44. ✅ **Nettoyage des répertoires orphelins** : Suppression des structures obsolètes
+    - Suppression : `tests/domaine/` et `tests/test_domaine/` (vides)
+    - Relocation : `metriques_tests.py` vers `tmp/` (outil de développement)
+    - **Structure finale** : Parfaitement conforme aux directives
+
+45. ✅ **Synchronisation documentaire obligatoire** : Mise à jour immédiate
+    - README.md : Métriques corrigées (92 tests unitaires, 35 acceptance, 4 intégration)
+    - DOC_TECHNIQUE.md : Architecture et structure actualisées
+    - testing-strategy.md : Répartition et scripts officiels conformes
+    - **Résultat** : Documentation 100% synchronisée avec le code

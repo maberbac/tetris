@@ -168,6 +168,15 @@ class MoteurPartie:
         
         # Opération atomique : placement + suppression immédiate au niveau plateau
         nb_lignes_supprimees = self.plateau.placer_piece_et_supprimer_lignes(self.piece_active)
+        
+        # CORRECTION BUG : Gérer l'échec de placement gracieusement
+        if nb_lignes_supprimees == -1:
+            # Placement impossible - déclencher Game Over
+            self.jeu_termine = True
+            self.messages.append("💀 GAME OVER ! Plus de place pour les pièces.")
+            print("💀 GAME OVER ! Placement impossible.")
+            return False
+        
         print(f"[ROUND_PUSHPIN] Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
         
         # Traitement des lignes supprimées

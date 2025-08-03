@@ -45,16 +45,21 @@ tetris/
 │   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav)
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
-├── tests/                      # Tests organisés par type
-│   ├── unit/                   # Tests unitaires
+├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
+│   ├── unit/                   # Tests unitaires (92 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
-│   │   │   ├── entites/        # Tests des entités
-│   │   │   └── services/       # Tests des services
-│   │   └── interface/          # Tests de l'interface
-│   ├── integration/            # Tests d'intégration
-│   └── acceptance/             # Tests d'acceptance
+│   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
+│   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
+│   │   └── adapters/           # Tests des adaptateurs (Audio mute/unmute)
+│   ├── acceptance/             # Tests d'acceptance (35 tests ✅)
+│   │   ├── test_controles_*.py # Tests des contrôles utilisateur
+│   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
+│   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
+│   ├── integration/            # Tests d'intégration (4 tests ✅)
+│   │   └── test_partie_complete.py # Tests système complet
+│   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── docs/                       # Documentation complète
-├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires
+├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires (metriques_tests.py)
 ├── demo/                       # Démonstrations et exemples
 ├── partie_tetris.py            # 🎭 ORCHESTRATEUR - Composition root (assemble tout)
 └── jouer.py                    # 🚀 Point d'entrée utilisateur

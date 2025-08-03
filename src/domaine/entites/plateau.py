@@ -126,17 +126,17 @@ class Plateau:
         Opération atomique : place une pièce et supprime immédiatement les lignes complètes.
         Cette méthode garantit qu'aucun état intermédiaire avec lignes complètes n'est visible.
         
+        CORRECTION BUG : Ne crash plus si la pièce ne peut pas être placée.
+        
         Args:
             piece: Pièce à placer
             
         Returns:
-            Nombre de lignes supprimées
-            
-        Raises:
-            ValueError: Si la pièce ne peut pas être placée
+            Nombre de lignes supprimées si placement réussi, -1 si échec de placement
         """
         if not self.peut_placer_piece(piece):
-            raise ValueError("Impossible de placer la pièce à cette position")
+            # CORRECTION : Retourner -1 au lieu de crasher
+            return -1
         
         # Opération atomique
         # 1. Placer la pièce
