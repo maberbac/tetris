@@ -3,7 +3,7 @@ Tests d'acceptance pour la fonctionnalité de pause au démarrage.
 
 Ces tests valident le comportement attendu :
 - Le jeu démarre en pause
-- ENTER et ESC permettent de basculer pause/jeu
+- La touche P permet de basculer pause/jeu
 - Les messages d'instruction sont affichés
 - Le son est préservé (M pour mute/unmute)
 """
@@ -65,13 +65,12 @@ class TestPauseAuDemarrage(unittest.TestCase):
         self.assertGreater(len(moteur.messages), 1, "Un nouveau message doit être généré")
         message_pause = moteur.messages[-1]
         self.assertIn("pause", message_pause.lower(), "Le message doit mentionner la pause")
-        self.assertIn("enter", message_pause.lower(), "Le message doit mentionner ENTER")
-        self.assertIn("esc", message_pause.lower(), "Le message doit mentionner ESC")
-        print("✅ Le message de pause contient les instructions ENTER/ESC")
+        self.assertIn("p", message_pause.lower(), "Le message doit mentionner la touche P")
+        print("✅ Le message de pause contient les instructions sur la touche P")
     
-    def test_touches_enter_et_esc_mappees(self):
-        """✅ Les touches ENTER et ESC sont bien mappées pour la pause."""
-        print("🧪 Test : Mapping des touches ENTER et ESC") 
+    def test_touche_p_mappee(self):
+        """✅ La touche P (principale) est bien mappée pour la pause."""
+        print("🧪 Test : Mapping de la touche P") 
         print("-" * 50)
         
         # GIVEN : Un gestionnaire d'événements
@@ -80,31 +79,21 @@ class TestPauseAuDemarrage(unittest.TestCase):
         # WHEN : On vérifie le mapping des touches
         mapping = gestionnaire._mapping_touches
         
-        # THEN : ENTER doit être mappé à REPRENDRE
-        self.assertIn("Return", mapping, "La touche ENTER (Return) doit être mappée")
-        self.assertEqual(mapping["Return"], ToucheClavier.REPRENDRE, 
-                        "ENTER doit être mappé à REPRENDRE")
-        print("✅ ENTER est mappé à REPRENDRE")
+        # THEN : P doit être mappé à PAUSE (contrôle principal)
+        self.assertIn("p", mapping, "La touche P doit être mappée")
+        self.assertEqual(mapping["p"], ToucheClavier.PAUSE, 
+                        "P doit être mappé à PAUSE")
+        print("✅ P est mappé à PAUSE (contrôle principal)")
         
-        # AND : ESC doit être mappé à MENU (qui fait pause maintenant)
-        self.assertIn("Escape", mapping, "La touche ESC (Escape) doit être mappée")
-        self.assertEqual(mapping["Escape"], ToucheClavier.MENU,
-                        "ESC doit être mappé à MENU")
-        print("✅ ESC est mappé à MENU")
-        
-        # AND : Les commandes REPRENDRE et MENU doivent pointer vers pause
+        # AND : La commande PAUSE a son rôle
         commandes = gestionnaire._commandes
-        self.assertIn(ToucheClavier.REPRENDRE, commandes, "REPRENDRE doit avoir une commande")
-        self.assertIn(ToucheClavier.MENU, commandes, "MENU doit avoir une commande")
+        self.assertIn(ToucheClavier.PAUSE, commandes, "PAUSE doit avoir une commande")
         
-        # Vérifier que les deux sont des CommandePause
-        commande_reprendre = commandes[ToucheClavier.REPRENDRE]
-        commande_menu = commandes[ToucheClavier.MENU]
-        self.assertEqual(type(commande_reprendre).__name__, "CommandePause",
-                        "REPRENDRE doit utiliser CommandePause")
-        self.assertEqual(type(commande_menu).__name__, "CommandePause", 
-                        "MENU doit utiliser CommandePause")
-        print("✅ ENTER et ESC utilisent tous deux CommandePause")
+        # Vérifier le type de commande
+        commande_pause = commandes[ToucheClavier.PAUSE]
+        self.assertEqual(type(commande_pause).__name__, "CommandePause",
+                        "PAUSE doit utiliser CommandePause")
+        print("✅ P utilise CommandePause")
 
 
 def run_tests():
@@ -113,7 +102,7 @@ def run_tests():
     print("=" * 60)
     print("Validation de la fonctionnalité :")
     print("- Démarrage en pause")
-    print("- Contrôles ENTER/ESC")
+    print("- Contrôle principal : P")
     print("- Messages explicatifs")
     print("=" * 60)
     

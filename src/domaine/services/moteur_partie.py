@@ -43,7 +43,7 @@ class MoteurPartie:
         # États du jeu
         self.en_pause = True  # Démarrer en pause par défaut selon les directives
         self.jeu_termine = False
-        self.afficher_menu = False
+        self.afficher_menu = False  # État d'affichage du menu
         
         # Statistiques
         self.stats = StatistiquesJeu()
@@ -82,6 +82,18 @@ class MoteurPartie:
     def obtenir_statistiques(self) -> StatistiquesJeu:
         """Retourne les statistiques de la partie."""
         return self.stats
+    
+    def basculer_menu(self) -> None:
+        """Bascule l'affichage du menu."""
+        self.afficher_menu = not self.afficher_menu
+        message = "Menu OUVERT" if self.afficher_menu else "Menu FERMÉ"
+        self.ajouter_message(message)
+    
+    def fermer_menu(self) -> None:
+        """Ferme le menu."""
+        if self.afficher_menu:
+            self.afficher_menu = False
+            self.ajouter_message("Menu FERMÉ")
     
     def deplacer_piece_active(self, delta_x: int, delta_y: int) -> bool:
         """Déplace la pièce active si possible."""
@@ -192,6 +204,15 @@ class MoteurPartie:
             self.jeu_termine = True
             self.messages.append("💀 GAME OVER ! Plus de place pour les pièces.")
             print("💀 GAME OVER ! Placement impossible.")
+            
+            # Jouer le son de game over
+            if self.audio:
+                try:
+                    self.audio.jouer_effet_sonore("assets/audio/sfx/game-over.wav", volume=1.0)
+                    print("🔊 Son de Game Over joué")
+                except Exception as e:
+                    print(f"⚠️ Erreur lors de la lecture du son de Game Over: {e}")
+            
             return False
         
         print(f"[ROUND_PUSHPIN] Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
@@ -283,6 +304,12 @@ class MoteurPartie:
         """Bascule l'état de pause."""
         self.en_pause = not self.en_pause
         
+        # Ajouter message explicatif pour l'utilisateur
+        if self.en_pause:
+            self.messages.append("⏸️ Jeu en pause - Appuyez sur P pour reprendre")
+        else:
+            self.messages.append("▶️ Jeu repris - Bonne partie !")
+        
         # Note : La musique continue même en pause - seule la touche M contrôle le mute/unmute
         print(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
     
@@ -316,11 +343,6 @@ class MoteurPartie:
     def obtenir_audio(self) -> Optional[AudioJeu]:
         """Obtient l'interface audio du moteur."""
         return self.audio
-    
-    def basculer_menu(self) -> None:
-        """Bascule l'affichage du menu."""
-        self.afficher_menu = not self.afficher_menu
-        print(f"📋 Menu: {'OUVERT' if self.afficher_menu else 'FERMÉ'}")
     
     def obtenir_messages(self) -> list:
         """Retourne et vide la liste des messages."""

@@ -27,10 +27,8 @@ def convertir_touche_pygame(touche_pygame: int) -> str:
         pygame.K_UP: "Up",
         pygame.K_DOWN: "Down",
         pygame.K_SPACE: "space",
-        pygame.K_ESCAPE: "Escape",
         pygame.K_p: "p",
         pygame.K_m: "m",
-        pygame.K_RETURN: "Return"
     }
     return mapping_pygame.get(touche_pygame, "")
 
@@ -41,7 +39,7 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
     def _creer_commandes(self):
         """Crée le mapping des commandes pour la partie."""
         from src.domaine.services.commandes import (
-            CommandeDescendre, CommandePause, CommandeAfficherMenu, CommandeBasculerMute
+            CommandeDescendre, CommandePause, CommandeBasculerMute
         )
         
         return {
@@ -50,7 +48,6 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
             ToucheClavier.ROTATION: CommandeTournerPartie(),
             ToucheClavier.CHUTE_RAPIDE: CommandeDescendre(),
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapidePartie(),
-            ToucheClavier.MENU: CommandeAfficherMenu(),
             ToucheClavier.PAUSE: CommandePause(),
             ToucheClavier.MUTE: CommandeBasculerMute(),
         }
@@ -76,18 +73,9 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
                         temps_actuel
                     )
                     
-                    # Gestion spéciale pour ESC et P
-                    if nom_touche == "Escape":
-                        if moteur.jeu_termine or moteur.afficher_menu:
-                            return False
-                        else:
-                            moteur.basculer_menu()
-                    elif nom_touche == "p":
+                    # Gestion spéciale pour P
+                    if nom_touche == "p":
                         moteur.basculer_pause()
-                
-                # Placement manuel avec ENTRÉE
-                if event.key == pygame.K_RETURN:
-                    moteur.placer_piece_et_generer_nouvelle()
             
             elif event.type == pygame.KEYUP:
                 nom_touche = convertir_touche_pygame(event.key)

@@ -2,7 +2,7 @@
 from .commandes_base import (
     Commande, MoteurJeu,
     CommandeDeplacerGauche, CommandeDeplacerDroite, CommandeDescendre,
-    CommandeChuteRapide, CommandeTourner, CommandePause, CommandeAfficherMenu,
+    CommandeChuteRapide, CommandeTourner, CommandePause,
     CommandeBasculerMute
 )
 

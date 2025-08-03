@@ -46,21 +46,26 @@ tetris/
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
-│   ├── unit/                   # Tests unitaires (93 tests ✅)
+│   ├── unit/                   # Tests unitaires (85 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
-│   ├── acceptance/             # Tests d'acceptance (39 tests ✅)
+│   ├── acceptance/             # Tests d'acceptance (64 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
 │   │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 │   │   ├── test_son_gain_niveau.py # Tests son gain de niveau ✅ NOUVEAU !
+│   │   ├── test_son_game_over.py # Tests son game over ✅ NOUVEAU !
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
-│   ├── integration/            # Tests d'intégration (6 tests ✅)
-│   │   └── test_partie_complete.py # Tests système complet
+│   ├── integration/            # Tests d'intégration (19 tests ✅)
+│   │   ├── test_audio_integration.py # Tests intégration audio (6 tests)
+│   │   ├── test_correction_audio.py # Tests correction audio (5 tests)
+│   │   ├── test_partie_complete.py # Tests système complet (4 tests)
+│   │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
+│   │   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
 │   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── docs/                       # Documentation complète
 ├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires (metriques_tests.py)
@@ -261,12 +266,12 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (93 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (39 tests)
-python tests/run_all_integration_tests.py # Tests d'intégration (6 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (85 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (64 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (19 tests)
 ```
 
-**Métriques actuelles** : **138 tests, 100% de réussite ✅**
+**Métriques actuelles** : **168 tests, 100% de réussite ✅**
 - **Architecture hexagonale** : Complètement implémentée
 - **Couverture TDD** : Toutes les fonctionnalités testées
 - **Performance** : Exécution complète en 0.690s

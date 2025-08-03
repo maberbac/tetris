@@ -61,14 +61,21 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         fabrique = FabriquePieces()
         piece_bloquee = fabrique.creer(TypePiece.I, x_pivot=0, y_pivot=0)
         
-        # Remplir le plateau sous la pièce pour qu'elle ne puisse pas être placée
-        for x in range(4):
-            for y in range(2):
-                from src.domaine.entites.position import Position
-                moteur.plateau._positions_occupees.add(Position(x, y))
+        # CORRECTION : Créer une collision RÉELLE avec les positions de la pièce I
+        # Pièce I à (0,0) a des positions : (-2,-1), (-1,-1), (0,-1), (1,-1)
+        # On occupe exactement CES positions pour forcer la collision
+        from src.domaine.entites.position import Position
+        for pos in piece_bloquee.positions:
+            moteur.plateau._positions_occupees.add(pos)
         
         # Forcer cette pièce comme pièce active
         moteur.piece_active = piece_bloquee
+        
+        # CORRECTION : Désactiver la pause pour permettre le placement
+        moteur.en_pause = False
+        
+        # Vérification : s'assurer qu'il y a bien collision
+        assert not moteur.plateau.peut_placer_piece(piece_bloquee), "La pièce devrait être en collision"
         
         # Act : Ne doit PAS crasher, retourner False et déclencher Game Over
         resultat = moteur.placer_piece_et_generer_nouvelle()
@@ -118,6 +125,9 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         for pos in piece_en_zone_invisible.positions:
             moteur.plateau._positions_occupees.add(pos)
         
+        # CORRECTION : Désactiver la pause pour permettre le placement
+        moteur.en_pause = False
+        
         # Vérification : la pièce ne peut effectivement pas être placée (collision)
         assert not moteur.plateau.peut_placer_piece(piece_en_zone_invisible)
         
@@ -143,6 +153,9 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         from src.domaine.entites.position import Position
         for pos in piece_impossible.positions:
             moteur.plateau._positions_occupees.add(pos)
+        
+        # CORRECTION : Désactiver la pause pour permettre le placement
+        moteur.en_pause = False
         
         # Vérification : la pièce ne peut effectivement pas être placée
         assert not moteur.plateau.peut_placer_piece(piece_impossible)

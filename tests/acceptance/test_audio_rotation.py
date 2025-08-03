@@ -19,6 +19,7 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         """Configuration pour chaque test."""
         self.mock_audio = Mock()
         self.moteur = MoteurPartie(audio=self.mock_audio)
+        self.moteur.en_pause = False  # Démarrer le jeu pour permettre les rotations
         print("\n🎮 TEST ACCEPTANCE AUDIO ROTATION")
         print("=" * 50)
     
@@ -28,7 +29,7 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         
         # L'utilisateur a une pièce active
         fabrique = FabriquePieces()
-        self.moteur.piece_active = fabrique.creer(TypePiece.T, x_pivot=5, y_pivot=5)
+        self.moteur.piece_active = fabrique.creer(TypePiece.T, x_pivot=5, y_pivot=15)
         
         print(f"  📍 Pièce active: {self.moteur.piece_active.type_piece.value}")
         
@@ -55,7 +56,7 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         
         # L'utilisateur a une pièce active
         fabrique = FabriquePieces()
-        self.moteur.piece_active = fabrique.creer(TypePiece.I, x_pivot=5, y_pivot=5)
+        self.moteur.piece_active = fabrique.creer(TypePiece.I, x_pivot=5, y_pivot=15)
         
         print(f"  📍 Pièce active: {self.moteur.piece_active.type_piece.value}")
         print("  🔇 Mode mute activé")
@@ -81,7 +82,7 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         # Utiliser une configuration simple qui empêche la rotation
         # PieceI très à gauche et verticale, rotation vers horizontal impossible 
         fabrique = FabriquePieces()
-        piece_i = fabrique.creer(TypePiece.I, x_pivot=0, y_pivot=5)  # Très à gauche
+        piece_i = fabrique.creer(TypePiece.I, x_pivot=0, y_pivot=15)  # Très à gauche
         piece_i.tourner()  # La mettre verticale d'abord
         self.moteur.piece_active = piece_i
         
@@ -110,7 +111,7 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         
         # L'utilisateur a une pièce T (4 orientations)
         fabrique = FabriquePieces()
-        self.moteur.piece_active = fabrique.creer(TypePiece.T, x_pivot=5, y_pivot=5)
+        self.moteur.piece_active = fabrique.creer(TypePiece.T, x_pivot=5, y_pivot=15)
         
         print(f"  📍 Pièce {self.moteur.piece_active.type_piece.value} prête")
         
@@ -135,8 +136,9 @@ class TestAcceptanceAudioRotation(unittest.TestCase):
         
         # Système sans audio
         moteur_sans_audio = MoteurPartie(audio=None)
+        moteur_sans_audio.en_pause = False  # Démarrer le jeu
         fabrique = FabriquePieces()
-        moteur_sans_audio.piece_active = fabrique.creer(TypePiece.O, x_pivot=5, y_pivot=5)
+        moteur_sans_audio.piece_active = fabrique.creer(TypePiece.O, x_pivot=5, y_pivot=15)
         
         print("  🚫 Aucun système audio disponible")
         print(f"  📍 Pièce {moteur_sans_audio.piece_active.type_piece.value} active")

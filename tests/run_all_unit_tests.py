@@ -5,13 +5,12 @@ Runner pour les tests unitaires - Tests de composants isolés.
 Ces tests valident le comportement individuel de chaque composant
 en isolation complète (domaine, entités, services).
 
-État actuel : 92 tests unitaires, 100% de réussite ✅
+État actuel : 85 tests unitaires, 100% de réussite ✅
 - Position (Value Object) : 5 tests ✅
 - 7 pièces complètes (I, O, T, S, Z, J, L) : 42 tests ✅
 - Factory Pattern et Registry : 8 tests ✅
-- Services et gestionnaires : 22 tests ✅ (incluant nouvelle fonctionnalité mute)
-- Adaptateurs (audio avec mute) : 9 tests ✅
-- Nouvelle fonctionnalité mute/unmute : 16 tests ✅ (commande + adaptateur + gestionnaire)
+- Services et gestionnaires : 16 tests ✅ (incluant nouvelle fonctionnalité mute)
+- Adaptateurs (audio avec mute) : 14 tests ✅ (audio rotation + mute/unmute)
 """
 
 import unittest
@@ -22,34 +21,30 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 def main():
-    """Exécuter tous nos tests développés."""
+    """Exécuter tous nos tests développés avec découverte automatique."""
+    print("🧪 TESTS UNITAIRES - Découverte automatique")
+    print("=" * 60)
+    
     loader = unittest.TestLoader()
-    suite = unittest.TestSuite()
     
-    # Charger tous nos modules de tests
-    modules_tests = [
-        'tests.unit.domaine.test_entites.test_position',
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_i',
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_o', 
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_t',
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_s',  # ← Nouvelle pièce S
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_z',  # ← Nouvelle pièce Z
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_j',  # ← Nouvelle pièce J
-        'tests.unit.domaine.test_entites.test_pieces.test_piece_l',  # ← Nouvelle pièce L
-        'tests.unit.domaine.test_entites.test_fabriques.test_registre_pieces',
-        'tests.unit.domaine.test_entites.test_fabriques.test_fabrique_pieces',
-        'tests.unit.domaine.services.test_gestionnaire_evenements',  # ← Tests des services
-        'tests.unit.domaine.services.test_commande_mute',  # ← Tests nouvelle commande mute
-        'tests.unit.adapters.test_audio_partie_mute',  # ← Tests adaptateur audio avec mute
-    ]
+    # Déterminer le chemin du répertoire unit
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repertoire_unit = os.path.join(script_dir, "unit")
     
-    for module in modules_tests:
-        try:
-            suite.addTests(loader.loadTestsFromName(module))
-            print(f"✅ Module chargé : {module}")
-        except Exception as e:
-            print(f"❌ Erreur lors du chargement de {module} : {e}")
+    if not os.path.exists(repertoire_unit):
+        print(f"❌ Répertoire non trouvé: {repertoire_unit}")
+        return False
     
+    # Découverte automatique de tous les tests unitaires
+    suite = loader.discover(repertoire_unit, pattern='test_*.py')
+    
+    # Compter les tests trouvés
+    test_count = suite.countTestCases()
+    print(f"🔍 Tests découverts automatiquement : {test_count}")
+    
+    if test_count == 0:
+        print("⚠️ Aucun test trouvé dans le répertoire unit/")
+        return False
     # Exécuter tous les tests
     print("\n" + "="*60)
     print("🧪 EXÉCUTION DE TOUS LES TESTS")

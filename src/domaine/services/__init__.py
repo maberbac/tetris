@@ -19,7 +19,7 @@ RÈGLES :
 from .commandes import (
     Commande, MoteurJeu,
     CommandeDeplacerGauche, CommandeDeplacerDroite, CommandeDescendre,
-    CommandeChuteRapide, CommandeTourner, CommandePause, CommandeAfficherMenu
+    CommandeChuteRapide, CommandeTourner, CommandePause
 )
 
 from .gestionnaire_evenements import (

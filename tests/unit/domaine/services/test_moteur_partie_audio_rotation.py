@@ -29,6 +29,9 @@ class TestMoteurPartieAudioRotation(unittest.TestCase):
         # S'assurer que la rotation sera possible
         # PieceI au centre peut tourner
         
+        # CORRECTION : Désactiver la pause pour permettre la rotation
+        self.moteur.en_pause = False
+        
         # Exécuter la rotation
         resultat = self.moteur.tourner_piece_active()
         
@@ -71,6 +74,10 @@ class TestMoteurPartieAudioRotation(unittest.TestCase):
         """La rotation doit fonctionner même sans système audio."""
         # Créer un moteur sans audio
         moteur_sans_audio = MoteurPartie(audio=None)
+        
+        # CORRECTION : Désactiver la pause pour permettre la rotation
+        moteur_sans_audio.en_pause = False
+        
         fabrique = FabriquePieces()
         moteur_sans_audio.piece_active = fabrique.creer(TypePiece.T, x_pivot=5, y_pivot=0)
         

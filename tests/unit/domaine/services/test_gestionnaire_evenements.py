@@ -32,12 +32,11 @@ class TestConfigurationControles(unittest.TestCase):
         
         # Vérifier les touches spéciales
         self.assertIn("space", mapping)
-        self.assertIn("Escape", mapping)
         self.assertIn("p", mapping)
         self.assertIn("m", mapping)
         
-        # Vérifier qu'on a exactement 8 touches essentielles (incluant mute)
-        self.assertEqual(len(mapping), 8)
+        # Vérifier qu'on a exactement 7 touches essentielles (incluant mute)
+        self.assertEqual(len(mapping), 7)
     
     def test_mapping_defaut_est_copie(self):
         """obtenir_mapping_defaut() doit retourner une copie."""

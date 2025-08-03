@@ -16,7 +16,7 @@ from typing import Dict, Optional, List, Callable
 from .commandes import (
     Commande, CommandeDeplacerGauche, CommandeDeplacerDroite,
     CommandeDescendre, CommandeChuteRapide, CommandeTournerPartie,
-    CommandePause, CommandeAfficherMenu, CommandeBasculerMute, MoteurJeu
+    CommandePause, CommandeBasculerMute, MoteurJeu
 )
 
 
@@ -38,7 +38,6 @@ class ToucheClavier(Enum):
     ROTATION = "rotation"         # ↑ Tourner la pièce
     CHUTE_RAPIDE = "chute_rapide" # ↓ Chute rapide (une ligne par frame)
     CHUTE_INSTANTANEE = "chute_instantanee"  # Space - Chute jusqu'en bas
-    MENU = "menu"                 # Esc - Afficher le menu en jeu
     PAUSE = "pause"               # P - Pause/Reprendre
     MUTE = "mute"                 # M - Basculer mute/unmute musique
 
@@ -60,7 +59,6 @@ class ConfigurationControles:
         
         # Actions spéciales
         "space": ToucheClavier.CHUTE_INSTANTANEE,  # Space - Chute instantanée
-        "Escape": ToucheClavier.MENU,              # Esc - Menu en jeu
         "p": ToucheClavier.PAUSE,                  # P - Pause/Reprendre
         "m": ToucheClavier.MUTE,                   # M - Mute/Unmute musique
     }
@@ -108,7 +106,6 @@ class GestionnaireEvenements:
             ToucheClavier.ROTATION: CommandeTournerPartie(), 
             ToucheClavier.CHUTE_RAPIDE: CommandeDescendre(),
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapide(),
-            ToucheClavier.MENU: CommandeAfficherMenu(),
             ToucheClavier.PAUSE: CommandePause(),
             ToucheClavier.MUTE: CommandeBasculerMute(),
         }

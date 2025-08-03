@@ -2,52 +2,56 @@
 
 ## Date de mise à jour : 3 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT
 
-#### **Tests implémentés (138 tests - 100% ✅) - CONFORME AUX DIRECTIVES**
+#### **Tests implémentés (168 tests - 100% ✅) - CONFORME AUX DIRECTIVES**
 ```
 tests/
-├── unit/                           # Tests unitaires (93 tests ✅)
+├── unit/                           # Tests unitaires (85 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute)
-├── integration/                   # Tests d'intégration (6 tests ✅)
-│   └── test_partie_complete.py   # Tests système complet
-│   └── test_son_gain_niveau_integration.py # Tests intégration son gain niveau ✅ NOUVEAU !
-├── acceptance/                    # Tests d'acceptance (39 tests ✅)
+├── integration/                   # Tests d'intégration (19 tests ✅)
+│   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
+│   ├── test_correction_audio.py   # Tests correction audio (5 tests)
+│   ├── test_partie_complete.py    # Tests système complet (4 tests)
+│   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
+│   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
+├── acceptance/                    # Tests d'acceptance (64 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
-│   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅ NOUVEAU !
-│   └── test_correction_bug_*.py  # Tests corrections de bugs ✅
+│   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
+│   └── test_son_game_over.py     # Tests son game over ✅ NOUVEAU !
 └── [4 scripts officiels]         # Scripts obligatoires par directives
 ```
 
 ### 🎯 **Scripts Officiels Obligatoires (Conformité Directives)**
-1. `run_all_unit_tests.py` - Tests unitaires uniquement (93 tests)
-2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (39 tests)  
-3. `run_all_integration_tests.py` - Tests intégration uniquement (6 tests)
-4. `run_suite_tests.py` - Suite complète avec métriques (138 tests total)
+1. `run_all_unit_tests.py` - Tests unitaires uniquement (85 tests)
+2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (64 tests)  
+3. `run_all_integration_tests.py` - Tests intégration uniquement (19 tests)
+4. `run_suite_tests.py` - Suite complète avec métriques (168 tests total)
 
 ### **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
+- **📊 Total tests** : 168 tests (85 unitaires + 64 acceptance + 19 intégration)
 - **✅ Taux de réussite** : 100.0%
 - **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Corrections bugs
 - **🔧 Corrections** : Tous les bugs corrigés + rotation horaire pièce T implémentée ✅
-- **⚡ Performance** : Tests s'exécutent en 0.639s avec reporting détaillé
+- **⚡ Performance** : Tests s'exécutent en ~1.7s avec reporting détaillé
 - **📋 Conformité** : Structure respecte intégralement les directives de développement
 
-### 🏆 **État final des tests - 138/138 TESTS RÉUSSIS (CONFORMITÉ TOTALE)**
+### 🏆 **État final des tests - 168/168 TESTS RÉUSSIS (CONFORMITÉ TOTALE)**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 138 tests (93 unitaires + 39 acceptance + 6 intégration)
+- **📊 Total tests** : 168 tests (85 unitaires + 64 acceptance + 19 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, Son gain niveau
-- **🔧 Corrections** : Tous les bugs corrigés + son gain niveau implémenté ✅
-- **🆕 Nouvelles fonctionnalités** : Son gained-a-new-level.wav à chaque passage de niveau ✅ **NOUVEAU !**
-- **⚡ Performance** : Tests s'exécutent en 0.690s
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, Son gain niveau, Son game over
+- **🔧 Corrections** : Tous les bugs corrigés + son gain niveau + son game over implémentés ✅
+- **🆕 Nouvelles fonctionnalités** : Son game-over.wav à chaque fin de partie ✅ **NOUVEAU !**
+- **🛠️ Correction runner intégration** : Script hybride découvre tous les tests (unittest + fonctions) ✅ **NOUVEAU !**
+- **⚡ Performance** : Tests s'exécutent en 0.703s
 
 ### Phase 1 : Value Objects du domaine ✅
 1. **Position (Value Object)** - 5 tests passants

@@ -188,16 +188,6 @@ class CommandePause(Commande):
         return True
 
 
-class CommandeAfficherMenu(Commande):
-    """Commande pour afficher le menu en jeu."""
-    
-    def execute(self, moteur: MoteurJeu) -> bool:
-        """Affiche le menu en jeu ou le ferme s'il est déjà ouvert."""
-        # Cette commande sera implémentée selon les besoins du moteur
-        # Pour l'instant, on retourne toujours True
-        return True
-
-
 class CommandeBasculerMute(Commande):
     """Commande pour basculer le mute/unmute de la musique."""
     

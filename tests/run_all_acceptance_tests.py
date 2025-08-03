@@ -5,12 +5,15 @@ Runner pour les tests d'acceptance - Tests de comportement utilisateur.
 Ces tests valident que le jeu répond correctement aux actions
 de l'utilisateur et aux scénarios d'usage réels.
 
-État actuel : 23 tests d'acceptance incluant les corrections de bugs :
+État actuel : 64 tests d'acceptance incluant les corrections de bugs :
 - Contrôles et gameplay (100% ✅)
 - Corrections bug lignes multiples ✅ 
 - Corrections bug game over prématuré ✅
 - Tests bug visuel ligne complète ✅
 - Nouvelle fonctionnalité mute/unmute ✅
+- Tests son gain de niveau ✅
+- Tests son game over ✅
+- Tests correction bugs divers ✅
 """
 
 import unittest
@@ -21,31 +24,30 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 def main():
-    """Exécuter tous les tests d'acceptance."""
-    loader = unittest.TestLoader()
-    suite = unittest.TestSuite()
-    
-    # Charger tous les modules de tests d'acceptance
-    modules_tests = [
-        'tests.acceptance.test_controles_rapide',
-        'tests.acceptance.test_controles_simplifies',
-        'tests.acceptance.test_descente_acceleree',
-        'tests.acceptance.test_bug_visuel_ligne_complete',
-        'tests.acceptance.test_correction_bug_lignes_multiples',      # ✅ Correction bug lignes multiples
-        'tests.acceptance.test_correction_bug_gameover_premature',    # ✅ Correction bug game over prématuré
-        'tests.acceptance.test_fonctionnalite_mute',                  # ✅ Nouvelle fonctionnalité mute/unmute
-    ]
-    
-    print("🎭 TESTS D'ACCEPTANCE - Comportement utilisateur")
+    """Exécuter tous les tests d'acceptance avec découverte automatique."""
+    print("🎭 TESTS D'ACCEPTANCE - Découverte automatique")
     print("=" * 60)
     
-    for module in modules_tests:
-        try:
-            suite.addTests(loader.loadTestsFromName(module))
-            print(f"✅ Module chargé : {module}")
-        except Exception as e:
-            print(f"❌ Erreur lors du chargement de {module} : {e}")
+    loader = unittest.TestLoader()
     
+    # Déterminer le chemin du répertoire acceptance
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repertoire_acceptance = os.path.join(script_dir, "acceptance")
+    
+    if not os.path.exists(repertoire_acceptance):
+        print(f"❌ Répertoire non trouvé: {repertoire_acceptance}")
+        return False
+    
+    # Découverte automatique de tous les tests d'acceptance
+    suite = loader.discover(repertoire_acceptance, pattern='test_*.py')
+    
+    # Compter les tests trouvés
+    test_count = suite.countTestCases()
+    print(f"🔍 Tests découverts automatiquement : {test_count}")
+    
+    if test_count == 0:
+        print("⚠️ Aucun test trouvé dans le répertoire acceptance/")
+        return False
     # Exécuter tous les tests
     print("\n" + "="*60)
     print("🎮 EXÉCUTION DES TESTS D'ACCEPTANCE")

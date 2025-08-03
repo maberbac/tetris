@@ -10,36 +10,46 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - **Système audio complet** avec musique de fond et effets sonores
   - **Musique de fond intégrée** avec le thème classique de Tetris
   - **Son de rotation** : Effet sonore rotate.wav à chaque rotation réussie ✅
-  - **Son de gain de niveau** : Effet sonore gained-a-new-level.wav à chaque passage de niveau ✅ **NOUVEAU !**
+  - **Son de gain de niveau** : Effet sonore gained-a-new-level.wav à chaque passage de niveau ✅
+  - **Son de game over** : Effet sonore game-over.wav à chaque fin de partie ✅ **NOUVEAU !**
   - **Contrôle mute/unmute** : Touche M pour basculer le son (musique ET effets)
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
 - Tests complets avec approche TDD (Test-Driven Development)
 - **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
 
-### **Tests implémentés (138 tests - 100% ✅)**
+### **Tests implémentés (168 tests - 100% ✅)**
 ```
 tests/
-├── unit/                           # Tests unitaires (93 tests ✅)
+├── unit/                           # Tests unitaires (85 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute ✅)
-├── integration/                   # Tests d'intégration (6 tests ✅)
-│   └── test_partie_complete.py   # Tests système complet
-│   └── test_son_gain_niveau_integration.py # Tests intégration son gain niveau ✅ NOUVEAU !
-├── acceptance/                    # Tests d'acceptance (39 tests ✅)
+├── integration/                   # Tests d'intégration (19 tests ✅)
+│   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
+│   ├── test_correction_audio.py   # Tests correction audio (5 tests)
+│   ├── test_partie_complete.py    # Tests système complet (4 tests)
+│   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
+│   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
+├── acceptance/                    # Tests d'acceptance (64 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
-│   └── test_son_gain_niveau.py   # Tests son gain de niveau ✅ NOUVEAU !
-└── [4 scripts officiels]          # Scripts de lancement obligatoires
+│   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
+│   ├── test_son_game_over.py     # Tests son game over ✅ NOUVEAU !
+│   ├── test_audio_rotation.py    # Tests audio rotation ✅ CORRIGÉ !
+│   └── test_messages_utilisateur.py # Tests messages utilisateur ✅ CORRIGÉ !
+└── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-**Performance** : 138 tests en 0.690s (100% succès - Suite complète validée ✅)
+**Performance** : 168 tests en ~1.8s (100% succès - Suite complète validée ✅)
+
+### 🔧 **Découverte dynamique des tests** ✅ **NOUVEAU !**
+Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
 
 ## 🚀 Installation et utilisation
 
@@ -77,7 +87,8 @@ python tests/run_suite_tests.py
 Le jeu inclut maintenant un **système audio complet et interactif** :
 - **Musique de fond** : Thème classique de Tetris (`tetris-theme.wav` - format compatible)
 - **Effets sonores** : Son de rotation (`rotate.wav`) joué à chaque rotation réussie ✅
-- **Son de gain de niveau** : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau ✅ **NOUVEAU !**
+- **Son de gain de niveau** : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau ✅
+- **Son de game over** : Son (`game-over.wav`) joué à chaque fin de partie ✅ **NOUVEAU !**
 - **Contrôle mute/unmute unifié** : Touche M pour basculer le son de TOUT l'audio ✅
 - **Feedback utilisateur** : Messages visuels lors du basculement mute/unmute
 - **Système de fallback** : Tentative automatique WAV si OGG échoue
@@ -160,10 +171,10 @@ python tests/run_suite_tests.py
 - **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - **AUCUN test à la racine** : Règle absolue respectée
 
-**Couverture actuelle** : **138 tests, 100% de réussite ✅**
-- **93 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
-- **39 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau
-- **6 tests d'intégration** : Système complet avec audio
+**Couverture actuelle** : **168 tests, 100% de réussite ✅**
+- **85 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
+- **64 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over
+- **19 tests d'intégration** : Système complet avec audio + intégration sons + fonctions directes
 
 ## 📋 État du développement
 
@@ -189,7 +200,7 @@ python tests/run_suite_tests.py
 - **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte
 - **Zone invisible** : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
 - **Corrections TDD** : Corrections des pièces T avec pivot et rotation horaire parfaits
-- **Suite de tests complète** : 131/131 tests passent (100% réussite) ✅
+- **Suite de tests complète** : 145/145 tests passent (100% réussite) ✅
 
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
@@ -198,8 +209,8 @@ Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnali
 - ✅ **Gameplay** : Chute des pièces, rotations horaires, lignes complètes
 - ✅ **Scoring** : Système de points et progression de niveaux
 - ✅ **Statistics** : Compteurs de pièces et performances
-- ✅ **Audio** : Musique de fond avec contrôles intégrés et gestion d'erreurs
-- ✅ **Tests TDD** : 131 tests validés (100% succès) avec corrections complètes
+- ✅ **Audio** : Musique de fond avec contrôles intégrés et gestion d'erreurs + sons de rotation, gain niveau et game over
+- ✅ **Tests TDD** : 145 tests validés (100% succès) avec corrections complètes
 - ✅ **Organisation** : Structure de projet professionnelle avec séparation claire
 
 ---

@@ -31,11 +31,22 @@ tests/
 │           └── test_gestionnaire_evenements.py   # Input handling
 │
 ├── integration/                   # Tests d'intégration (système complet)
-│   └── test_partie_complete.py           # Test partie complète end-to-end
+│   ├── test_partie_complete.py           # Test partie complète end-to-end
+│   ├── test_audio_integration.py         # Tests intégration audio
+│   ├── test_correction_audio.py          # Tests correction audio
+│   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau
+│   └── test_son_game_over_integration.py  # Tests intégration son game over ✅ NOUVEAU !
 │
 └── acceptance/                    # Tests d'acceptance (comportement utilisateur)
     ├── test_controles_rapide.py          # Tests contrôles rapides
-    └── test_controles_simplifies.py      # Tests contrôles simplifiés
+    ├── test_controles_simplifies.py      # Tests contrôles simplifiés
+    ├── test_descente_acceleree.py        # Tests descente accélérée
+    ├── test_bug_visuel_ligne_complete.py # Tests correction bug visuel
+    ├── test_correction_bug_lignes_multiples.py # Tests correction bug lignes multiples
+    ├── test_correction_bug_gameover_premature.py # Tests correction bug game over prématuré  
+    ├── test_fonctionnalite_mute.py       # Tests fonctionnalité mute/unmute
+    ├── test_son_gain_niveau.py           # Tests son gain de niveau
+    └── test_son_game_over.py             # Tests son game over ✅ NOUVEAU !
 ```
 
 ## 🎯 Types de Tests
