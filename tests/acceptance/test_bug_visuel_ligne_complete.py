@@ -32,6 +32,9 @@ class TestBugVisuelLigneComplete(unittest.TestCase):
         # Arrange : Préparer une ligne presque complète
         plateau = self.moteur.obtenir_plateau()
         
+        # CORRECTION : Sortir le moteur de pause
+        self.moteur.en_pause = False
+        
         # Remplir 8 cellules de la ligne 19 (dernière ligne) 
         for x in range(8):
             pos = Position(x, 19)

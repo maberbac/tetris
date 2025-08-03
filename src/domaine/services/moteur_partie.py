@@ -41,7 +41,7 @@ class MoteurPartie:
         self.piece_suivante: Optional[Piece] = None
         
         # États du jeu
-        self.en_pause = False
+        self.en_pause = True  # Démarrer en pause par défaut selon les directives
         self.jeu_termine = False
         self.afficher_menu = False
         
@@ -277,13 +277,7 @@ class MoteurPartie:
         """Bascule l'état de pause."""
         self.en_pause = not self.en_pause
         
-        # Gérer la musique en fonction de la pause
-        if self.audio:
-            if self.en_pause:
-                self.audio.mettre_en_pause_musique()
-            else:
-                self.audio.reprendre_musique()
-        
+        # Note : La musique continue même en pause - seule la touche M contrôle le mute/unmute
         print(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
     
     def demarrer_musique(self) -> bool:
@@ -312,6 +306,10 @@ class MoteurPartie:
         if self.audio:
             return self.audio.est_musique_en_cours()
         return False
+    
+    def obtenir_audio(self) -> Optional[AudioJeu]:
+        """Obtient l'interface audio du moteur."""
+        return self.audio
     
     def basculer_menu(self) -> None:
         """Bascule l'affichage du menu."""

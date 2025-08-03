@@ -36,7 +36,7 @@ tests/
 └── [4 scripts officiels]          # Scripts de lancement obligatoires
 ```
 
-**Performance** : 131 tests en 0.639s (100% succès - Suite complète validée ✅)
+**Performance** : 131 tests en 0.640s (100% succès - Suite complète validée ✅)
 
 ## 🚀 Installation et utilisation
 

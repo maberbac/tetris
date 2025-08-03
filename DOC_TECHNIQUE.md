@@ -46,15 +46,17 @@ tetris/
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
-│   ├── unit/                   # Tests unitaires (107 tests ✅ + 10 nouveaux pour audio rotation !)
+│   ├── unit/                   # Tests unitaires (92 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
-│   │   └── adapters/           # Tests des adaptateurs (Audio mute/unmute + rotation ✅)
-│   ├── acceptance/             # Tests d'acceptance (40 tests ✅ + 5 nouveaux pour audio rotation !)
+│   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
+│   ├── acceptance/             # Tests d'acceptance (35 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
-│   │   ├── test_audio_rotation.py # Tests audio rotation rotate.wav ✅ NOUVEAU !
+│   │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
+│   │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
+│   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅ NOUVEAU !
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
 │   ├── integration/            # Tests d'intégration (4 tests ✅)
 │   │   └── test_partie_complete.py # Tests système complet
@@ -261,21 +263,19 @@ python tests/run_suite_tests.py
 python tests/run_all_unit_tests.py       # Tests unitaires (92 tests)
 python tests/run_all_acceptance_tests.py # Tests d'acceptance (35 tests)
 python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (22 tests)
-python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
 ```
 
-**Métriques actuelles** : **101 tests, 100% de réussite ✅**
+**Métriques actuelles** : **131 tests, 100% de réussite ✅**
 - **Architecture hexagonale** : Complètement implémentée
 - **Couverture TDD** : Toutes les fonctionnalités testées
-- **Corrections récentes** : Pièces S et Z harmonisées (positions y-1)
-python tests/run_all_integration_tests.py # Tests d'intégration (11 tests)
+- **Performance** : Exécution complète en 0.640s
+- **Correction récente** : Bug visuel ligne complète réparé ✅
 
 # Tests spécifiques par pièce
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
-**État actuel** : 103/103 tests réussis (100% ✅)
+**État actuel** : 131/131 tests réussis (100% ✅)
 
 #### Métriques actuelles
 - **92 tests** passent (100% ✅)
