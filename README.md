@@ -1,6 +1,20 @@
 # Tetris
 
-Un jeu de Tetris classique développé en Python avec une architecture moderne et des bonnes pratiques de développement.
+Un jeu de Tetris classique développé en Python avec une archit## 🎯 Comment jouer
+
+### 🕹️ Contrôles de jeu
+- **Flèches directionnelles** : Déplacer les pièces (gauche/droite/bas)
+- **Flèche du haut** ou **Espace** : Faire tourner les pièces (rotation horaire) ✅
+- **Touche P** : Pause/reprendre (met aussi la musique en pause)
+- **Touche M** : Mute/unmute la musique ET les effets sonores ✅
+- **Touche R** : **Redémarrer une nouvelle partie** (seulement après game over) ✅ **NOUVEAU !**
+
+### 🎮 Règles du jeu
+- **Objectif** : Compléter des lignes horizontales pour les faire disparaître
+- **Fin de partie** : Quand les pièces atteignent le haut de l'écran
+- **Restart** : Appuyez sur **R** après un game over pour commencer une nouvelle partie instantanément ✅
+
+**Rotation horaire** : La pièce T suit maintenant l'ordre de rotation horaire : Nord → Ouest → Sud → Est → Nord ✅erne et des bonnes pratiques de développement.
 
 ## 🎮 Fonctionnalités
 
@@ -18,7 +32,7 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - Tests complets avec approche TDD (Test-Driven Development)
 - **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
 
-### **Tests implémentés (169 tests - 100% ✅)**
+### **Tests implémentés (185 tests - 100% ✅)** ✅ **NOUVEAU RECORD !**
 ```
 tests/
 ├── unit/                           # Tests unitaires (85 tests ✅)
@@ -26,28 +40,31 @@ tests/
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute ✅)
-├── integration/                   # Tests d'intégration (19 tests ✅)
+├── integration/                   # Tests d'intégration (25 tests ✅) 
 │   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
 │   ├── test_correction_audio.py   # Tests correction audio (5 tests)
 │   ├── test_partie_complete.py    # Tests système complet (4 tests)
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
-│   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
+│   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
+│   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅ **NOUVEAU !**
+│   └── test_integration_complete.py # Tests intégration complète (3 tests) ✅ **NOUVEAU !**
 ├── acceptance/                    # Tests d'acceptance (75 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
+│   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart ✅ **NOUVEAU !**
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 │   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
-│   ├── test_son_game_over.py     # Tests son game over ✅ NOUVEAU !
-│   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
-│   ├── test_audio_rotation.py    # Tests audio rotation ✅ CORRIGÉ !
-│   └── test_messages_utilisateur.py # Tests messages utilisateur ✅ CORRIGÉ !
+│   ├── test_son_game_over.py     # Tests son game over ✅
+│   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅
+│   ├── test_audio_rotation.py    # Tests audio rotation ✅
+│   └── test_messages_utilisateur.py # Tests messages utilisateur ✅
 └── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-**Performance** : 169 tests en ~1.9s (100% succès - Suite complète validée ✅)
+**Performance** : 185 tests en ~1.4s (100% succès - Suite complète validée ✅) ✅ **NOUVEAU RECORD !**
 
 ### 🔧 **Découverte dynamique des tests** ✅ **NOUVEAU !**
 Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
@@ -75,9 +92,10 @@ python tests/run_suite_tests.py
 ## 🎯 Comment jouer
 
 - **Flèches directionnelles** : Déplacer les pièces (gauche/droite/bas)
-- **Flèche du haut** ou **Espace** : Faire tourner les pièces (rotation horaire) �
+- **Flèche du haut** ou **Espace** : Faire tourner les pièces (rotation horaire) ✅
 - **Touche P** : Pause/reprendre (met aussi la musique en pause)
 - **Touche M** : Mute/unmute la musique ET les effets sonores ✅
+- **Touche R** : Redémarrer une nouvelle partie (seulement après game over) ✅ **NOUVEAU !**
 - **Objectif** : Compléter des lignes horizontales pour les faire disparaître
 - **Fin de partie** : Quand les pièces atteignent le haut de l'écran
 
@@ -173,10 +191,10 @@ python tests/run_suite_tests.py
 - **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - **AUCUN test à la racine** : Règle absolue respectée
 
-**Couverture actuelle** : **169 tests, 100% de réussite ✅**
-- **85 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
-- **75 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + **son TETRIS** ✅ **NOUVEAU !**
-- **19 tests d'intégration** : Système complet avec audio + intégration sons + fonctions directes
+**Couverture actuelle** : **185 tests, 100% de réussite ✅** ✅ **NOUVEAU RECORD !**
+- **85 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart ✅
+- **75 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + **fonctionnalité restart** ✅ **NOUVEAU !**
+- **25 tests d'intégration** : Système complet avec audio + intégration sons + **intégration restart** ✅ **NOUVEAU !**
 
 ## 📋 État du développement
 
@@ -207,7 +225,7 @@ python tests/run_suite_tests.py
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
 - ✅ **Interface graphique** : Affichage Pygame avec couleurs et masquage zone invisible
-- ✅ **Contrôles** : 7 commandes (flèches, espace, p, m) avec rotation horaire ✅
+- ✅ **Contrôles** : 8 commandes (flèches, espace, p, m, r) avec rotation horaire ✅
 - ✅ **Gameplay** : Chute des pièces, rotations horaires, lignes complètes
 - ✅ **Scoring** : Système de points et progression de niveaux
 - ✅ **Statistics** : Compteurs de pièces et performances

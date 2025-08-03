@@ -358,6 +358,51 @@ class MoteurPartie:
         self.messages.clear()
         return messages
     
+    def est_game_over(self) -> bool:
+        """
+        Vérifie si le jeu est terminé.
+        
+        Returns:
+            True si le jeu est terminé, False sinon
+        """
+        return self.jeu_termine
+    
+    def redemarrer_partie(self) -> None:
+        """
+        Redémarre complètement une nouvelle partie.
+        
+        Réinitialise :
+        - Le plateau (vide)
+        - Les statistiques (score, niveau, lignes)
+        - L'état de jeu (plus en game over)
+        - Les pièces actives
+        """
+        # Réinitialiser le plateau
+        self.plateau = Plateau(10, 20)
+        
+        # Réinitialiser les statistiques
+        self.stats = StatistiquesJeu()
+        
+        # Réinitialiser l'état du jeu
+        self.jeu_termine = False
+        self.en_pause = True  # Redémarre en pause selon directives
+        self.afficher_menu = False
+        
+        # Réinitialiser les pièces
+        self.piece_active = None
+        self.piece_suivante = None
+        
+        # Réinitialiser le timer de chute
+        self.derniere_chute = time.time()
+        self.intervalle_chute = 1.0
+        
+        # Vider les messages
+        self.messages.clear()
+        
+        # Générer la première pièce
+        self._generer_piece_suivante()
+        self._faire_descendre_piece_suivante()
+    
     def fermer(self) -> None:
         """Ferme proprement le moteur et nettoie les ressources."""
         if self.audio:

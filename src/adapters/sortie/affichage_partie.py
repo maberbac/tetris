@@ -38,12 +38,12 @@ class AffichagePartie(AffichageJeu):
         self.hauteur_jeu = self.hauteur_plateau * self.taille_cellule
         
         # Interface complète avec panneaux latéraux
-        self.largeur_interface = 320  # Panel droit pour stats/preview (élargi pour les contrôles)
+        self.largeur_interface = 400  # Panel droit pour stats/preview (élargi pour les contrôles)
         largeur_totale = self.largeur_jeu + self.largeur_interface + 3 * self.marge
         hauteur_totale = self.hauteur_jeu + 2 * self.marge + 60  # Space pour titre
         
         self.ecran = pygame.display.set_mode((largeur_totale, hauteur_totale))
-        pygame.display.set_caption("Tetris - Partie Complète avec Génération Aléatoire")
+        pygame.display.set_caption("Tetris")
         
         # Couleurs
         self.noir = (0, 0, 0)
@@ -245,6 +245,7 @@ class AffichagePartie(AffichageJeu):
             "Espace        : Chute instantanée",
             "P             : Pause/Reprendre",
             "M             : Mute/Unmute",
+            "R             : Redémarrer après Game Over",
             "ESC           : Menu/Quitter"
         ]
         

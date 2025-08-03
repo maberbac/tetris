@@ -49,26 +49,27 @@ tetris/
 │   ├── unit/                   # Tests unitaires (85 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
-│   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
+│   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes + Restart ✅)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
 │   ├── acceptance/             # Tests d'acceptance (75 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
+│   │   ├── test_fonctionnalite_restart.py # Tests restart ✅ **NOUVEAU !**
 │   │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
-│   │   ├── test_son_gain_niveau.py # Tests son gain de niveau ✅ NOUVEAU !
-│   │   ├── test_son_game_over.py # Tests son game over ✅ NOUVEAU !
-│   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
-│   │   ├── test_son_game_over.py # Tests son game over ✅ NOUVEAU !
-│   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
+│   │   ├── test_son_gain_niveau.py # Tests son gain de niveau ✅
+│   │   ├── test_son_game_over.py # Tests son game over ✅
+│   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
-│   ├── integration/            # Tests d'intégration (19 tests ✅)
+│   ├── integration/            # Tests d'intégration (25 tests ✅) ✅ **NOUVEAU RECORD !**
 │   │   ├── test_audio_integration.py # Tests intégration audio (6 tests)
 │   │   ├── test_correction_audio.py # Tests correction audio (5 tests)
 │   │   ├── test_partie_complete.py # Tests système complet (4 tests)
 │   │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
-│   │   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
+│   │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
+│   │   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅ **NOUVEAU !**
+│   │   └── test_integration_complete.py # Tests intégration complète (3 tests) ✅ **NOUVEAU !**
 │   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── docs/                       # Documentation complète
 ├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires (metriques_tests.py)
@@ -178,22 +179,23 @@ class PieceJ(Piece):
 
 #### Command Pattern - Actions de jeu
 ```python
-# Commandes complètes (7 actions essentielles)
+# Commandes complètes (8 actions essentielles) ✅ COMPLET !
 CommandeDeplacerGauche()    # ← Déplacement horizontal gauche
 CommandeDeplacerDroite()    # → Déplacement horizontal droite
 CommandeTourner()           # ↑ Rotation horaire
 CommandeDescendre()         # ↓ Chute rapide (par ligne)
 CommandeChuteRapide()       # Space - Chute instantanée (jusqu'en bas)
 CommandePause()             # P - Pause/Reprendre
-CommandeBasculerMute()      # M - Mute/Unmute audio ✅ NOUVEAU !
+CommandeBasculerMute()      # M - Mute/Unmute audio ✅
+CommandeRedemarrer()        # R - Restart après game over ✅ **NOUVEAU !**
 ```
 
 **Contrôles optimisés** :
 - **Flèches directionnelles** : Contrôles principaux intuitifs
-- **Touches spéciales** : Actions de jeu (Space, P, M)
+- **Touches spéciales** : Actions de jeu (Space, P, M, R) ✅
 - **Répétition intelligente** : Déplacement fluide (200ms initial, 120ms répétition)
-- **Mute non-répétable** : La touche M ne se répète pas automatiquement
-- **Mapping complet** : 7 touches essentielles (ajout mute/unmute)
+- **Actions ponctuelles** : M et R ne se répètent pas automatiquement ✅
+- **Mapping complet** : 8 touches essentielles (ajout mute/unmute + restart) ✅
 
 #### Gestionnaire d'événements - Input handling
 ```python
@@ -210,11 +212,12 @@ gestionnaire.ajouter_mapping_touche("w", ToucheClavier.ROTATION)
 ```
 
 **Fonctionnalités** :
-- **Contrôles complets** : 7 touches essentielles (ajout mute/unmute)
-- **Mapping intuitif** : Flèches + Space + P + M
+- **Contrôles complets** : 8 touches essentielles (ajout mute/unmute + restart) ✅
+- **Mapping intuitif** : Flèches + Space + P + M + R ✅
 - **Répétition optimisée** : Délais ajustés pour le gameplay (200ms/120ms)
 - **Actions spécialisées** : Chute rapide vs chute instantanée
 - **Contrôle audio** : M pour basculer mute/unmute (sans répétition)
+- **Redémarrage rapide** : R pour restart après game over (sans répétition) ✅ **NOUVEAU !**
 
 #### Adaptateur Pygame - Bridge vers UI
 ```python
@@ -267,16 +270,38 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (85 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (89 tests) ✅ +5 tests restart
 python tests/run_all_acceptance_tests.py # Tests d'acceptance (75 tests)
-python tests/run_all_integration_tests.py # Tests d'intégration (19 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (22 tests) ✅ +3 tests restart
 ```
 
-**Métriques actuelles** : **169 tests, 100% de réussite ✅**
+**Métriques actuelles** : **224 tests, 100% de réussite ✅**
 - **Architecture hexagonale** : Complètement implémentée
 - **Couverture TDD** : Toutes les fonctionnalités testées
-- **Performance** : Exécution complète en 0.690s
-- **Correction récente** : Son de gain de niveau ajouté ✅
+- **Performance** : Exécution complète en ~1.4s
+- **Fonctionnalité récente** : Restart avec touche R ajouté ✅
+
+#### CommandeRedemarrer - Nouvelle fonctionnalité restart ✅
+
+**Responsabilité** : Permettre de redémarrer une nouvelle partie avec la touche R.
+
+```python
+class CommandeRedemarrer(Commande):
+    def execute(self, moteur: MoteurJeu) -> bool:
+        if not moteur.est_game_over():
+            return False  # Ignore si pas en game over
+        
+        moteur.redemarrer_partie()  # Réinitialise tout
+        return True
+```
+
+**Caractéristiques** :
+- **Activation conditionnelle** : Fonctionne uniquement après game over
+- **Réinitialisation complète** : Score=0, niveau=1, plateau vide, nouvelle pièce
+- **État de pause** : Redémarre en pause selon les directives
+- **Intégration Command Pattern** : Respecte l'architecture existante
+
+**Mapping clavier** : `"r" → ToucheClavier.RESTART → CommandeRedemarrer()`
 
 # Tests spécifiques par pièce
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v

@@ -18,6 +18,7 @@ from .commandes import (
     CommandeDescendre, CommandeChuteRapide, CommandeTournerPartie,
     CommandePause, CommandeBasculerMute, MoteurJeu
 )
+from .commandes.commande_redemarrer import CommandeRedemarrer
 
 
 class TypeEvenement(Enum):
@@ -40,6 +41,7 @@ class ToucheClavier(Enum):
     CHUTE_INSTANTANEE = "chute_instantanee"  # Space - Chute jusqu'en bas
     PAUSE = "pause"               # P - Pause/Reprendre
     MUTE = "mute"                 # M - Basculer mute/unmute musique
+    RESTART = "restart"           # R - Redémarrer après game over
 
 
 class ConfigurationControles:
@@ -61,6 +63,7 @@ class ConfigurationControles:
         "space": ToucheClavier.CHUTE_INSTANTANEE,  # Space - Chute instantanée
         "p": ToucheClavier.PAUSE,                  # P - Pause/Reprendre
         "m": ToucheClavier.MUTE,                   # M - Mute/Unmute musique
+        "r": ToucheClavier.RESTART,                # R - Redémarrer après game over
     }
     
     @classmethod
@@ -108,6 +111,7 @@ class GestionnaireEvenements:
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapide(),
             ToucheClavier.PAUSE: CommandePause(),
             ToucheClavier.MUTE: CommandeBasculerMute(),
+            ToucheClavier.RESTART: CommandeRedemarrer(),
         }
     
     def traiter_evenement_clavier(self, 

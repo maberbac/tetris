@@ -13,6 +13,7 @@ def main():
     """Lance la partie de Tetris."""
     print("🚀 Lancement de Tetris...")
     print("🏗️ Architecture hexagonale respectée")
+    print("🎮 Contrôles : Flèches, Space, P (pause), M (mute), R (restart)")
     print("=" * 50)
     
     try:

@@ -29,6 +29,7 @@ def convertir_touche_pygame(touche_pygame: int) -> str:
         pygame.K_SPACE: "space",
         pygame.K_p: "p",
         pygame.K_m: "m",
+        pygame.K_r: "r",  # Ajout touche R pour restart
     }
     return mapping_pygame.get(touche_pygame, "")
 
@@ -41,6 +42,7 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
         from src.domaine.services.commandes import (
             CommandeDescendre, CommandePause, CommandeBasculerMute
         )
+        from src.domaine.services.commandes.commande_redemarrer import CommandeRedemarrer
         
         return {
             ToucheClavier.GAUCHE: CommandeDeplacerGauchePartie(),
@@ -50,6 +52,7 @@ class GestionnairePartie(GestionnaireEvenements, ControleurJeu):
             ToucheClavier.CHUTE_INSTANTANEE: CommandeChuteRapidePartie(),
             ToucheClavier.PAUSE: CommandePause(),
             ToucheClavier.MUTE: CommandeBasculerMute(),
+            ToucheClavier.RESTART: CommandeRedemarrer(),  # Ajout commande restart
         }
     
     def traiter_evenements(self, moteur: 'MoteurPartie', temps_actuel: float) -> bool:

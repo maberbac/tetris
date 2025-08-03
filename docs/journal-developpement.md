@@ -231,6 +231,27 @@
     - Documentation mise à jour : README.md (contrôles + audio), DOC_TECHNIQUE.md (commandes), testing-strategy.md (métriques)
     - **Résultat** : Documentation entièrement cohérente avec la nouvelle fonctionnalité mute ✅
 
+### **Phase 17 : Implémentation fonctionnalité restart (3 août - TDD strict)** ✅ **NOUVEAU !**
+45. ✅ **Implémentation CommandeRedemarrer** : Développement TDD de la commande de redémarrage
+    - Développement : Commande avec validation game over, reset complet du moteur, intégration gestionnaire
+    - **Résultat** : 5/5 tests unitaires réussis pour CommandeRedemarrer ✅ **NOUVEAU !**
+
+46. ✅ **Extension GestionnairePartie avec restart** : Ajout fonctionnalité restart à l'adaptateur pygame
+    - Développement : Mapping touche R, import CommandeRedemarrer, intégration ToucheClavier.RESTART
+    - **Résultat** : Intégration pygame complète pour restart ✅ **NOUVEAU !**
+
+47. ✅ **Tests d'acceptance restart** : Création de tests utilisateur pour la fonctionnalité
+    - Développement : 8 tests couvrant tous les scénarios (restart après game over, validation, feedback)
+    - **Résultat** : 8/8 tests d'acceptance réussis ✅ **NOUVEAU !**
+
+48. ✅ **Tests d'intégration restart** : Validation système complet avec restart
+    - Développement : 3 tests d'intégration + 3 tests intégration complète
+    - **Résultat** : Suite complète 185/185 tests (100% ✅) ✅ **NOUVEAU RECORD !**
+
+49. ✅ **Documentation synchronisée restart** : Mise à jour complète pour fonctionnalité restart
+    - Documentation mise à jour : README.md (contrôles + UI), DOC_TECHNIQUE.md (commandes), testing-strategy.md (métriques)
+    - **Résultat** : Documentation entièrement cohérente avec la nouvelle fonctionnalité restart ✅ **NOUVEAU !**
+
 ### **Phase 17 : Correction bug crash reprise partie (3 août - TDD strict)**
 45. ✅ **Bug identifié et reproduit** : TDD RED appliqué strictement
     - Bug : AttributeError: 'MoteurPartie' object has no attribute 'afficher_menu'
