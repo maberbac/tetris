@@ -198,7 +198,7 @@ class MoteurPartie:
         
         # Traitement des lignes supprimées
         if nb_lignes_supprimees > 0:
-            self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
+            niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
             
             if nb_lignes_supprimees == 4:
                 self.messages.append("[PARTY] TETRIS ! (+800 pts)")
@@ -206,6 +206,12 @@ class MoteurPartie:
                 self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
             
             print(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
+            
+            # Jouer le son de gain de niveau si nécessaire
+            if niveau_a_change and self.audio:
+                self.audio.jouer_effet_sonore("assets/audio/sfx/gained-a-new-level.wav", volume=1.0)
+                self.messages.append(f"🎉 NIVEAU {self.stats.niveau} ! La vitesse augmente !")
+                print(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
             
             # Accélérer le jeu selon le niveau
             self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)

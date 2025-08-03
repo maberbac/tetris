@@ -186,6 +186,31 @@ class TestStatistiquesJeu(unittest.TestCase):
         total_pieces = sum(self.stats.pieces_par_type.values())
         self.assertEqual(total_pieces, self.stats.pieces_placees)
 
+    def test_detection_changement_niveau(self):
+        """Test : La méthode détecte quand le niveau change."""
+        # Au début, niveau 1
+        self.assertEqual(self.stats.niveau, 1)
+        
+        # 9 lignes : pas de changement de niveau
+        niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(9)
+        self.assertFalse(niveau_a_change)
+        self.assertEqual(self.stats.niveau, 1)
+        
+        # 10ème ligne : changement de niveau !
+        niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(1)
+        self.assertTrue(niveau_a_change)
+        self.assertEqual(self.stats.niveau, 2)
+        
+        # 5 lignes de plus : pas de changement
+        niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(5)
+        self.assertFalse(niveau_a_change)
+        self.assertEqual(self.stats.niveau, 2)
+        
+        # 5 lignes de plus (total 20) : changement vers niveau 3
+        niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(5)
+        self.assertTrue(niveau_a_change)
+        self.assertEqual(self.stats.niveau, 3)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,31 +2,34 @@
 
 ## Date de mise à jour : 3 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT
 
-#### **Tests implémentés (131 tests - 100% ✅) - CONFORME AUX DIRECTIVES**
+#### **Tests implémentés (138 tests - 100% ✅) - CONFORME AUX DIRECTIVES**
 ```
 tests/
-├── unit/                           # Tests unitaires (92 tests ✅)
+├── unit/                           # Tests unitaires (93 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute)
-├── integration/                   # Tests d'intégration (4 tests ✅)
+├── integration/                   # Tests d'intégration (6 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (35 tests ✅)
+│   └── test_son_gain_niveau_integration.py # Tests intégration son gain niveau ✅ NOUVEAU !
+├── acceptance/                    # Tests d'acceptance (39 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   └── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
+│   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
+│   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅ NOUVEAU !
+│   └── test_correction_bug_*.py  # Tests corrections de bugs ✅
 └── [4 scripts officiels]         # Scripts obligatoires par directives
 ```
 
 ### 🎯 **Scripts Officiels Obligatoires (Conformité Directives)**
-1. `run_all_unit_tests.py` - Tests unitaires uniquement (92 tests)
-2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (35 tests)  
-3. `run_all_integration_tests.py` - Tests intégration uniquement (4 tests)
-4. `run_suite_tests.py` - Suite complète avec métriques (131 tests total)
+1. `run_all_unit_tests.py` - Tests unitaires uniquement (93 tests)
+2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (39 tests)  
+3. `run_all_integration_tests.py` - Tests intégration uniquement (6 tests)
+4. `run_suite_tests.py` - Suite complète avec métriques (138 tests total)
 
 ### **Métriques de qualité actuelles - PARFAITES** :
 - **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
@@ -36,15 +39,15 @@ tests/
 - **⚡ Performance** : Tests s'exécutent en 0.639s avec reporting détaillé
 - **📋 Conformité** : Structure respecte intégralement les directives de développement
 
-### 🏆 **État final des tests - 131/131 TESTS RÉUSSIS (CONFORMITÉ TOTALE)**
+### 🏆 **État final des tests - 138/138 TESTS RÉUSSIS (CONFORMITÉ TOTALE)**
 
 **Métriques de qualité actuelles - PARFAITES** :
-- **📊 Total tests** : 131 tests (92 unitaires + 35 acceptance + 4 intégration)
+- **📊 Total tests** : 138 tests (93 unitaires + 39 acceptance + 6 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute
-- **🔧 Corrections** : Tous les bugs corrigés + rotation horaire pièce T parfaitement implémentée ✅
-- **🆕 Nouvelles fonctionnalités** : Mute/unmute audio + rotation horaire avec tests complets
-- **⚡ Performance** : Tests s'exécutent en 0.639s
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, Son gain niveau
+- **🔧 Corrections** : Tous les bugs corrigés + son gain niveau implémenté ✅
+- **🆕 Nouvelles fonctionnalités** : Son gained-a-new-level.wav à chaque passage de niveau ✅ **NOUVEAU !**
+- **⚡ Performance** : Tests s'exécutent en 0.690s
 
 ### Phase 1 : Value Objects du domaine ✅
 1. **Position (Value Object)** - 5 tests passants

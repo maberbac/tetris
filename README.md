@@ -9,34 +9,37 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - **Zone invisible masquée** : Seules les parties visibles des pièces (y ≥ 0) sont affichées pour une expérience utilisateur propre
 - **Système audio complet** avec musique de fond et effets sonores
   - **Musique de fond intégrée** avec le thème classique de Tetris
-  - **Son de rotation** : Effet sonore rotate.wav à chaque rotation réussie ✅ **NOUVEAU !**
+  - **Son de rotation** : Effet sonore rotate.wav à chaque rotation réussie ✅
+  - **Son de gain de niveau** : Effet sonore gained-a-new-level.wav à chaque passage de niveau ✅ **NOUVEAU !**
   - **Contrôle mute/unmute** : Touche M pour basculer le son (musique ET effets)
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
 - Tests complets avec approche TDD (Test-Driven Development)
 - **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
 
-### **Tests implémentés (131 tests - 100% ✅)**
+### **Tests implémentés (138 tests - 100% ✅)**
 ```
 tests/
-├── unit/                           # Tests unitaires (92 tests ✅)
+├── unit/                           # Tests unitaires (93 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute ✅)
-├── integration/                   # Tests d'intégration (4 tests ✅)
+├── integration/                   # Tests d'intégration (6 tests ✅)
 │   └── test_partie_complete.py   # Tests système complet
-├── acceptance/                    # Tests d'acceptance (35 tests ✅)
+│   └── test_son_gain_niveau_integration.py # Tests intégration son gain niveau ✅ NOUVEAU !
+├── acceptance/                    # Tests d'acceptance (39 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   └── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
+│   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
+│   └── test_son_gain_niveau.py   # Tests son gain de niveau ✅ NOUVEAU !
 └── [4 scripts officiels]          # Scripts de lancement obligatoires
 ```
 
-**Performance** : 131 tests en 0.640s (100% succès - Suite complète validée ✅)
+**Performance** : 138 tests en 0.690s (100% succès - Suite complète validée ✅)
 
 ## 🚀 Installation et utilisation
 
@@ -74,6 +77,7 @@ python tests/run_suite_tests.py
 Le jeu inclut maintenant un **système audio complet et interactif** :
 - **Musique de fond** : Thème classique de Tetris (`tetris-theme.wav` - format compatible)
 - **Effets sonores** : Son de rotation (`rotate.wav`) joué à chaque rotation réussie ✅
+- **Son de gain de niveau** : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau ✅ **NOUVEAU !**
 - **Contrôle mute/unmute unifié** : Touche M pour basculer le son de TOUT l'audio ✅
 - **Feedback utilisateur** : Messages visuels lors du basculement mute/unmute
 - **Système de fallback** : Tentative automatique WAV si OGG échoue
@@ -156,10 +160,10 @@ python tests/run_suite_tests.py
 - **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - **AUCUN test à la racine** : Règle absolue respectée
 
-**Couverture actuelle** : **131 tests, 100% de réussite ✅**
-- **92 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
-- **35 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute
-- **4 tests d'intégration** : Système complet avec audio
+**Couverture actuelle** : **138 tests, 100% de réussite ✅**
+- **93 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
+- **39 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau
+- **6 tests d'intégration** : Système complet avec audio
 
 ## 📋 État du développement
 

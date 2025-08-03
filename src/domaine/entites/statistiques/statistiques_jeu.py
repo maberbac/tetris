@@ -32,8 +32,17 @@ class StatistiquesJeu:
         self.pieces_par_type[type_piece] += 1
         self.pieces_placees += 1
     
-    def ajouter_score_selon_lignes_completees(self, nb_lignes: int) -> None:
-        """Ajoute le score aux statistiques selon le nombre de lignes complétées simultanément."""
+    def ajouter_score_selon_lignes_completees(self, nb_lignes: int) -> bool:
+        """
+        Ajoute le score aux statistiques selon le nombre de lignes complétées simultanément.
+        
+        Args:
+            nb_lignes: Nombre de lignes complétées
+            
+        Returns:
+            bool: True si le niveau a changé, False sinon
+        """
+        ancien_niveau = self.niveau
         self.lignes_completees += nb_lignes
         
         # Calcul du score selon le nombre de lignes
@@ -48,3 +57,6 @@ class StatistiquesJeu:
         
         # Calcul du niveau (tous les 10 lignes)
         self.niveau = (self.lignes_completees // 10) + 1
+        
+        # Retourner True si le niveau a changé
+        return self.niveau != ancien_niveau

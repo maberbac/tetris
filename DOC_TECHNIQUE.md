@@ -46,19 +46,20 @@ tetris/
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
-│   ├── unit/                   # Tests unitaires (92 tests ✅)
+│   ├── unit/                   # Tests unitaires (93 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
-│   ├── acceptance/             # Tests d'acceptance (35 tests ✅)
+│   ├── acceptance/             # Tests d'acceptance (39 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
 │   │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅ NOUVEAU !
+│   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
+│   │   ├── test_son_gain_niveau.py # Tests son gain de niveau ✅ NOUVEAU !
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
-│   ├── integration/            # Tests d'intégration (4 tests ✅)
+│   ├── integration/            # Tests d'intégration (6 tests ✅)
 │   │   └── test_partie_complete.py # Tests système complet
 │   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── docs/                       # Documentation complète
@@ -260,22 +261,22 @@ stats = adaptateur.traiter_evenements(moteur)
 python tests/run_suite_tests.py
 
 # Tests par catégorie
-python tests/run_all_unit_tests.py       # Tests unitaires (92 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (35 tests)
-python tests/run_all_integration_tests.py # Tests d'intégration (4 tests)
+python tests/run_all_unit_tests.py       # Tests unitaires (93 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (39 tests)
+python tests/run_all_integration_tests.py # Tests d'intégration (6 tests)
 ```
 
-**Métriques actuelles** : **131 tests, 100% de réussite ✅**
+**Métriques actuelles** : **138 tests, 100% de réussite ✅**
 - **Architecture hexagonale** : Complètement implémentée
 - **Couverture TDD** : Toutes les fonctionnalités testées
-- **Performance** : Exécution complète en 0.640s
-- **Correction récente** : Bug visuel ligne complète réparé ✅
+- **Performance** : Exécution complète en 0.690s
+- **Correction récente** : Son de gain de niveau ajouté ✅
 
 # Tests spécifiques par pièce
 python -m unittest tests.unit.domaine.test_entites.test_pieces.test_piece_j -v
 ```
 
-**État actuel** : 131/131 tests réussis (100% ✅)
+**État actuel** : 138/138 tests réussis (100% ✅)
 
 #### Métriques actuelles
 - **92 tests** passent (100% ✅)
@@ -491,12 +492,13 @@ P                : Pause/Reprendre la partie
 - **AudioPartie Adapter** : Implémentation Pygame avec gestion des assets et mute
 - **Intégration MoteurPartie** : Injection de dépendance + effets sonores rotation
 - **Contrôles intégrés** : Pause affecte aussi la musique (touche P)
-- **Mute global** : Touche M bascule mute/unmute pour TOUS les sons ✅ **NOUVEAU !**
-- **Audio rotation** : rotate.wav joué à chaque rotation réussie (volume 60%) ✅ **NOUVEAU !**
+- **Mute global** : Touche M bascule mute/unmute pour TOUS les sons ✅
+- **Audio rotation** : rotate.wav joué à chaque rotation réussie (volume 100%) ✅
+- **Audio gain de niveau** : gained-a-new-level.wav joué à chaque passage de niveau ✅ **NOUVEAU !**
 - **Architecture respectée** : Port/Adapter pattern pour l'audio
 - **Fallback automatique** : Tentative WAV si OGG échoue
 - **Problème résolu** : Chemin audio corrigé (4 remontées au lieu de 3)
-- **Tests complets** : 15 nouveaux tests (unit + acceptance) pour audio rotation ✅ **NOUVEAU !**
+- **Tests complets** : 7 nouveaux tests (acceptance + intégration) pour son gain niveau ✅ **NOUVEAU !**
 
 ```python
 # Interface port audio
