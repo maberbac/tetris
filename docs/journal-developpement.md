@@ -252,6 +252,19 @@
     - Documentation mise à jour : README.md (contrôles + UI), DOC_TECHNIQUE.md (commandes), testing-strategy.md (métriques)
     - **Résultat** : Documentation entièrement cohérente avec la nouvelle fonctionnalité restart ✅ **NOUVEAU !**
 
+### **Phase 18 : Documentation des exceptions (3 août - Conformité directives)** ✅ **NOUVEAU !**
+50. ✅ **Section exceptions complète** : Ajout documentation technique des exceptions du projet
+    - Documentation : Section complète avec 6 sous-sections (domaine, adapters, infrastructure, stratégie, messages utilisateur, architecture)
+    - **Résultat** : 6 types d'exceptions documentés avec exemples de code et bonnes pratiques ✅ **NOUVEAU !**
+
+51. ✅ **Table des matières enrichie** : Ajout navigation structurée pour DOC_TECHNIQUE.md
+    - Amélioration : Table des matières avec ancres et organisation claire des sections
+    - **Résultat** : Navigation améliorée avec 4 sections principales et 13 sous-sections ✅ **NOUVEAU !**
+
+52. ✅ **Tests d'exceptions documentés** : Intégration de la gestion d'erreurs dans la stratégie TDD
+    - Documentation : Conventions de test pour exceptions avec validation des messages français
+    - **Résultat** : Stratégie TDD enrichie avec gestion d'erreurs par couches architecturales ✅ **NOUVEAU !**
+
 ### **Phase 17 : Correction bug crash reprise partie (3 août - TDD strict)**
 45. ✅ **Bug identifié et reproduit** : TDD RED appliqué strictement
     - Bug : AttributeError: 'MoteurPartie' object has no attribute 'afficher_menu'

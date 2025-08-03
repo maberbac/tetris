@@ -2,6 +2,23 @@
 
 Documentation technique pour comprendre l'architecture hexagonale et l'implémentation du jeu Tetris.
 
+## 📋 Table des matières
+
+1. [🏗️ Architecture du projet](#architecture-du-projet)
+2. [🎯 Composants principaux](#composants-principaux)
+   - [Value Objects - Position](#1-value-objects---position)
+   - [Entities - Pièces](#2-entities---pièces)
+   - [Factory Pattern avec Registry](#3-factory-pattern-avec-registry)
+   - [Services - Couche logique métier](#4-services---couche-logique-métier)
+3. [🚨 Gestion des Exceptions](#gestion-des-exceptions)
+   - [Exceptions du Domaine](#1-exceptions-du-domaine---logique-métier)
+   - [Exceptions des Adapters](#2-exceptions-des-adapters---couche-technique)
+   - [Exceptions d'Infrastructure](#3-exceptions-dinfrastructure---couche-système)
+   - [Stratégie de Gestion d'Erreurs](#4-stratégie-de-gestion-derreurs)
+4. [🧪 Tests et Validation](#tests-et-validation)
+
+---
+
 ## 🏗️ Architecture du projet
 
 ### Structure actuelle - Architecture Hexagonale
@@ -229,6 +246,215 @@ adaptateur.demarrer()
 stats = adaptateur.traiter_evenements(moteur)
 # → Conversion automatique événements Pygame → commandes
 ```
+
+## 🚨 Gestion des Exceptions {#gestion-des-exceptions}
+
+Le projet utilise une approche structurée pour la gestion des erreurs, respectant l'architecture hexagonale avec des exceptions spécifiques à chaque couche.
+
+### 1. **Exceptions du Domaine** - Logique métier
+
+#### **ExceptionCollision** - Gestion spécifique des collisions
+```python
+# Plateau - Collision lors du placement
+if not self.peut_placer_piece(piece):
+    raise ExceptionCollision("Impossible de placer la pièce à cette position")
+
+# Usage recommandé pour toute situation de collision inattendue
+try:
+    plateau.placer_piece(piece)
+except ExceptionCollision as e:
+    print(f"Collision non autorisée : {e}")
+```
+
+**Utilisation** :
+- **Collisions de placement** : Pièce ne peut pas être placée (collision, hors limites)
+- **Situations inattendues** : Collisions qui ne devraient pas arriver en conditions normales
+- **Débogage** : Identifier précisément les problèmes de collision
+
+#### **ValueError** - Validation des données métier
+```python
+# Plateau - Dimensions invalides
+if self.largeur <= 0 or self.hauteur <= 0:
+    raise ValueError(f"Dimensions invalides: {self.largeur}x{self.hauteur}")
+
+# Factory - Type de pièce non supporté
+if type_piece not in cls._pieces_enregistrees:
+    raise ValueError(
+        f"Type de pièce non supporté : {type_piece.value}. "
+        f"Types disponibles : {types_disponibles}"
+    )
+
+# Factory - Aucune pièce enregistrée
+if not types_disponibles:
+    raise ValueError("Aucune pièce enregistrée dans le registre")
+```
+
+**Utilisation** :
+- **Validation des dimensions** : Plateau avec largeur/hauteur <= 0
+- **Validation des types** : Type de pièce non supporté par le registre
+- **Validation du registre** : Aucune pièce disponible pour génération aléatoire
+
+### 2. **Exceptions des Adapters** - Couche technique
+
+#### **pygame.error** - Erreurs spécifiques Pygame
+```python
+# AudioPartie - Initialisation audio
+try:
+    pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=1024)
+except pygame.error as e:
+    print(f"[ERROR] Erreur lors de l'initialisation audio: {e}")
+    self._initialise = False
+
+# AudioPartie - Chargement de fichiers audio
+try:
+    self._mixer.music.load(chemin_complet)
+except pygame.error as e:
+    print(f"[ERROR] Impossible de charger la musique: {e}")
+
+# AudioPartie - Lecture d'effets sonores
+try:
+    effet = pygame.mixer.Sound(chemin_complet)
+    effet.play()
+except pygame.error as e:
+    print(f"[ERROR] Impossible de jouer l'effet sonore: {e}")
+```
+
+**Utilisation** :
+- **Initialisation audio** : Problèmes avec le système audio du système
+- **Chargement de fichiers** : Fichiers audio corrompus ou formats non supportés
+- **Lecture audio** : Problèmes de lecture en temps réel
+
+### 3. **Exceptions d'Infrastructure** - Couche système
+
+#### **ImportError** - Dépendances manquantes
+```python
+# Vérification Pygame
+try:
+    import pygame
+except ImportError:
+    pygame = None
+
+# AdaptateurPygame - Validation des dépendances
+if not pygame:
+    raise ImportError("Pygame n'est pas installé. Utilisez: pip install pygame")
+
+# Lanceur principal - Gestion des imports
+except ImportError as e:
+    print(f"❌ Erreur d'importation: {e}")
+    print("Assurez-vous que pygame est installé : pip install pygame")
+```
+
+**Utilisation** :
+- **Dépendances manquantes** : Pygame non installé
+- **Modules introuvables** : Problèmes de structure du projet
+- **Imports optionnels** : Fonctionnalités dégradées sans dépendance
+
+#### **Exception** - Gestionnaire générique
+```python
+# MoteurPartie - Gestion robuste des erreurs
+try:
+    self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav")
+except Exception as e:
+    print(f"[DEBUG] Erreur audio non critique: {e}")
+
+# CommandeBasculerMute - Gestion des erreurs de commande
+try:
+    resultat_mute = moteur.basculer_mute()
+except Exception as e:
+    print(f"[ERROR] Erreur lors du basculement mute: {e}")
+    return False
+
+# Lanceur principal - Catch-all pour stabilité
+except Exception as e:
+    print(f"❌ Erreur durant la partie: {e}")
+    traceback.print_exc()
+```
+
+**Utilisation** :
+- **Erreurs audio non critiques** : Le jeu continue sans audio
+- **Erreurs de commandes** : Retour gracieux avec feedback utilisateur
+- **Erreurs système imprévues** : Affichage debug + stack trace complet
+
+### 4. **Stratégie de Gestion d'Erreurs**
+
+#### **Principe de Résilience**
+```python
+# ✅ CORRECT - Gestion gracieuse avec fallback
+try:
+    self.audio.jouer_musique("tetris-theme.ogg")
+except pygame.error:
+    # Tentative de fallback WAV
+    try:
+        self.audio.jouer_musique("tetris-theme.wav")
+    except pygame.error as e2:
+        print(f"[ERROR] Impossible de jouer la musique: {e2}")
+        # Le jeu continue sans musique
+
+# ✅ CORRECT - Validation préventive
+if self.largeur <= 0 or self.hauteur <= 0:
+    raise ValueError(f"Dimensions invalides: {self.largeur}x{self.hauteur}")
+
+# ✅ CORRECT - Logging informatif
+except Exception as e:
+    print(f"[DEBUG] Erreur audio non critique: {e}")
+    # Continue l'exécution
+```
+
+#### **Anti-Patterns à Éviter**
+```python
+# ❌ INCORRECT - Masquer les erreurs
+try:
+    operation_critique()
+except:
+    pass  # Erreur silencieuse = problème
+
+# ❌ INCORRECT - Catch trop large sans action
+try:
+    operation_specifique()
+except Exception:
+    return False  # Perte d'information sur l'erreur
+
+# ❌ INCORRECT - Laisser crasher sans gestion
+def operation_sans_validation(data):
+    return data.some_property  # Peut lever AttributeError
+```
+
+### 5. **Messages d'Erreur Utilisateur**
+
+#### **Messages Français et Informatifs**
+```python
+# ✅ Messages clairs pour l'utilisateur
+"Impossible de placer la pièce à cette position"
+"Dimensions invalides: 10x-5"  
+"Type de pièce non supporté : X. Types disponibles : ['I', 'O', 'T']"
+"Pygame n'est pas installé. Utilisez: pip install pygame"
+
+# ✅ Messages de debug pour les développeurs  
+"[ERROR] Erreur lors de l'initialisation audio: [Errno 2] No such file"
+"[DEBUG] Erreur audio non critique: mixer not initialized"
+"❌ Erreur durant la partie: 'NoneType' object has no attribute 'play'"
+```
+
+### 6. **Architecture d'Exception par Couche**
+
+```
+🏗️ Architecture des Exceptions
+├── Domaine/               # ValueError pour logique métier
+│   ├── ValidationError    # Données invalides (dimensions, types)
+│   └── BusinessRuleError  # Règles métier violées (placement impossible)
+├── Adapters/              # Exceptions techniques spécifiques
+│   ├── pygame.error       # Problèmes audio/vidéo Pygame
+│   └── OSError           # Problèmes système (fichiers, permissions)
+└── Infrastructure/        # Exceptions système
+    ├── ImportError        # Dépendances manquantes
+    └── Exception          # Catch-all pour stabilité
+```
+
+Cette approche garantit :
+- **🛡️ Robustesse** : Le jeu ne crash pas pour des erreurs non critiques
+- **🔍 Debugabilité** : Messages clairs pour identifier les problèmes
+- **👤 UX** : Feedback utilisateur approprié selon le contexte
+- **🏗️ Architecture** : Exceptions appropriées à chaque couche hexagonale
 
 **Architecture** :
 - **Bridge Pattern** : Sépare abstraction (gestionnaire) de l'implémentation (Pygame)

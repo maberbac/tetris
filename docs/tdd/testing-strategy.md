@@ -230,6 +230,14 @@ tetris/
 - **Classes** : `Test[Entite]` 
 - **Méthodes** : `test_[comportement]_[condition]_[resultat]`
 - **Langue** : Français pour lisibilité métier
+- **Gestion d'erreurs** : Tests d'exceptions avec validation des messages français
+- **Architecture hexagonale** : Tests organisés par couches (domaine, adapters, infrastructure)
+
+### Gestion des Exceptions dans les Tests
+- **ValueError** : Tests de validation des données métier (dimensions, placements, types)
+- **pygame.error** : Tests de robustesse des adapters audio/vidéo
+- **ImportError** : Tests de dépendances et fallbacks gracieux
+- **Exception** : Tests de résilience avec catch-all appropriés
 - **Organisation stricte** : `tests/integration/`, `tests/unit/`, `tests/acceptance/`
 - **AUCUN test à la racine** : Règle absolue respectée
 

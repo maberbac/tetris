@@ -16,6 +16,7 @@ Responsabilités :
 from typing import List, Set, Optional
 from .position import Position
 from .piece import Piece, TypePiece
+from ..exceptions.exception_collision import ExceptionCollision
 
 
 class Plateau:
@@ -112,10 +113,10 @@ class Plateau:
             piece: Pièce à placer
             
         Raises:
-            ValueError: Si la pièce ne peut pas être placée
+            ExceptionCollision: Si la pièce ne peut pas être placée
         """
         if not self.peut_placer_piece(piece):
-            raise ValueError("Impossible de placer la pièce à cette position")
+            raise ExceptionCollision("Impossible de placer la pièce à cette position")
         
         # Marquer toutes les positions de la pièce comme occupées
         for position in piece.positions:
