@@ -223,6 +223,14 @@ class MoteurPartie:
             
             if nb_lignes_supprimees == 4:
                 self.messages.append("[PARTY] TETRIS ! (+800 pts)")
+                
+                # Jouer le son TETRIS spécial pour 4 lignes éliminées
+                if self.audio:
+                    try:
+                        self.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
+                        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
+                    except Exception as e:
+                        print(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
             else:
                 self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
             

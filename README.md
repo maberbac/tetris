@@ -18,7 +18,7 @@ Un jeu de Tetris classique développé en Python avec une architecture moderne e
 - Tests complets avec approche TDD (Test-Driven Development)
 - **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
 
-### **Tests implémentés (168 tests - 100% ✅)**
+### **Tests implémentés (169 tests - 100% ✅)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (85 tests ✅)
@@ -32,7 +32,7 @@ tests/
 │   ├── test_partie_complete.py    # Tests système complet (4 tests)
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅ NOUVEAU !
-├── acceptance/                    # Tests d'acceptance (64 tests ✅)
+├── acceptance/                    # Tests d'acceptance (75 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
@@ -41,12 +41,13 @@ tests/
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 │   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
 │   ├── test_son_game_over.py     # Tests son game over ✅ NOUVEAU !
+│   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
 │   ├── test_audio_rotation.py    # Tests audio rotation ✅ CORRIGÉ !
 │   └── test_messages_utilisateur.py # Tests messages utilisateur ✅ CORRIGÉ !
 └── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-**Performance** : 168 tests en ~1.8s (100% succès - Suite complète validée ✅)
+**Performance** : 169 tests en ~1.9s (100% succès - Suite complète validée ✅)
 
 ### 🔧 **Découverte dynamique des tests** ✅ **NOUVEAU !**
 Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
@@ -89,6 +90,7 @@ Le jeu inclut maintenant un **système audio complet et interactif** :
 - **Effets sonores** : Son de rotation (`rotate.wav`) joué à chaque rotation réussie ✅
 - **Son de gain de niveau** : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau ✅
 - **Son de game over** : Son (`game-over.wav`) joué à chaque fin de partie ✅ **NOUVEAU !**
+- **Son TETRIS spécial** : Son (`tetris.wav`) joué exclusivement lors de l'élimination de 4 lignes simultanées ✅ **NOUVEAU !**
 - **Contrôle mute/unmute unifié** : Touche M pour basculer le son de TOUT l'audio ✅
 - **Feedback utilisateur** : Messages visuels lors du basculement mute/unmute
 - **Système de fallback** : Tentative automatique WAV si OGG échoue
@@ -171,9 +173,9 @@ python tests/run_suite_tests.py
 - **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - **AUCUN test à la racine** : Règle absolue respectée
 
-**Couverture actuelle** : **168 tests, 100% de réussite ✅**
+**Couverture actuelle** : **169 tests, 100% de réussite ✅**
 - **85 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute
-- **64 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over
+- **75 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + **son TETRIS** ✅ **NOUVEAU !**
 - **19 tests d'intégration** : Système complet avec audio + intégration sons + fonctions directes
 
 ## 📋 État du développement
@@ -205,7 +207,7 @@ python tests/run_suite_tests.py
 ### 🎮 **Projet TERMINÉ et FONCTIONNEL**
 Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
 - ✅ **Interface graphique** : Affichage Pygame avec couleurs et masquage zone invisible
-- ✅ **Contrôles** : 8 commandes (flèches, espace, esc, p, m) avec rotation horaire ✅
+- ✅ **Contrôles** : 7 commandes (flèches, espace, p, m) avec rotation horaire ✅
 - ✅ **Gameplay** : Chute des pièces, rotations horaires, lignes complètes
 - ✅ **Scoring** : Système de points et progression de niveaux
 - ✅ **Statistics** : Compteurs de pièces et performances

@@ -244,7 +244,7 @@
 
 47. ✅ **Code intégré et refactorisé** : TDD REFACTOR appliqué  
     - Code intégré dans src/domaine/services/moteur_partie.py (architecture hexagonale respectée)
-    - Tests existants : 168/168 continuent de passer (non-régression parfaite)
+    - Tests existants : 169/169 continuent de passer (non-régression parfaite)
 
 48. ✅ **Tests d'acceptance officiels créés** : Validation finale
     - Test officiel : tests/acceptance/test_correction_bug_crash_reprise_partie.py
@@ -309,7 +309,7 @@
 - ✅ **Game Over** : Détection automatique correcte avec zone invisible
 - ✅ **Zone invisible** : Système de spawn réaliste (Y_SPAWN_DEFAUT = -3)
 
-### **Tests implémentés (168 tests - 100% passants ✅)**
+### **Tests implémentés (169 tests - 100% passants ✅)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (85 tests ✅)
@@ -323,7 +323,7 @@ tests/
 │   ├── test_partie_complete.py    # Tests système complet (4 tests)
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   └── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
-├── acceptance/                    # Tests d'acceptance (64 tests ✅)
+├── acceptance/                    # Tests d'acceptance (75 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
@@ -335,7 +335,7 @@ tests/
 └── run_tests.py                  # Lanceur des tests
 ```
 
-**Performance** : 168 tests en ~1.8s environ (100% succès - Suite complète validée ✅)
+**Performance** : 169 tests en ~1.9s environ (100% succès - Suite complète validée ✅)
 
 ### **Architecture finale réalisée**
 ```
@@ -653,7 +653,7 @@ Un jeu Tetris complet avec :
 Le projet Tetris est maintenant **100% fonctionnel et complet** avec :
 - Architecture hexagonale impeccable
 - TDD appliqué de bout en bout  
-- Tous les tests validés (168/168) ✅ **MISE À JOUR !**
+- Tous les tests validés (169/169) ✅ **MISE À JOUR !**
 - Documentation entièrement synchronisée ✅ **NOUVEAU !**
 - Bug visuel ligne complète réparé ✅
 - Son de gain de niveau ajouté ✅
@@ -665,23 +665,23 @@ Le projet Tetris est maintenant **100% fonctionnel et complet** avec :
 50. ✅ **Modernisation découverte tests** : Conversion vers unittest.TestLoader.discover()
     - Modification : 4 scripts de test convertis à la découverte automatique
     - Élimination : Listes manuelles de modules remplacées par pattern matching
-    - **Résultat** : Découverte automatique de 168 tests (85+64+19) au lieu de 156
+    - **Résultat** : Découverte automatique de 169 tests (85+75+19) au lieu de 156
 
 51. ✅ **Correction 5 tests d'acceptance défaillants** : Résolution complète des échecs
     - Tests audio rotation : Correction état de pause (moteur.en_pause = False)
     - Mapping touches : Ajout "Return" key pour ToucheClavier.PAUSE
     - Messages utilisateur : Implémentation génération messages dans basculer_pause()
-    - **Résultat** : 100% de réussite sur 64 tests d'acceptance (0 échec)
+    - **Résultat** : 100% de réussite sur 75 tests d'acceptance (0 échec)
 
 52. ✅ **Documentation synchronisée** : Mise à jour complète des métriques
     - Correction : README.md, DOC_TECHNIQUE.md, testing-strategy.md
-    - Métriques : 168 tests (85 unitaires + 64 acceptance + 19 intégration)
+    - Métriques : 169 tests (85 unitaires + 75 acceptance + 19 intégration)
     - **Résultat** : Documentation parfaitement alignée avec l'état réel du projet ✅
 
 ### **Phase 17 : Synchronisation finale documentation (3 août)**
 53. ✅ **Correction métriques runners** : Mise à jour des en-têtes de commentaires obsolètes
     - run_all_unit_tests.py : 92 → 85 tests unitaires
-    - run_suite_tests.py : 156 → 168 tests total
-    - run_all_acceptance_tests.py : 44 → 64 tests d'acceptance
-    - journal-developpement.md : 156 → 168 tests dans section état actuel
-    - **Résultat** : Documentation entièrement cohérente avec l'état réel (168/168 tests ✅)
+    - run_suite_tests.py : 156 → 169 tests total
+    - run_all_acceptance_tests.py : 44 → 75 tests d'acceptance
+    - journal-developpement.md : 156 → 169 tests dans section état actuel
+    - **Résultat** : Documentation entièrement cohérente avec l'état réel (169/169 tests ✅)

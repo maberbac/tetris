@@ -42,7 +42,7 @@ tetris/
 ├── assets/                     # 🎨 MÉDIAS - Assets du jeu
 │   ├── audio/                  # Sons et musiques
 │   │   ├── music/              # Musique principale (tetris-theme.wav ✅ FONCTIONNEL !)
-│   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav ✅ NOUVEAU !)
+│   │   └── sfx/                # Effets sonores (line_clear.wav, rotate.wav, tetris.wav ✅ NOUVEAU !)
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
@@ -51,7 +51,7 @@ tetris/
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
-│   ├── acceptance/             # Tests d'acceptance (64 tests ✅)
+│   ├── acceptance/             # Tests d'acceptance (75 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
 │   │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
@@ -59,6 +59,9 @@ tetris/
 │   │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 │   │   ├── test_son_gain_niveau.py # Tests son gain de niveau ✅ NOUVEAU !
 │   │   ├── test_son_game_over.py # Tests son game over ✅ NOUVEAU !
+│   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
+│   │   ├── test_son_game_over.py # Tests son game over ✅ NOUVEAU !
+│   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅ NOUVEAU !
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
 │   ├── integration/            # Tests d'intégration (19 tests ✅)
 │   │   ├── test_audio_integration.py # Tests intégration audio (6 tests)
@@ -175,23 +178,22 @@ class PieceJ(Piece):
 
 #### Command Pattern - Actions de jeu
 ```python
-# Commandes complètes (8 actions essentielles)
+# Commandes complètes (7 actions essentielles)
 CommandeDeplacerGauche()    # ← Déplacement horizontal gauche
 CommandeDeplacerDroite()    # → Déplacement horizontal droite
 CommandeTourner()           # ↑ Rotation horaire
 CommandeDescendre()         # ↓ Chute rapide (par ligne)
 CommandeChuteRapide()       # Space - Chute instantanée (jusqu'en bas)
-CommandeAfficherMenu()      # Esc - Menu en jeu
 CommandePause()             # P - Pause/Reprendre
 CommandeBasculerMute()      # M - Mute/Unmute audio ✅ NOUVEAU !
 ```
 
 **Contrôles optimisés** :
 - **Flèches directionnelles** : Contrôles principaux intuitifs
-- **Touches spéciales** : Actions de jeu (Space, Esc, P, M)
+- **Touches spéciales** : Actions de jeu (Space, P, M)
 - **Répétition intelligente** : Déplacement fluide (200ms initial, 120ms répétition)
 - **Mute non-répétable** : La touche M ne se répète pas automatiquement
-- **Mapping complet** : 8 touches essentielles (ajout mute/unmute)
+- **Mapping complet** : 7 touches essentielles (ajout mute/unmute)
 
 #### Gestionnaire d'événements - Input handling
 ```python
@@ -208,11 +210,10 @@ gestionnaire.ajouter_mapping_touche("w", ToucheClavier.ROTATION)
 ```
 
 **Fonctionnalités** :
-- **Contrôles complets** : 8 touches essentielles (ajout mute/unmute)
-- **Mapping intuitif** : Flèches + Space + Esc + P + M
+- **Contrôles complets** : 7 touches essentielles (ajout mute/unmute)
+- **Mapping intuitif** : Flèches + Space + P + M
 - **Répétition optimisée** : Délais ajustés pour le gameplay (200ms/120ms)
 - **Actions spécialisées** : Chute rapide vs chute instantanée
-- **Gestion de menu** : Esc pour ouvrir/fermer le menu en jeu
 - **Contrôle audio** : M pour basculer mute/unmute (sans répétition)
 
 #### Adaptateur Pygame - Bridge vers UI
@@ -267,11 +268,11 @@ python tests/run_suite_tests.py
 
 # Tests par catégorie
 python tests/run_all_unit_tests.py       # Tests unitaires (85 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (64 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (75 tests)
 python tests/run_all_integration_tests.py # Tests d'intégration (19 tests)
 ```
 
-**Métriques actuelles** : **168 tests, 100% de réussite ✅**
+**Métriques actuelles** : **169 tests, 100% de réussite ✅**
 - **Architecture hexagonale** : Complètement implémentée
 - **Couverture TDD** : Toutes les fonctionnalités testées
 - **Performance** : Exécution complète en 0.690s
@@ -366,8 +367,8 @@ Contrôles simplifiés et intuitifs :
 ↑ Flèche haut    : Tourner la pièce (rotation horaire)
 ↓ Flèche bas     : Chute rapide (ligne par ligne)
 Space            : Chute instantanée (jusqu'en bas)
-Esc              : Afficher/masquer le menu en jeu
 P                : Pause/Reprendre la partie
+M                : Mute/Unmute audio (musique et effets)
 ```
 
 **Touches répétables** : ←, →, ↓ (pour un déplacement fluide)  
@@ -474,11 +475,11 @@ P                : Pause/Reprendre la partie
 - ✅ **Adaptateur Pygame** pour l'intégration
 
 **Réalisations** :
-- **7 Commandes essentielles** : Gauche, Droite, Rotation, Chute rapide, Chute instantanée, Menu, Pause
-- **Mapping intuitif** : Flèches directionnelles + Space + Esc + P
+- **7 Commandes essentielles** : Gauche, Droite, Rotation, Chute rapide, Chute instantanée, Pause, Mute
+- **Mapping intuitif** : Flèches directionnelles + Space + P + M
 - **Répétition fluide** : 200ms initial, 120ms répétition pour déplacement continu
 - **Architecture découplée** : Bridge Pattern vers Pygame
-- **Menu intégré** : Esc pour accéder au menu en cours de jeu
+- **Contrôle audio intégré** : M pour basculer mute/unmute
 
 ### ⏳ Phase 2.6 - Système audio (TERMINÉE ✅)
 **Objectifs** :
