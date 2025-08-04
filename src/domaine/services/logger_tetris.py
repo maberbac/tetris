@@ -133,4 +133,4 @@ class LoggerTetris:
 # Instance globale du logger (pattern Singleton simplifié)
 logger_tetris = LoggerTetris()
 # Mode principal : permettre les messages INFO et plus élevés
-logger_tetris.set_silent_mode(False)  # Messages INFO, WARNING, ERROR
+logger_tetris.set_silent_mode(True)  # Messages INFO, WARNING, ERROR
