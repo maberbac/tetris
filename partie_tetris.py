@@ -19,6 +19,7 @@ from src.domaine.services.moteur_partie import MoteurPartie
 from src.adapters.entree.gestionnaire_partie import GestionnairePartie
 from src.adapters.sortie.affichage_partie import AffichagePartie
 from src.adapters.sortie.audio_partie import AudioPartie
+from src.domaine.services.logger_tetris import logger_tetris
 
 
 class PartieTetris:
@@ -48,18 +49,18 @@ class PartieTetris:
             delai_repetition=0.12
         )
         
-        print("🚀 Partie complète de Tetris initialisée !")
-        print("🏗️ Architecture hexagonale respectée :")
-        print("   🎯 Domaine : Logique métier pure")
-        print("   🔌 Ports : Interfaces définies")  
-        print("   🔧 Adaptateurs : Implémentations pygame")
-        print("🎯 Toutes les fonctionnalités sont actives :")
-        print("   🎲 Génération aléatoire des 7 types de pièces")
-        print("   🏗️ Plateau refactorisé 10x20")
-        print("   🎉 Détection automatique des lignes complètes")
-        print("   📊 Score et statistiques complètes")
-        print("   ⏱️ Chute automatique avec accélération")
-        print("   🎵 Système audio intégré")
+        logger_tetris.info("🚀 Partie complète de Tetris initialisée !")
+        logger_tetris.info("🏗️ Architecture hexagonale respectée :")
+        logger_tetris.info("   🎯 Domaine : Logique métier pure")
+        logger_tetris.info("   🔌 Ports : Interfaces définies")  
+        logger_tetris.info("   🔧 Adaptateurs : Implémentations pygame")
+        logger_tetris.info("🎯 Toutes les fonctionnalités sont actives :")
+        logger_tetris.info("   🎲 Génération aléatoire des 7 types de pièces")
+        logger_tetris.info("   🏗️ Plateau refactorisé 10x20")
+        logger_tetris.info("   🎉 Détection automatique des lignes complètes")
+        logger_tetris.info("   📊 Score et statistiques complètes")
+        logger_tetris.info("   ⏱️ Chute automatique avec accélération")
+        logger_tetris.info("   🎵 Système audio intégré")
     
     def jouer(self):
         """Lance la partie principale."""
@@ -67,28 +68,21 @@ class PartieTetris:
         self.affichage.initialiser()
         
         # Démarrer la musique de fond
-        print("🎵 Démarrage de la musique...")
+        logger_tetris.debug("🎵 Démarrage de la musique...")
         if self.moteur.demarrer_musique():
-            print("✅ Musique de fond lancée")
+            logger_tetris.info("✅ Musique de fond lancée")
         else:
-            print("⚠️ Impossible de lancer la musique (fichier manquant ?)")
+            logger_tetris.warning("⚠️ Impossible de lancer la musique (fichier manquant ?)")
         
         horloge = pygame.time.Clock()
         actif = True
         
-        print("\n" + "="*60)
-        print("🎮 TETRIS - PARTIE COMPLÈTE")
-        print("="*60)
-        print("🎯 Objectif : Complétez des lignes pour marquer des points !")
-        print("📈 Le jeu accélère tous les 10 lignes complétées")
-        print()
-        print("Contrôles :")
-        print("  ← → : Déplacer | ↑ : Rotation | ↓ : Chute rapide")
-        print("  ESPACE : Chute instantanée | P : Pause")
-        print("  ESC : Menu/Quitter | ENTRÉE : Placer manuellement")
-        print()
-        print("Démarrage de la partie...")
-        print("="*60)
+        logger_tetris.info("\n" + "="*60)
+        logger_tetris.info("🎮 TETRIS - PARTIE COMPLÈTE")
+        logger_tetris.info("="*60)
+        logger_tetris.info("🎯 Objectif : Complétez des lignes pour marquer des points !")
+        logger_tetris.info("📈 Le jeu accélère tous les 10 lignes complétées")
+        logger_tetris.info("")
         
         try:
             while actif:
@@ -115,34 +109,17 @@ class PartieTetris:
             self.affichage.nettoyer()
             self.moteur.fermer()  # Nettoie l'audio
         
-        # Affichage des statistiques finales
-        print("\n" + "="*60)
-        print("🏁 PARTIE TERMINÉE")
-        print("="*60)
-        stats = self.moteur.stats
-        print(f"📊 Score final: {stats.score:,} points")
-        print(f"📈 Niveau atteint: {stats.niveau}")
-        print(f"📝 Lignes complétées: {stats.lignes_completees}")
-        print(f"🧩 Pièces placées: {stats.pieces_placees}")
-        print()
-        print("Répartition des pièces utilisées :")
-        for type_piece, count in stats.pieces_par_type.items():
-            if count > 0:
-                print(f"  {type_piece.value}: {count} pièces")
-        print("="*60)
-        print("Merci d'avoir joué ! 🎮")
+
 
 
 if __name__ == "__main__":
-    print("🚀 Démarrage de la partie complète de Tetris...")
-    print("🏗️ Architecture hexagonale + Génération aléatoire + Interface complète")
-    
+
     try:
         partie = PartieTetris()
         partie.jouer()
     except KeyboardInterrupt:
-        print("\n⚠️ Partie interrompue par l'utilisateur")
+        logger_tetris.info("⚠️ Partie interrompue par l'utilisateur")
     except Exception as e:
-        print(f"\n❌ Erreur durant la partie: {e}")
+        logger_tetris.error(f"❌ Erreur durant la partie: {e}")
         import traceback
         traceback.print_exc()

@@ -10,10 +10,10 @@ import os
 # Ajouter le répertoire src au path pour les imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from domaine.exceptions.exception_collision import ExceptionCollision
-from domaine.entites.plateau import Plateau
-from domaine.entites.fabriques.fabrique_pieces import FabriquePieces
-from domaine.entites.position import Position
+from src.domaine.exceptions.exception_collision import ExceptionCollision
+from src.domaine.entites.plateau import Plateau
+from src.domaine.entites.fabriques.fabrique_pieces import FabriquePieces
+from src.domaine.entites.position import Position
 
 
 class TestExceptionCollision(unittest.TestCase):

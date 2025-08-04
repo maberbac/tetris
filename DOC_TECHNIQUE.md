@@ -63,12 +63,12 @@ tetris/
 │   └── images/                 # Images et textures
 │       └── backgrounds/        # Arrière-plans optionnels
 ├── tests/                      # Tests organisés par type (CONFORMES AUX DIRECTIVES)
-│   ├── unit/                   # Tests unitaires (85 tests ✅)
+│   ├── unit/                   # Tests unitaires (91 tests ✅)
 │   │   ├── domaine/            # Tests du domaine métier
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes + Restart ✅)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute ✅)
-│   ├── acceptance/             # Tests d'acceptance (75 tests ✅)
+│   ├── acceptance/             # Tests d'acceptance (82 tests ✅)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute ✅
 │   │   ├── test_fonctionnalite_restart.py # Tests restart ✅ **NOUVEAU !**
@@ -79,14 +79,13 @@ tetris/
 │   │   ├── test_son_game_over.py # Tests son game over ✅
 │   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes ✅
 │   │   └── test_correction_bug_*.py # Tests corrections de bugs ✅
-│   ├── integration/            # Tests d'intégration (25 tests ✅) ✅ **NOUVEAU RECORD !**
+│   ├── integration/            # Tests d'intégration (22 tests ✅) ✅ **NOUVEAU RECORD !**
 │   │   ├── test_audio_integration.py # Tests intégration audio (6 tests)
 │   │   ├── test_correction_audio.py # Tests correction audio (5 tests)
-│   │   ├── test_partie_complete.py # Tests système complet (4 tests)
+│   │   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅ **NOUVEAU !**
 │   │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
-│   │   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅ **NOUVEAU !**
-│   │   └── test_integration_complete.py # Tests intégration complète (3 tests) ✅ **NOUVEAU !**
+│   │   └── [4 tests d'intégration directe] # Tests génération, moteur, plateau, statistiques ✅
 │   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── docs/                       # Documentation complète
 ├── tmp/                        # 🔧 OUTILS DE DÉVELOPPEMENT - Scripts temporaires (metriques_tests.py)

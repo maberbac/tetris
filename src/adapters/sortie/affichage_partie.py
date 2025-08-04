@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 
 from src.domaine.entites.piece import TypePiece
 from src.ports.sortie.affichage_jeu import AffichageJeu
+from src.domaine.services.logger_tetris import logger_tetris
 
 if TYPE_CHECKING:
     from src.domaine.services.moteur_partie import MoteurPartie
@@ -88,7 +89,7 @@ class AffichagePartie(AffichageJeu):
         self.zone_interface_x = self.zone_jeu_x + self.largeur_jeu + self.marge
         
         self.initialise = True
-        print("🖥️ Interface graphique initialisée")
+        logger_tetris.info("🖥️ Interface graphique initialisée")
     
     def dessiner(self, moteur: 'MoteurPartie') -> None:
         """Dessine l'interface complète du jeu."""

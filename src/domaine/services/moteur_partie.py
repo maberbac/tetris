@@ -13,6 +13,7 @@ from src.domaine.entites.position import Position
 from src.domaine.entites.plateau import Plateau
 from src.domaine.entites.statistiques.statistiques_jeu import StatistiquesJeu
 from src.ports.sortie.audio_jeu import AudioJeu
+from .logger_tetris import logger_tetris
 
 
 class MoteurPartie:
@@ -58,14 +59,14 @@ class MoteurPartie:
         # Messages à afficher
         self.messages = []
         
-        print(f"[GAME] Partie Tetris initialisée")
-        print(f"[ROUND_PUSHPIN] Plateau: {self.plateau.largeur}x{self.plateau.hauteur}")
-        print(f"[DICE] Types de pièces disponibles: {len(self.fabrique.obtenir_types_supportes())}")
+        logger_tetris.debug(f"[GAME] Partie Tetris initialisée")
+        logger_tetris.debug(f"[ROUND_PUSHPIN] Plateau: {self.plateau.largeur}x{self.plateau.hauteur}")
+        logger_tetris.debug(f"[DICE] Types de pièces disponibles: {len(self.fabrique.obtenir_types_supportes())}")
         
         # Initialiser l'audio si disponible
         if self.audio:
             self.audio.initialiser()
-            print("[MUSIC] Système audio initialisé")
+            logger_tetris.debug("[MUSIC] Système audio initialisé")
         
         # Générer les premières pièces
         self._generer_piece_suivante()
@@ -109,7 +110,7 @@ class MoteurPartie:
         
         # Vérifier si c'est valide
         if self.plateau.peut_placer_piece(self.piece_active):
-            print(f"[ROUND_PUSHPIN] Déplacement réussi: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
+            logger_tetris.debug(f"[ROUND_PUSHPIN] Déplacement réussi: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             return True
         else:
             # Annuler le déplacement
@@ -139,7 +140,7 @@ class MoteurPartie:
         
         # Vérifier si c'est valide
         if self.plateau.peut_placer_piece(self.piece_active):
-            print(f"[ROTATE] Rotation réussie: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
+            logger_tetris.debug(f"[ROTATE] Rotation réussie: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             
             # Jouer le son de rotation si audio disponible
             if self.audio:
@@ -184,7 +185,7 @@ class MoteurPartie:
                 break
         
         if nb_lignes > 0:
-            print(f"[FAST_DROP] Chute rapide: {nb_lignes} lignes -> {self.piece_active.positions}")
+            logger_tetris.debug(f"[FAST_DROP] Chute rapide: {nb_lignes} lignes -> {self.piece_active.positions}")
             # Ajouter des points pour la chute rapide
             self.stats.score += nb_lignes * self.stats.niveau
         
@@ -203,19 +204,19 @@ class MoteurPartie:
             # Placement impossible - déclencher Game Over
             self.jeu_termine = True
             self.messages.append("💀 GAME OVER ! Plus de place pour les pièces.")
-            print("💀 GAME OVER ! Placement impossible.")
+            logger_tetris.info("💀 GAME OVER ! Placement impossible.")
             
             # Jouer le son de game over
             if self.audio:
                 try:
                     self.audio.jouer_effet_sonore("assets/audio/sfx/game-over.wav", volume=1.0)
-                    print("🔊 Son de Game Over joué")
+                    logger_tetris.info("🔊 Son de Game Over joué")
                 except Exception as e:
-                    print(f"⚠️ Erreur lors de la lecture du son de Game Over: {e}")
+                    logger_tetris.warning(f"⚠️ Erreur lors de la lecture du son de Game Over: {e}")
             
             return False
         
-        print(f"[ROUND_PUSHPIN] Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
+        logger_tetris.debug(f"[ROUND_PUSHPIN] Pièce {self.piece_active.type_piece.value} placée: {self.piece_active.positions}")
         
         # Traitement des lignes supprimées
         if nb_lignes_supprimees > 0:
@@ -228,19 +229,19 @@ class MoteurPartie:
                 if self.audio:
                     try:
                         self.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
-                        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
+                        logger_tetris.info("🎵 Son TETRIS joué ! (4 lignes éliminées)")
                     except Exception as e:
-                        print(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
+                        logger_tetris.warning(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
             else:
                 self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
             
-            print(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
+            logger_tetris.debug(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
             
             # Jouer le son de gain de niveau si nécessaire
             if niveau_a_change and self.audio:
                 self.audio.jouer_effet_sonore("assets/audio/sfx/gained-a-new-level.wav", volume=1.0)
                 self.messages.append(f"🎉 NIVEAU {self.stats.niveau} ! La vitesse augmente !")
-                print(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
+                logger_tetris.info(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
             
             # Accélérer le jeu selon le niveau
             self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)
@@ -276,7 +277,7 @@ class MoteurPartie:
                     # Pièce encore en zone invisible et ne peut pas descendre = Game Over
                     self.jeu_termine = True
                     self.messages.append("💀 GAME OVER !")
-                    print("💀 GAME OVER ! La pièce ne peut pas descendre de la zone invisible.")
+                    logger_tetris.error("💀 GAME OVER ! La pièce ne peut pas descendre de la zone invisible.")
                     return
                 
                 # Sinon, placement normal
@@ -287,7 +288,7 @@ class MoteurPartie:
     def _generer_piece_suivante(self) -> None:
         """Génère la prochaine pièce aléatoire."""
         self.piece_suivante = self.fabrique.creer_aleatoire(x_pivot=5, y_pivot=1)
-        print(f"[DICE] Prochaine pièce générée: {self.piece_suivante.type_piece.value}")
+        logger_tetris.debug(f"[DICE] Prochaine pièce générée: {self.piece_suivante.type_piece.value}")
     
     def _faire_descendre_piece_suivante(self) -> None:
         """
@@ -299,7 +300,7 @@ class MoteurPartie:
         """
         if self.piece_suivante:
             self.piece_active = self.piece_suivante
-            print(f"[DOWN_ARROW] Nouvelle pièce active: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
+            logger_tetris.debug(f"[DOWN_ARROW] Nouvelle pièce active: {self.piece_active.type_piece.value} -> {self.piece_active.positions}")
             
             # CORRECTION : Pas de vérification game over immédiate
             # La pièce va naturellement essayer de descendre via mettre_a_jour_chute_automatique()
@@ -319,7 +320,7 @@ class MoteurPartie:
             self.messages.append("▶️ Jeu repris - Bonne partie !")
         
         # Note : La musique continue même en pause - seule la touche M contrôle le mute/unmute
-        print(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
+        logger_tetris.debug(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
     
     def demarrer_musique(self) -> bool:
         """Démarre la musique de fond du jeu."""
@@ -328,7 +329,7 @@ class MoteurPartie:
                 self.audio.jouer_musique("tetris-theme.wav", volume=0.7, boucle=True)
                 return True
             except Exception as e:
-                print(f"❌ Erreur démarrage musique: {e}")
+                logger_tetris.error(f"❌ Erreur démarrage musique: {e}")
                 return False
         return False
     
@@ -407,4 +408,4 @@ class MoteurPartie:
         """Ferme proprement le moteur et nettoie les ressources."""
         if self.audio:
             self.audio.nettoyer()
-            print("[CLEANUP] Ressources audio nettoyées")
+            logger_tetris.debug("[CLEANUP] Ressources audio nettoyées")

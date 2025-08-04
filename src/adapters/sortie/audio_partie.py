@@ -9,6 +9,7 @@ import pygame
 from pathlib import Path
 from typing import Optional
 from src.ports.sortie.audio_jeu import AudioJeu
+from src.domaine.services.logger_tetris import logger_tetris
 
 
 class AudioPartie(AudioJeu):
@@ -52,10 +53,10 @@ class AudioPartie(AudioJeu):
                 pygame.mixer.init()
             
             self._initialise = True
-            print("[AUDIO] Système audio initialisé avec succès")
+            logger_tetris.info("[AUDIO] Système audio initialisé avec succès")
             
         except pygame.error as e:
-            print(f"[ERROR] Erreur lors de l'initialisation audio: {e}")
+            logger_tetris.error(f"[ERROR] Erreur lors de l'initialisation audio: {e}")
             self._initialise = False
     
     def jouer_musique(self, chemin_fichier: str, volume: float = 0.7, boucle: bool = True) -> None:
@@ -79,7 +80,7 @@ class AudioPartie(AudioJeu):
             chemin_complet = Path(__file__).parent.parent.parent.parent / "assets" / "audio" / "music" / chemin_fichier
             
             if not chemin_complet.exists():
-                print(f"[ERROR] Fichier audio introuvable: {chemin_complet}")
+                logger_tetris.error(f"[ERROR] Fichier audio introuvable: {chemin_complet}")
                 return
             
             # Charger et jouer la musique
@@ -93,12 +94,12 @@ class AudioPartie(AudioJeu):
             pygame.mixer.music.play(loops)
             
             self._musique_chargee = True
-            print(f"[MUSIC] Musique lancée: {chemin_complet.name}")
+            logger_tetris.info(f"[MUSIC] Musique lancée: {chemin_complet.name}")
             
         except pygame.error as e:
-            print(f"[ERROR] Erreur lecture musique: {e}")
-            print(f"💡 Conseil: Le fichier {chemin_fichier} pourrait être corrompu")
-            print("   Essayez avec un fichier WAV ou un autre fichier OGG")
+            logger_tetris.error(f"[ERROR] Erreur lecture musique: {e}")
+            logger_tetris.info(f"💡 Conseil: Le fichier {chemin_fichier} pourrait être corrompu")
+            logger_tetris.info("   Essayez avec un fichier WAV ou un autre fichier OGG")
             
             # Tentative avec un fichier WAV de fallback si c'est un OGG qui pose problème
             if chemin_fichier.endswith('.ogg'):
@@ -106,36 +107,36 @@ class AudioPartie(AudioJeu):
                 fallback_path = Path(__file__).parent.parent.parent.parent / "assets" / "audio" / "music" / fallback_file
                 
                 if fallback_path.exists():
-                    print(f"🔄 Tentative avec fichier de fallback: {fallback_file}")
+                    logger_tetris.info(f"🔄 Tentative avec fichier de fallback: {fallback_file}")
                     try:
                         pygame.mixer.music.load(str(fallback_path))
                         pygame.mixer.music.set_volume(volume)
                         loops = -1 if boucle else 0
                         pygame.mixer.music.play(loops)
                         self._musique_chargee = True
-                        print(f"[CHECK_MARK] Fallback réussi: {fallback_path.name}")
+                        logger_tetris.info(f"✅ Fallback réussi: {fallback_path.name}")
                     except pygame.error as e2:
-                        print(f"[ERROR] Fallback échoué aussi: {e2}")
+                        logger_tetris.error(f"[ERROR] Fallback échoué aussi: {e2}")
         except Exception as e:
-            print(f"[ERROR] Erreur inattendue lors de la lecture de la musique: {e}")
+            logger_tetris.error(f"[ERROR] Erreur inattendue lors de la lecture de la musique: {e}")
     
     def arreter_musique(self) -> None:
         """Arrête complètement la musique de fond."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.stop()
-            print("[MUTE] Musique arrêtée")
+            logger_tetris.debug("[MUTE] Musique arrêtée")
     
     def mettre_en_pause_musique(self) -> None:
         """Met la musique en pause (peut être reprise)."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.pause()
-            print("[PAUSE] Musique mise en pause")
+            logger_tetris.debug("[PAUSE] Musique mise en pause")
     
     def reprendre_musique(self) -> None:
         """Reprend la musique après une pause."""
         if self._initialise and self._musique_chargee:
             pygame.mixer.music.unpause()
-            print("[PLAY] Musique reprise")
+            logger_tetris.debug("[PLAY] Musique reprise")
     
     def basculer_mute_musique(self) -> bool:
         """
@@ -152,13 +153,13 @@ class AudioPartie(AudioJeu):
             self._est_mute = False
             self._volume_musique = self._volume_avant_mute
             pygame.mixer.music.set_volume(self._volume_musique)
-            print(f"[UNMUTE] Musique réactivée - Volume: {int(self._volume_musique * 100)}%")
+            logger_tetris.info(f"[UNMUTE] Musique réactivée - Volume: {int(self._volume_musique * 100)}%")
         else:
             # Mute : sauvegarder le volume actuel et mettre à 0
             self._volume_avant_mute = self._volume_musique
             self._est_mute = True
             pygame.mixer.music.set_volume(0.0)
-            print("[MUTE] Musique désactivée")
+            logger_tetris.info("[MUTE] Musique désactivée")
             
         return self._est_mute
     
@@ -174,7 +175,7 @@ class AudioPartie(AudioJeu):
         
         if self._initialise:
             pygame.mixer.music.set_volume(self._volume_musique)
-            print(f"[VOLUME] Volume musique: {int(self._volume_musique * 100)}%")
+            logger_tetris.debug(f"[VOLUME] Volume musique: {int(self._volume_musique * 100)}%")
     
     def jouer_effet_sonore(self, chemin_fichier: str, volume: float = 1.0) -> bool:
         """
@@ -199,7 +200,7 @@ class AudioPartie(AudioJeu):
             chemin_complet = Path(__file__).parent.parent.parent.parent / chemin_fichier
             
             if not chemin_complet.exists():
-                print(f"[ERROR] Fichier effet sonore introuvable: {chemin_complet}")
+                logger_tetris.error(f"[ERROR] Fichier effet sonore introuvable: {chemin_complet}")
                 return False
             
             # Charger et jouer l'effet sonore
@@ -212,11 +213,11 @@ class AudioPartie(AudioJeu):
             effet.play()
             
             status_mute = " (MUTE)" if self._est_mute else ""
-            print(f"[SFX] Effet sonore joué: {chemin_complet.name} - Volume: {int(volume_effectif * 100)}%{status_mute}")
+            logger_tetris.debug(f"[SFX] Effet sonore joué: {chemin_complet.name} - Volume: {int(volume_effectif * 100)}%{status_mute}")
             return True
             
         except pygame.error as e:
-            print(f"[ERROR] Erreur lors de la lecture de l'effet sonore: {e}")
+            logger_tetris.error(f"[ERROR] Erreur lors de la lecture de l'effet sonore: {e}")
             return False
     
     def est_musique_en_cours(self) -> bool:
@@ -234,8 +235,14 @@ class AudioPartie(AudioJeu):
     def nettoyer(self) -> None:
         """Nettoie les ressources audio et ferme le système."""
         if self._initialise:
-            pygame.mixer.music.stop()
-            pygame.mixer.quit()
-            self._initialise = False
-            self._musique_chargee = False
-            print("[CLEANUP] Système audio nettoyé")
+            try:
+                # Essayer d'arrêter la musique si le mixer est encore initialisé
+                if pygame.mixer.get_init():
+                    pygame.mixer.music.stop()
+                pygame.mixer.quit()
+            except pygame.error as e:
+                logger_tetris.warning(f"[WARNING] Erreur lors du nettoyage audio: {e}")
+            finally:
+                self._initialise = False
+                self._musique_chargee = False
+                logger_tetris.debug("[CLEANUP] Système audio nettoyé")

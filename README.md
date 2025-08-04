@@ -32,27 +32,26 @@ Un jeu de Tetris classique développé en Python avec une archit## 🎯 Comment 
 - Tests complets avec approche TDD (Test-Driven Development)
 - **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
 
-### **Tests implémentés (185 tests - 100% ✅)** ✅ **NOUVEAU RECORD !**
+### **Tests implémentés (195 tests - 100% ✅)** ✅ **NOUVEAU RECORD ABSOLU !**
 ```
 tests/
-├── unit/                           # Tests unitaires (85 tests ✅)
+├── unit/                           # Tests unitaires (91 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
 │   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
 │   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute ✅)
-├── integration/                   # Tests d'intégration (25 tests ✅) 
+├── integration/                   # Tests d'intégration (22 tests ✅) 
 │   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
 │   ├── test_correction_audio.py   # Tests correction audio (5 tests)
-│   ├── test_partie_complete.py    # Tests système complet (4 tests)
+│   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
-│   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅ **NOUVEAU !**
-│   └── test_integration_complete.py # Tests intégration complète (3 tests) ✅ **NOUVEAU !**
-├── acceptance/                    # Tests d'acceptance (75 tests ✅)
+│   └── [4 tests d'intégration directe] # Tests génération aléatoire, moteur, plateau, statistiques ✅
+├── acceptance/                    # Tests d'acceptance (82 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
-│   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart ✅ **NOUVEAU !**
+│   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
@@ -64,7 +63,7 @@ tests/
 └── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-**Performance** : 185 tests en ~1.4s (100% succès - Suite complète validée ✅) ✅ **NOUVEAU RECORD !**
+**Performance** : 195 tests en ~1.9s (100% succès - Suite complète validée ✅) ✅ **NOUVEAU RECORD ABSOLU !**
 
 ### 🔧 **Découverte dynamique des tests** ✅ **NOUVEAU !**
 Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
@@ -191,9 +190,10 @@ python tests/run_suite_tests.py
 - **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - **AUCUN test à la racine** : Règle absolue respectée
 
-**Couverture actuelle** : **185 tests, 100% de réussite ✅** ✅ **NOUVEAU RECORD !**
-- **85 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart ✅
-- **75 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + **fonctionnalité restart** ✅ **NOUVEAU !**
+**Couverture actuelle** : **195 tests, 100% de réussite ✅** ✅ **NOUVEAU RECORD ABSOLU !**
+- **91 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart ✅
+- **82 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + **fonctionnalité restart** ✅
+- **22 tests d'intégration** : Intégration audio, restart, génération aléatoire, moteur, plateau, statistiques ✅ **NOUVEAU !**
 - **25 tests d'intégration** : Système complet avec audio + intégration sons + **intégration restart** ✅ **NOUVEAU !**
 
 ## 📋 État du développement

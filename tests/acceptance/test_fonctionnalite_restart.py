@@ -52,7 +52,7 @@ class TestAcceptanceRestart(unittest.TestCase):
         self.assertTrue(result, "La commande restart doit réussir")
         self.assertFalse(self.moteur.est_game_over(), "Le jeu ne doit plus être terminé")
         self.assertEqual(self.moteur.stats.score, 0, "Le score doit être remis à zéro")
-        self.assertIsNotNone(self.moteur.piece_courante, "Une nouvelle pièce doit être générée")
+        self.assertIsNotNone(self.moteur.piece_active, "Une nouvelle pièce doit être générée")
         self.assertGreater(score_initial, self.moteur.stats.score, "Le score doit avoir été reset")
         print("✅ Test d'acceptance RÉUSSI : Restart après game over")
     
@@ -70,13 +70,13 @@ class TestAcceptanceRestart(unittest.TestCase):
         
         # Arrange - Jeu en cours
         self.assertFalse(self.moteur.est_game_over(), "Le jeu doit être en cours")
-        piece_avant = self.moteur.piece_courante
+        piece_avant = self.moteur.piece_active
         score_avant = self.moteur.stats.score
         
         print(f"📊 État initial:")
         print(f"   Game Over: {self.moteur.est_game_over()}")
         print(f"   Score: {score_avant}")
-        print(f"   Pièce: {piece_avant.obtenir_type()}")
+        print(f"   Pièce: {piece_avant.type_piece}")
         
         # Act - Appuyer sur R
         result = self.gestionnaire.traiter_evenement_clavier('r', TypeEvenement.CLAVIER_APPUI, self.moteur)
@@ -89,7 +89,7 @@ class TestAcceptanceRestart(unittest.TestCase):
         # Assert
         self.assertFalse(result, "La commande restart doit être ignorée")
         self.assertFalse(self.moteur.est_game_over(), "Le jeu doit toujours être en cours")
-        self.assertEqual(self.moteur.piece_courante.obtenir_type(), piece_avant.obtenir_type(), "La pièce ne doit pas changer")
+        self.assertEqual(self.moteur.piece_active.type_piece, piece_avant.type_piece, "La pièce ne doit pas changer")
         self.assertEqual(self.moteur.stats.score, score_avant, "Le score ne doit pas changer")
         print("✅ Test d'acceptance RÉUSSI : R ignoré pendant partie")
     
@@ -130,8 +130,8 @@ class TestAcceptanceRestart(unittest.TestCase):
         self.assertEqual(self.moteur.stats.niveau, 1, "Niveau reset")
         self.assertEqual(self.moteur.stats.lignes_completees, 0, "Lignes reset")
         self.assertFalse(self.moteur.est_game_over(), "Game over reset")
-        self.assertIsNotNone(self.moteur.piece_courante, "Nouvelle pièce générée")
-        self.assertIsNotNone(self.moteur.prochaine_piece, "Prochaine pièce générée")
+        self.assertIsNotNone(self.moteur.piece_active, "Nouvelle pièce générée")
+        self.assertIsNotNone(self.moteur.piece_suivante, "Prochaine pièce générée")
         print("✅ Test d'acceptance RÉUSSI : Architecture préservée")
     
     def test_restart_fonctionne_plusieurs_fois_consecutives(self):
@@ -183,15 +183,20 @@ class TestAcceptanceRestart(unittest.TestCase):
         self.assertEqual(touche_string, "r", "pygame.K_r doit se convertir en 'r'")
         print(f"   📋 Mapping pygame: K_r → '{touche_string}'")
         
-        # Vérifier que le gestionnaire a la commande restart
-        gestionnaire_evenements = self.gestionnaire._creer_gestionnaire_evenements()
+        # Vérifier que le gestionnaire traite correctement la touche R
         from src.domaine.services.gestionnaire_evenements import ToucheClavier
         from src.domaine.services.commandes.commande_redemarrer import CommandeRedemarrer
         
-        commande_restart = gestionnaire_evenements.commandes.get(ToucheClavier.RESTART)
-        self.assertIsNotNone(commande_restart, "Commande RESTART doit être mappée")
-        self.assertIsInstance(commande_restart, CommandeRedemarrer, "Doit être CommandeRedemarrer")
-        print(f"   📋 Commande: ToucheClavier.RESTART → {type(commande_restart).__name__}")
+        # Créer un moteur en état de game over pour tester la commande
+        moteur_test = MoteurPartie()
+        moteur_test.jeu_termine = True  # Mettre en état game over
+        
+        # Essayer d'exécuter la commande restart via le gestionnaire
+        result = self.gestionnaire.traiter_evenement_clavier('r', TypeEvenement.CLAVIER_APPUI, moteur_test)
+        
+        # Vérifier que la commande s'exécute (résultat True = succès)
+        self.assertTrue(result, "La commande restart doit être trouvée et exécutée")
+        print(f"   📋 Commande: Touche 'r' → Commande exécutée avec succès")
         
         print("✅ Test d'acceptance RÉUSSI : Mapping touche R correct")
 

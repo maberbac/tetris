@@ -7,6 +7,7 @@ l'ajout de nouvelles pièces sans modifier la fabrique principale.
 
 from typing import Dict, Type, Set, TypeVar, Callable
 from ..piece import Piece, TypePiece
+from ...services.logger_tetris import logger_tetris
 
 # Type générique pour le décorateur
 T = TypeVar('T', bound=Type[Piece])
@@ -57,7 +58,7 @@ class RegistrePieces:
         cls._pieces_enregistrees[type_piece] = classe_piece
         cls._types_supportes.add(type_piece)
         # Note: Emoji remplacé par texte pour compatibilité Windows
-        print(f"[REGISTRY] Pièce enregistrée : {type_piece.value} -> {classe_piece.__name__}")
+        logger_tetris.debug(f"[REGISTRY] Pièce enregistrée : {type_piece.value} -> {classe_piece.__name__}")
     
     @classmethod
     def obtenir_classe_piece(cls, type_piece: TypePiece) -> Type[Piece]:

@@ -15,6 +15,7 @@ from abc import ABC, abstractmethod
 from typing import Protocol
 from ...entites.piece import Piece
 from ...entites.plateau import Plateau
+from ..logger_tetris import logger_tetris
 
 
 class MoteurJeu(Protocol):
@@ -197,20 +198,24 @@ class CommandeBasculerMute(Commande):
             audio = moteur.obtenir_audio()
             if audio is None:
                 print("❌ Audio non disponible")
+                logger_tetris.warning("❌ Audio non disponible")
                 return False
             
             est_mute = audio.basculer_mute_musique()
             
-            # Feedback utilisateur
+            # Feedback utilisateur (directement à l'utilisateur)
             if est_mute:
                 print("🔇 Musique désactivée")
+                logger_tetris.info("🔇 Musique désactivée")
             else:
                 print("🔊 Musique réactivée")
+                logger_tetris.info("🔊 Musique réactivée")
                 
             return True
             
         except Exception as e:
             print(f"❌ Erreur audio: {e}")
+            logger_tetris.error(f"❌ Erreur audio: {e}")
             return False
 
 
