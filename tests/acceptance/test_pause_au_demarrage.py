@@ -40,33 +40,31 @@ class TestPauseAuDemarrage(unittest.TestCase):
         print("✅ Le moteur démarre bien en pause")
     
     def test_basculement_pause_avec_messages(self):
-        """✅ Le basculement de pause génère des messages explicatifs."""
-        print("🧪 Test : Basculement de pause avec messages")
+        """✅ Le basculement de pause fonctionne sans messages gênants."""
+        print("🧪 Test : Basculement de pause sans messages gênants")
         print("-" * 50)
         
         # GIVEN : Un moteur en pause au démarrage
         moteur = MoteurPartie()
         self.assertTrue(moteur.en_pause, "Le moteur doit démarrer en pause")
+        messages_initiaux = len(moteur.messages)
         
         # WHEN : On bascule la pause (reprendre le jeu)
         moteur.basculer_pause()
         
-        # THEN : Le jeu n'est plus en pause et un message est généré
+        # THEN : Le jeu n'est plus en pause et aucun message gênant n'est généré
         self.assertFalse(moteur.en_pause, "Le jeu ne doit plus être en pause")
-        self.assertGreater(len(moteur.messages), 0, "Un message doit être généré")
-        self.assertIn("repris", moteur.messages[0].lower(), "Le message doit indiquer que le jeu a repris")
-        print("✅ Le basculement fonctionne avec messages explicatifs")
+        # Vérifier qu'aucun nouveau message de pause n'a été ajouté
+        self.assertEqual(len(moteur.messages), messages_initiaux, "Aucun message de pause ne doit être ajouté")
+        print("✅ Le basculement fonctionne sans messages gênants")
         
         # WHEN : On remet en pause
         moteur.basculer_pause()
         
-        # THEN : Le jeu est en pause et un message de pause est généré
+        # THEN : Le jeu est en pause et toujours aucun message gênant
         self.assertTrue(moteur.en_pause, "Le jeu doit être en pause")
-        self.assertGreater(len(moteur.messages), 1, "Un nouveau message doit être généré")
-        message_pause = moteur.messages[-1]
-        self.assertIn("pause", message_pause.lower(), "Le message doit mentionner la pause")
-        self.assertIn("p", message_pause.lower(), "Le message doit mentionner la touche P")
-        print("✅ Le message de pause contient les instructions sur la touche P")
+        self.assertEqual(len(moteur.messages), messages_initiaux, "Toujours aucun message de pause ajouté")
+        print("✅ La mise en pause fonctionne sans affichage rapide de texte")
     
     def test_touche_p_mappee(self):
         """✅ La touche P (principale) est bien mappée pour la pause."""

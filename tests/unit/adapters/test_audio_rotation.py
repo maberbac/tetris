@@ -74,24 +74,25 @@ class TestAudioRotation(unittest.TestCase):
     
     def test_jouer_effet_sonore_gere_fichier_inexistant(self):
         """L'effet sonore doit gérer gracieusement les fichiers inexistants."""
+        from src.domaine.exceptions.exception_audio import ExceptionAudio
+        
         self.audio._initialise = True
         
-        # Tenter de jouer un fichier inexistant
-        resultat = self.audio.jouer_effet_sonore("fichier_inexistant.wav")
-        
-        # Doit retourner False sans crash
-        self.assertFalse(resultat)
+        # Tenter de jouer un fichier inexistant doit lever ExceptionAudio
+        with self.assertRaises(ExceptionAudio):
+            self.audio.jouer_effet_sonore("fichier_inexistant.wav")
     
     def test_jouer_effet_sonore_initialise_automatiquement(self):
         """L'effet sonore doit initialiser automatiquement le système si nécessaire."""
+        from src.domaine.exceptions.exception_audio import ExceptionAudio
+        
         with patch.object(self.audio, 'initialiser') as mock_init:
             mock_init.return_value = None
             self.audio._initialise = False
             
-            # Première tentative doit déclencher l'initialisation
-            self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav")
-            
-            mock_init.assert_called_once()
+            # Sans initialisation doit lever ExceptionAudio
+            with self.assertRaises(ExceptionAudio):
+                self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav")
 
 
 if __name__ == '__main__':

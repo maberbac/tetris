@@ -5,14 +5,18 @@ Runner pour les tests d'acceptance - Tests de comportement utilisateur.
 Ces tests valident que le jeu répond correctement aux actions
 de l'utilisateur et aux scénarios d'usage réels.
 
-État actuel : 64 tests d'acceptance incluant les corrections de bugs :
+État actuel : 87 tests d'acceptance incluant les corrections de bugs :
 - Contrôles et gameplay (100% ✅)
 - Corrections bug lignes multiples ✅ 
 - Corrections bug game over prématuré ✅
 - Tests bug visuel ligne complète ✅
 - Nouvelle fonctionnalité mute/unmute ✅
+- Nouvelle fonctionnalité restart ✅
 - Tests son gain de niveau ✅
 - Tests son game over ✅
+- Tests son TETRIS pour 4 lignes ✅
+- Tests audio rotation ✅
+- Tests masquage zone invisible ✅
 - Tests correction bugs divers ✅
 """
 

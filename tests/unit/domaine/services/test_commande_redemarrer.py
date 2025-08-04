@@ -5,6 +5,11 @@ Architecture : Command Pattern + TDD strict
 
 import unittest
 from unittest.mock import Mock, MagicMock
+import os
+import sys
+
+# Ajouter le répertoire racine du projet au path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
 
 from src.domaine.services.commandes.commande_redemarrer import CommandeRedemarrer
 from src.domaine.services.moteur_partie import MoteurPartie

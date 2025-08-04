@@ -7,7 +7,6 @@ naturellement dans les entités.
 Services disponibles :
 - Commandes : Command Pattern pour les actions de jeu
 - GestionnaireEvenements : Gestion des inputs et contrôles
-- AdaptateurPygame : Bridge vers la bibliothèque Pygame
 
 RÈGLES :
 - Services sans état (stateless) ou avec état géré explicitement
@@ -27,21 +26,10 @@ from .gestionnaire_evenements import (
     ConfigurationControles
 )
 
-# Import conditionnel de l'adaptateur Pygame
-try:
-    from .adaptateur_pygame import AdaptateurPygame
-    PYGAME_SUPPORT = True
-except ImportError:
-    PYGAME_SUPPORT = False
-    AdaptateurPygame = None
-
 __all__ = [
     'Commande', 'MoteurJeu',
     'CommandeDeplacerGauche', 'CommandeDeplacerDroite', 'CommandeDescendre',
     'CommandeChuteRapide', 'CommandeTourner', 'CommandePause', 'CommandeAfficherMenu',
     'GestionnaireEvenements', 'TypeEvenement', 'ToucheClavier',
-    'ConfigurationControles', 'PYGAME_SUPPORT'
+    'ConfigurationControles'
 ]
-
-if PYGAME_SUPPORT:
-    __all__.append('AdaptateurPygame')

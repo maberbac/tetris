@@ -246,8 +246,7 @@ class AffichagePartie(AffichageJeu):
             "Espace        : Chute instantanée",
             "P             : Pause/Reprendre",
             "M             : Mute/Unmute",
-            "R             : Redémarrer après Game Over",
-            "ESC           : Menu/Quitter"
+            "R             : Redémarrer après Game Over"
         ]
         
         for controle in controles:

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Optional
 from src.ports.sortie.audio_jeu import AudioJeu
 from src.domaine.services.logger_tetris import logger_tetris
+from src.domaine.exceptions.exception_audio import ExceptionAudio
 
 
 class AudioPartie(AudioJeu):
@@ -58,6 +59,11 @@ class AudioPartie(AudioJeu):
         except pygame.error as e:
             logger_tetris.error(f"[ERROR] Erreur lors de l'initialisation audio: {e}")
             self._initialise = False
+            raise ExceptionAudio(f"Échec initialisation audio: {e}")
+        except Exception as e:
+            logger_tetris.error(f"[ERROR] Erreur inattendue lors de l'initialisation audio: {e}")
+            self._initialise = False
+            raise ExceptionAudio(f"Échec initialisation audio inattendu: {e}")
     
     def jouer_musique(self, chemin_fichier: str, volume: float = 0.7, boucle: bool = True) -> None:
         """
@@ -72,7 +78,7 @@ class AudioPartie(AudioJeu):
             self.initialiser()
         
         if not self._initialise:
-            return
+            raise ExceptionAudio("Système audio non initialisé")
             
         try:
             # Construire le chemin absolu vers assets/audio/music/
@@ -81,7 +87,7 @@ class AudioPartie(AudioJeu):
             
             if not chemin_complet.exists():
                 logger_tetris.error(f"[ERROR] Fichier audio introuvable: {chemin_complet}")
-                return
+                raise ExceptionAudio(f"Fichier musique introuvable: {chemin_fichier}")
             
             # Charger et jouer la musique
             pygame.mixer.music.load(str(chemin_complet))
@@ -117,8 +123,17 @@ class AudioPartie(AudioJeu):
                         logger_tetris.info(f"✅ Fallback réussi: {fallback_path.name}")
                     except pygame.error as e2:
                         logger_tetris.error(f"[ERROR] Fallback échoué aussi: {e2}")
+                        raise ExceptionAudio(f"Erreur lecture musique (et fallback): {e}")
+                else:
+                    raise ExceptionAudio(f"Erreur lecture musique: {e}")
+            else:
+                raise ExceptionAudio(f"Erreur lecture musique: {e}")
         except Exception as e:
-            logger_tetris.error(f"[ERROR] Erreur inattendue lors de la lecture de la musique: {e}")
+            if not isinstance(e, ExceptionAudio):
+                logger_tetris.error(f"[ERROR] Erreur inattendue lors de la lecture de la musique: {e}")
+                raise ExceptionAudio(f"Erreur inattendue lecture musique: {e}")
+            else:
+                raise
     
     def arreter_musique(self) -> None:
         """Arrête complètement la musique de fond."""
@@ -192,7 +207,7 @@ class AudioPartie(AudioJeu):
             self.initialiser()
         
         if not self._initialise:
-            return False
+            raise ExceptionAudio("Système audio non initialisé pour effet sonore")
             
         try:
             # Construire le chemin absolu
@@ -201,7 +216,7 @@ class AudioPartie(AudioJeu):
             
             if not chemin_complet.exists():
                 logger_tetris.error(f"[ERROR] Fichier effet sonore introuvable: {chemin_complet}")
-                return False
+                raise ExceptionAudio(f"Fichier effet sonore introuvable: {chemin_fichier}")
             
             # Charger et jouer l'effet sonore
             effet = pygame.mixer.Sound(str(chemin_complet))
@@ -218,7 +233,13 @@ class AudioPartie(AudioJeu):
             
         except pygame.error as e:
             logger_tetris.error(f"[ERROR] Erreur lors de la lecture de l'effet sonore: {e}")
-            return False
+            raise ExceptionAudio(f"Erreur lecture effet sonore: {e}")
+        except Exception as e:
+            if not isinstance(e, ExceptionAudio):
+                logger_tetris.error(f"[ERROR] Erreur inattendue effet sonore: {e}")
+                raise ExceptionAudio(f"Erreur inattendue effet sonore: {e}")
+            else:
+                raise
     
     def est_musique_en_cours(self) -> bool:
         """
@@ -242,6 +263,7 @@ class AudioPartie(AudioJeu):
                 pygame.mixer.quit()
             except pygame.error as e:
                 logger_tetris.warning(f"[WARNING] Erreur lors du nettoyage audio: {e}")
+                # Ne pas lever ExceptionAudio pour le nettoyage - on veut toujours pouvoir nettoyer
             finally:
                 self._initialise = False
                 self._musique_chargee = False

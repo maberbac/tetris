@@ -1,71 +1,118 @@
 # Tetris
 
-Un jeu de Tetris classique développé en Python avec une archit## 🎯 Comment jouer
+Un jeu de Tetris classique développé en Python avec l'aide de Github Copilot (Claude 4.0)
+
+## 📋 Table des matières
+
+1. [🎬 Démonstration du gameplay](#-démonstration-du-gameplay)
+   - [🕹️ Contrôles de jeu](#️-contrôles-de-jeu)
+   - [🎮 Règles du jeu](#-règles-du-jeu)
+   - [🎯 Système de score](#-système-de-score)
+2. [🎮 Fonctionnalités](#-fonctionnalités)
+3. [🚀 Installation et utilisation](#-installation-et-utilisation)
+4. [🎯 Comment jouer](#-comment-jouer)
+   - [Contrôles](#contrôles)
+   - [Gameplay](#gameplay)
+   - [Scoring](#scoring)
+5. [🎵 Audio](#-audio)
+6. [🎲 Types de pièces](#-types-de-pièces)
+7. [🏗️ Architecture technique](#️-architecture-technique)
+8. [🧪 Tests](#-tests)
+9. [📋 État du développement](#-état-du-développement)
+
+---
+
+## 🎬 Démonstration du gameplay
+
+[![Démonstration Tetris](https://img.youtube.com/vi/4wGwvLoQEzo/0.jpg)](https://youtu.be/4wGwvLoQEzo)
+
+*Cliquez sur l'image ci-dessus pour voir une démonstration vidéo du jeu en action !*
 
 ### 🕹️ Contrôles de jeu
-- **Flèches directionnelles** : Déplacer les pièces (gauche/droite/bas)
-- **Flèche du haut** ou **Espace** : Faire tourner les pièces (rotation horaire) ✅
-- **Touche P** : Pause/reprendre (met aussi la musique en pause)
-- **Touche M** : Mute/unmute la musique ET les effets sonores ✅
-- **Touche R** : **Redémarrer une nouvelle partie** (seulement après game over) ✅ **NOUVEAU !**
+- Flèche Gauche (←) : Déplacer la pièce vers la gauche
+- Flèche Droite (→) : Déplacer la pièce vers la droite
+- Flèche Haut (↑) : Faire tourner la pièce (rotation horaire)
+- Flèche Bas (↓) : Chute rapide (descente accélérée ligne par ligne)
+- Barre d'Espace : Chute instantanée (dépose immédiatement la pièce)
+- P : Pause/Reprendre la partie (met aussi la musique en pause)
+- M : Mute/Unmute la musique ET les effets sonores
+- R : Redémarrer une nouvelle partie (disponible seulement après game over)
+- X (fenêtre) : Fermer le jeu proprement
 
 ### 🎮 Règles du jeu
-- **Objectif** : Compléter des lignes horizontales pour les faire disparaître
-- **Fin de partie** : Quand les pièces atteignent le haut de l'écran
-- **Restart** : Appuyez sur **R** après un game over pour commencer une nouvelle partie instantanément ✅
+- Démarrage : Le jeu démarre automatiquement en pause pour permettre au joueur de se préparer
+- Objectif : Compléter des lignes horizontales pour les faire disparaître et marquer des points
+- Plateau de jeu : Grille de 10 colonnes × 20 lignes (dimensions standard Tetris)
+- Pièces (Tétrominos) : 7 formes différentes (I, O, T, S, Z, J, L) qui descendent automatiquement
+- Rotation : Toutes les pièces peuvent tourner (sauf le carré O) dans le sens horaire
+- Placement : Une pièce se fixe quand elle ne peut plus descendre
+- Lignes complètes : Éliminées automatiquement avec descente des lignes au-dessus
+- Accélération : La vitesse de chute augmente progressivement avec le niveau
+- Fin de partie : Quand une nouvelle pièce ne peut pas être placée (sommet atteint)
+- Score : Points attribués selon les lignes éliminées et le niveau actuel
+- Restart : Appuyez sur R après un game over pour commencer une nouvelle partie instantanément
+- Fermer le jeu : Cliquez simplement sur le X de la fenêtre pour quitter proprement
 
-**Rotation horaire** : La pièce T suit maintenant l'ordre de rotation horaire : Nord → Ouest → Sud → Est → Nord ✅erne et des bonnes pratiques de développement.
+### 🎯 Système de score
+- 1 ligne : 100 × niveau points
+- 2 lignes simultanées : 300 × niveau points  
+- 3 lignes simultanées : 500 × niveau points
+- 4 lignes simultanées (TETRIS) : 800 × niveau points + son spécial
+- Niveau : Augmente toutes les 10 lignes éliminées
 
 ## 🎮 Fonctionnalités
 
-- Gameplay classique de Tetris avec **les 7 tétrominos complets** (I, O, T, S, Z, J, L)
+- Gameplay classique de Tetris avec les 7 tétrominos complets (I, O, T, S, Z, J, L)
 - Rotation et déplacement des pièces avec validation de collision
-- **Zone invisible masquée** : Seules les parties visibles des pièces (y ≥ 0) sont affichées pour une expérience utilisateur propre
-- **Système audio complet** avec musique de fond et effets sonores
-  - **Musique de fond intégrée** avec le thème classique de Tetris
-  - **Son de rotation** : Effet sonore rotate.wav à chaque rotation réussie ✅
-  - **Son de gain de niveau** : Effet sonore gained-a-new-level.wav à chaque passage de niveau ✅
-  - **Son de game over** : Effet sonore game-over.wav à chaque fin de partie ✅ **NOUVEAU !**
-  - **Contrôle mute/unmute** : Touche M pour basculer le son (musique ET effets)
+- Zone invisible masquée : Seules les parties visibles des pièces (y ≥ 0) sont affichées pour une expérience utilisateur propre
+- Système audio complet avec musique de fond et effets sonores
+  - Musique de fond intégrée avec le thème classique de Tetris
+  - Son de rotation : Effet sonore rotate.wav à chaque rotation réussie ✅
+  - Son de gain de niveau : Effet sonore gained-a-new-level.wav à chaque passage de niveau ✅
+  - Son de game over : Effet sonore game-over.wav à chaque fin de partie ✅
+  - Contrôle mute/unmute : Touche M pour basculer le son (musique ET effets)
 - Factory Pattern avec auto-enregistrement des pièces (Registry Pattern)
 - Architecture hexagonale avec séparation claire des responsabilités
 - Tests complets avec approche TDD (Test-Driven Development)
-- **Rotation horaire** : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ **CORRIGÉ !**
+- Rotation horaire : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ CORRIGÉ !
 
-### **Tests implémentés (195 tests - 100% ✅)** ✅ **NOUVEAU RECORD ABSOLU !**
+### Tests implémentés (258 tests - 100% ✅)
 ```
 tests/
-├── unit/                           # Tests unitaires (91 tests ✅)
+├── unit/                           # Tests unitaires (145 tests ✅)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
-│   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes)
-│   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute ✅)
-├── integration/                   # Tests d'intégration (22 tests ✅) 
+│   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes + ExceptionCollision + Restart)
+│   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute + ExceptionAudio ✅)
+├── integration/                   # Tests d'intégration (26 tests ✅) 
 │   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
 │   ├── test_correction_audio.py   # Tests correction audio (5 tests)
+│   ├── test_exception_audio_integration.py # Tests intégration ExceptionAudio (4 tests) ✅
 │   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
 │   └── [4 tests d'intégration directe] # Tests génération aléatoire, moteur, plateau, statistiques ✅
-├── acceptance/                    # Tests d'acceptance (82 tests ✅)
+├── acceptance/                    # Tests d'acceptance (87 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
 │   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart ✅
+│   ├── test_correction_bug_crash_placement.py # Tests correction bug crash placement ✅
+│   ├── test_correction_bug_crash_reprise_partie.py # Tests correction bug crash reprise ✅
 │   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
 │   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
 │   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
 │   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
 │   ├── test_son_game_over.py     # Tests son game over ✅
 │   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅
-│   ├── test_audio_rotation.py    # Tests audio rotation ✅
-│   └── test_messages_utilisateur.py # Tests messages utilisateur ✅
+│   ├── test_audio_rotation.py    # Tests audio rotation avec ExceptionAudio ✅
+│   └── test_masquage_zone_invisible.py # Tests masquage zone invisible ✅
 └── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-**Performance** : 195 tests en ~1.9s (100% succès - Suite complète validée ✅) ✅ **NOUVEAU RECORD ABSOLU !**
+Performance : 258 tests en temps rapide (100% succès - Suite complète validée ✅)
 
-### 🔧 **Découverte dynamique des tests** ✅ **NOUVEAU !**
+### 🔧 Découverte dynamique des tests ✅
 Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
 
 ## 🚀 Installation et utilisation
@@ -90,36 +137,51 @@ python tests/run_suite_tests.py
 
 ## 🎯 Comment jouer
 
-- **Flèches directionnelles** : Déplacer les pièces (gauche/droite/bas)
-- **Flèche du haut** ou **Espace** : Faire tourner les pièces (rotation horaire) ✅
-- **Touche P** : Pause/reprendre (met aussi la musique en pause)
-- **Touche M** : Mute/unmute la musique ET les effets sonores ✅
-- **Touche R** : Redémarrer une nouvelle partie (seulement après game over) ✅ **NOUVEAU !**
-- **Objectif** : Compléter des lignes horizontales pour les faire disparaître
-- **Fin de partie** : Quand les pièces atteignent le haut de l'écran
+### Contrôles
+- Flèche Gauche (←) : Déplacer la pièce vers la gauche
+- Flèche Droite (→) : Déplacer la pièce vers la droite  
+- Flèche Haut (↑) : Faire tourner la pièce (rotation horaire)
+- Flèche Bas (↓) : Chute rapide (descente accélérée ligne par ligne)
+- Barre d'Espace : Chute instantanée (dépose immédiatement la pièce)
+- P : Pause/Reprendre la partie
+- M : Mute/Unmute la musique ET les effets sonores
+- R : Redémarrer une nouvelle partie (seulement après game over)
+- X (fenêtre) : Fermer le jeu proprement
 
-**Rotation horaire** : La pièce T suit maintenant l'ordre de rotation horaire : Nord → Ouest → Sud → Est → Nord ✅
+### Gameplay
+- Démarrage : Le jeu démarre automatiquement en pause - appuyez sur P pour commencer à jouer
+- Objectif : Compléter des lignes horizontales pour les faire disparaître et marquer des points
+- Plateau : Grille de 10×20 avec zone invisible au-dessus pour l'apparition des pièces
+- Fin de partie : Quand une nouvelle pièce ne peut pas être placée
+- Progression : Le niveau augmente toutes les 10 lignes éliminées avec accélération automatique
+
+### Scoring
+- 1 ligne : 100 × niveau
+- 2 lignes : 300 × niveau  
+- 3 lignes : 500 × niveau
+- 4 lignes (TETRIS) : 800 × niveau + son spécial
 
 ## 🎵 Audio
 
-Le jeu inclut maintenant un **système audio complet et interactif** :
-- **Musique de fond** : Thème classique de Tetris (`tetris-theme.wav` - format compatible)
-- **Effets sonores** : Son de rotation (`rotate.wav`) joué à chaque rotation réussie ✅
-- **Son de gain de niveau** : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau ✅
-- **Son de game over** : Son (`game-over.wav`) joué à chaque fin de partie ✅ **NOUVEAU !**
-- **Son TETRIS spécial** : Son (`tetris.wav`) joué exclusivement lors de l'élimination de 4 lignes simultanées ✅ **NOUVEAU !**
-- **Contrôle mute/unmute unifié** : Touche M pour basculer le son de TOUT l'audio ✅
-- **Feedback utilisateur** : Messages visuels lors du basculement mute/unmute
-- **Système de fallback** : Tentative automatique WAV si OGG échoue
-- **Contrôle automatique** : La musique se met en pause avec le jeu (touche P)
-- **Volume optimisé** : Musique 70%, effets sonores 100% pour une expérience équilibrée
-- **Architecture hexagonale** : Audio intégré via des ports et adaptateurs
-- **Gestion d'erreurs robuste** : Le jeu fonctionne même sans audio
-- **Respect du mute** : Les effets sonores sont automatiquement mutés quand le mode mute est activé
+Le jeu inclut maintenant un système audio complet et interactif :
+- Musique de fond : Thème classique de Tetris (`tetris-theme.wav` - format compatible)
+- Effets sonores : Son de rotation (`rotate.wav`) joué à chaque rotation réussie
+- Son de gain de niveau : Son (`gained-a-new-level.wav`) joué à chaque passage de niveau
+- Son de game over : Son (`game-over.wav`) joué à chaque fin de partie
+- Son TETRIS spécial : Son (`tetris.wav`) joué exclusivement lors de l'élimination de 4 lignes simultanées
+- Contrôle mute/unmute unifié : Touche M pour basculer le son de TOUT l'audio
+- Feedback utilisateur : Messages visuels lors du basculement mute/unmute
+- Système de fallback : Tentative automatique WAV si OGG échoue
+- Contrôle automatique : La musique se met en pause avec le jeu (touche P)
+- Volume optimisé : Musique 70%, effets sonores 100% pour une expérience équilibrée
+- Architecture hexagonale : Audio intégré via des ports et adaptateurs
+- Gestion d'erreurs robuste : Le jeu fonctionne même sans audio avec ExceptionAudio
+- Respect du mute : Les effets sonores sont automatiquement mutés quand le mode mute est activé
+- Gestion centralisée des erreurs : ExceptionAudio capturée dans jouer.py avec messages informatifs
 
 ## 🎲 Types de pièces
 
-Le jeu a maintenant **toutes les 7 tétrominos classiques** complètement implémentées :
+Le jeu a maintenant toutes les 7 tétrominos classiques complètement implémentées :
 
 ```
 I-piece (ligne)     O-piece (carré)     T-piece (T)
@@ -134,19 +196,19 @@ S-piece (S)         Z-piece (Z)         J-piece (J)     L-piece (L)
                                           ██               ██
 ```
 
-✅ **Toutes les pièces sont maintenant implémentées avec leurs rotations complètes** :
-- **Rotation horaire** : Toutes les pièces suivent l'ordre horaire (sauf O qui ne tourne pas)
-- **Pièce T spécialement corrigée** : Nord → Ouest → Sud → Est → Nord ✅
-- **Pivot cohérent** : Chaque pièce a un pivot fixe et correct pour ses rotations
+✅ Toutes les pièces sont maintenant implémentées avec leurs rotations complètes :
+- Rotation horaire : Toutes les pièces suivent l'ordre horaire (sauf O qui ne tourne pas)
+- Pièce T spécialement corrigée : Nord → Ouest → Sud → Est → Nord ✅
+- Pivot cohérent : Chaque pièce a un pivot fixe et correct pour ses rotations
 
 ## 🏗️ Architecture technique
 
-Le projet suit une **architecture hexagonale** avec séparation claire des responsabilités :
+Le projet suit une architecture hexagonale avec séparation claire des responsabilités :
 
-- **Domaine** : Logique métier pure (pièces, plateau, règles)
-- **Ports** : Interfaces pour les services externes (affichage, audio, contrôles)
-- **Adapters** : Implémentations concrètes (UI, audio, stockage, etc.)
-- **Assets** : Médias du jeu (sons, images, musiques)
+- Domaine : Logique métier pure (pièces, plateau, règles)
+- Ports : Interfaces pour les services externes (affichage, audio, contrôles)
+- Adapters : Implémentations concrètes (UI, audio, stockage, etc.)
+- Assets : Médias du jeu (sons, images, musiques)
 
 ```
 tetris/
@@ -157,8 +219,15 @@ tetris/
 ├── assets/           # Médias du jeu
 │   ├── audio/        # Sons et musiques
 │   └── images/       # Images et textures
-├── tests/            # Tests organisés par type
 ├── docs/             # Documentation complète
+│   ├── DIRECTIVES_DEVELOPPEMENT.md  # Règles de développement
+│   ├── DOC_TECHNIQUE.md              # Documentation technique
+│   ├── journal-developpement.md     # Journal du projet
+│   └── testing-strategy.md          # Stratégie TDD
+├── tests/            # Tests organisés par type
+│   ├── unit/         # Tests unitaires (145 tests)
+│   ├── acceptance/   # Tests d'acceptance (87 tests)
+│   └── integration/  # Tests d'intégration (26 tests)
 ├── tmp/              # Scripts temporaires et outils de développement
 ├── jouer.py          # Point d'entrée principal
 └── partie_tetris.py  # Orchestrateur du jeu
@@ -166,7 +235,7 @@ tetris/
 
 ## 🧪 Tests
 
-Le projet utilise une approche **TDD** (Test-Driven Development) avec respect strict des directives :
+Le projet utilise une approche TDD (Test-Driven Development) avec respect strict des directives :
 
 ```bash
 # SCRIPTS OFFICIELS OBLIGATOIRES (selon directives)
@@ -184,56 +253,37 @@ python tests/run_all_integration_tests.py
 python tests/run_suite_tests.py
 ```
 
-**Organisation conforme aux directives** :
-- **Structure stricte** : `tests/unit/`, `tests/acceptance/`, `tests/integration/`
-- **4 scripts officiels** : Exactement ceux spécifiés dans les directives
-- **Outils de développement** : Déplacés dans `tmp/` (comme `metriques_tests.py`)
-- **AUCUN test à la racine** : Règle absolue respectée
+Organisation conforme aux directives :
+- Structure stricte : `tests/unit/`, `tests/acceptance/`, `tests/integration/`
+- 4 scripts officiels : Exactement ceux spécifiés dans les directives
+- Outils de développement : Déplacés dans `tmp/` (comme `metriques_tests.py`)
+- AUCUN test à la racine : Règle absolue respectée
 
-**Couverture actuelle** : **195 tests, 100% de réussite ✅** ✅ **NOUVEAU RECORD ABSOLU !**
-- **91 tests unitaires** : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart ✅
-- **82 tests d'acceptance** : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + **fonctionnalité restart** ✅
-- **22 tests d'intégration** : Intégration audio, restart, génération aléatoire, moteur, plateau, statistiques ✅ **NOUVEAU !**
-- **25 tests d'intégration** : Système complet avec audio + intégration sons + **intégration restart** ✅ **NOUVEAU !**
+Couverture actuelle : 258 tests, 100% de réussite
+- 145 tests unitaires : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart, ExceptionAudio
+- 87 tests d'acceptance : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + fonctionnalité restart + audio rotation avec ExceptionAudio
+- 26 tests d'intégration : Intégration audio, restart, génération aléatoire, moteur, plateau, statistiques, ExceptionAudio
 
 ## 📋 État du développement
 
 ### ✅ Terminé
 - Architecture de base avec TDD
-- **Toutes les 7 pièces complètes** : I, O, T, S, Z, J, L avec rotations horaires complètes ✅
-- **Rotation horaire corrigée** : Pièce T maintenant conforme à l'ordre horaire (Nord → Ouest → Sud → Est)
+- Toutes les 7 pièces complètes : I, O, T, S, Z, J, L avec rotations horaires complètes 
+- Rotation horaire corrigée : Pièce T maintenant conforme à l'ordre horaire (Nord → Ouest → Sud → Est)
 - Factory Pattern avec auto-enregistrement (Registry Pattern)
-- Tests complets du domaine et validation TDD complète ✅
+- Tests complets du domaine et validation TDD complète 
 - Value Objects et Entities avec comportements métier
 - Symétrie parfaite entre pièces J et L
-- **Suite de tests complètement validée et fonctionnelle**
-- **Plateau de jeu complet** avec détection de lignes complètes
-- **Interface utilisateur Pygame complète** avec affichage 60 FPS
-- **Zone invisible masquée** : Affichage propre avec masquage des positions y < 0
-- **Système de score et niveaux fonctionnel**
-- **Command Pattern** pour les contrôles
-- **Architecture hexagonale** respectée
-- **Moteur de partie complet** avec statistiques
-- **Système audio intégré** avec musique de fond fonctionnelle
-- **Gestion d'erreurs audio** : Fallback automatique et fonctionnement sans son
-- **Organisation des fichiers** : Structure propre avec `tmp/` pour les outils de développement
-- **Debug TDD systématique** : Corrections de bugs avec méthodologie stricte
-- **Zone invisible** : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
-- **Corrections TDD** : Corrections des pièces T avec pivot et rotation horaire parfaits
-- **Suite de tests complète** : 145/145 tests passent (100% réussite) ✅
-
-### 🎮 **Projet TERMINÉ et FONCTIONNEL**
-Le jeu Tetris est maintenant **complet et jouable** avec toutes les fonctionnalités :
-- ✅ **Interface graphique** : Affichage Pygame avec couleurs et masquage zone invisible
-- ✅ **Contrôles** : 8 commandes (flèches, espace, p, m, r) avec rotation horaire ✅
-- ✅ **Gameplay** : Chute des pièces, rotations horaires, lignes complètes
-- ✅ **Scoring** : Système de points et progression de niveaux
-- ✅ **Statistics** : Compteurs de pièces et performances
-- ✅ **Audio** : Musique de fond avec contrôles intégrés et gestion d'erreurs + sons de rotation, gain niveau et game over
-- ✅ **Tests TDD** : 145 tests validés (100% succès) avec corrections complètes
-- ✅ **Organisation** : Structure de projet professionnelle avec séparation claire
-
----
-
-> **Licence** : Projet éducatif  
-> **Status** : 🎉 **PROJET TETRIS COMPLET** - Jeu fonctionnel avec architecture hexagonale et TDD
+- Suite de tests complètement validée et fonctionnelle
+- Plateau de jeu complet avec détection de lignes complètes
+- Interface utilisateur Pygame complète avec affichage 60 FPS
+- Zone invisible masquée : Affichage propre avec masquage des positions y < 0
+- Système de score et niveaux fonctionnel
+- Command Pattern pour les contrôles avec exceptions métier
+- Gestion des exceptions : ExceptionCollision utilisée par toutes les commandes de mouvement (gauche, droite, rotation, chute rapide)
+- Architecture hexagonale respectée avec gestionnaire centralisé des collisions
+- Moteur de partie complet avec statistiques
+- Système audio intégré avec musique de fond fonctionnelle
+- Gestion d'erreurs audio : Fallback automatique et fonctionnement sans son
+- Zone invisible : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
+- Suite de tests complète : 258/258 tests passent (100% réussite) 

@@ -5,14 +5,18 @@ Runner pour les tests d'intégration - Tests de composants ensemble.
 Ces tests valident le fonctionnement complet du système avec 
 plusieurs composants fonctionnant ensemble (moteur + plateau + factory).
 
-État actuel : 19 tests d'intégration, 100% de réussite ✅
-- Tests unittest d'intégration complète : 15 tests ✅
+État actuel : 22 tests d'intégration, 100% de réussite ✅
+- Tests unittest d'intégration (découverte automatique) : 18 tests ✅
   - Intégration audio (6 tests)
   - Correction audio (5 tests)  
+  - Intégration restart (3 tests)
   - Intégration son gain de niveau (2 tests)
   - Intégration son game over (2 tests)
-- Tests de fonctions directes : 4 tests ✅
+- Tests de fonctions directes (exécution manuelle) : 4 tests ✅
   - Génération aléatoire des pièces ✅
+  - Moteur de partie complet ✅
+  - Plateau avec collisions ✅
+  - Statistiques et scoring ✅
   - Moteur de partie complet ✅
   - Collisions et plateau ✅
   - Statistiques et score ✅

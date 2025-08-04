@@ -4,5 +4,6 @@ CONFORME AUX DIRECTIVES : Point d'accès centralisé pour toutes les exceptions 
 """
 
 from .exception_collision import ExceptionCollision
+from .exception_audio import ExceptionAudio
 
-__all__ = ['ExceptionCollision']
+__all__ = ['ExceptionCollision', 'ExceptionAudio']

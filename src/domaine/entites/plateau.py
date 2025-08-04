@@ -105,23 +105,6 @@ class Plateau:
         """
         return all(self.est_position_libre(pos) for pos in piece.positions)
     
-    def placer_piece(self, piece: Piece) -> None:
-        """
-        Place une pièce sur le plateau (marque ses positions comme occupées).
-        
-        Args:
-            piece: Pièce à placer
-            
-        Raises:
-            ExceptionCollision: Si la pièce ne peut pas être placée
-        """
-        if not self.peut_placer_piece(piece):
-            raise ExceptionCollision("Impossible de placer la pièce à cette position")
-        
-        # Marquer toutes les positions de la pièce comme occupées
-        for position in piece.positions:
-            self._positions_occupees.add(position)
-    
     def placer_piece_et_supprimer_lignes(self, piece: Piece) -> int:
         """
         Opération atomique : place une pièce et supprime immédiatement les lignes complètes.

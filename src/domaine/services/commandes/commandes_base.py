@@ -13,6 +13,9 @@ Avantages du Command Pattern :
 
 from abc import ABC, abstractmethod
 from typing import Protocol
+
+# Import des exceptions du domaine selon les directives
+from ...exceptions.exception_collision import ExceptionCollision
 from ...entites.piece import Piece
 from ...entites.plateau import Plateau
 from ..logger_tetris import logger_tetris
@@ -88,7 +91,8 @@ class CommandeDeplacerGauche(Commande):
         else:
             # Annuler le déplacement
             piece._positions = positions_originales
-            return False
+            # Lever ExceptionCollision selon les directives
+            raise ExceptionCollision("Impossible de déplacer la pièce vers la gauche")
 
 
 class CommandeDeplacerDroite(Commande):
@@ -111,7 +115,8 @@ class CommandeDeplacerDroite(Commande):
         else:
             # Annuler le déplacement
             piece._positions = positions_originales
-            return False
+            # Lever ExceptionCollision selon les directives
+            raise ExceptionCollision("Impossible de déplacer la pièce vers la droite")
 
 
 class CommandeDescendre(Commande):
@@ -130,11 +135,27 @@ class CommandeChuteRapide(Commande):
         piece = moteur.obtenir_piece_active()
         plateau = moteur.obtenir_plateau()
         
+        # Vérifier d'abord si la pièce peut descendre au moins une fois
+        positions_originales = piece.positions.copy()
+        pivot_original = piece.position_pivot
+        
+        piece.deplacer(0, 1)
+        peut_descendre_initialement = plateau.peut_placer_piece(piece)
+        
+        # Restaurer position originale complètement
+        piece._positions = positions_originales
+        piece.position_pivot = pivot_original
+        
+        if not peut_descendre_initialement:
+            # Lever ExceptionCollision selon les directives
+            raise ExceptionCollision("Impossible d'effectuer une chute rapide - pièce bloquée")
+        
         nb_lignes_descendues = 0
         
         while True:
             # Sauvegarder la position actuelle
-            positions_originales = piece.positions.copy()
+            positions_actuelles = piece.positions.copy()
+            pivot_actuel = piece.position_pivot
             
             # Essayer de descendre
             piece.deplacer(0, 1)
@@ -144,7 +165,8 @@ class CommandeChuteRapide(Commande):
                 nb_lignes_descendues += 1
             else:
                 # Annuler le dernier déplacement et arrêter
-                piece._positions = positions_originales
+                piece._positions = positions_actuelles
+                piece.position_pivot = pivot_actuel
                 break
         
         # Placer la pièce définitivement
@@ -162,9 +184,8 @@ class CommandeTourner(Commande):
         piece = moteur.obtenir_piece_active()
         plateau = moteur.obtenir_plateau()
         
-        # Sauvegarder l'état actuel (positions et orientation)
+        # Sauvegarder l'état actuel (positions seulement)
         positions_originales = piece.positions.copy()
-        orientation_originale = piece._orientation
         
         # Essayer la rotation
         piece.tourner()
@@ -173,10 +194,10 @@ class CommandeTourner(Commande):
         if plateau.peut_placer_piece(piece):
             return True
         else:
-            # Annuler la rotation
-            piece._positions = positions_originales
-            piece._orientation = orientation_originale
-            return False
+            # Annuler la rotation en restaurant les positions originales
+            piece.positions = positions_originales
+            # Lever ExceptionCollision selon les directives
+            raise ExceptionCollision("Impossible de tourner la pièce")
 
 
 class CommandePause(Commande):
@@ -197,7 +218,6 @@ class CommandeBasculerMute(Commande):
         try:
             audio = moteur.obtenir_audio()
             if audio is None:
-                print("❌ Audio non disponible")
                 logger_tetris.warning("❌ Audio non disponible")
                 return False
             
@@ -205,16 +225,13 @@ class CommandeBasculerMute(Commande):
             
             # Feedback utilisateur (directement à l'utilisateur)
             if est_mute:
-                print("🔇 Musique désactivée")
                 logger_tetris.info("🔇 Musique désactivée")
             else:
-                print("🔊 Musique réactivée")
                 logger_tetris.info("🔊 Musique réactivée")
                 
             return True
             
         except Exception as e:
-            print(f"❌ Erreur audio: {e}")
             logger_tetris.error(f"❌ Erreur audio: {e}")
             return False
 

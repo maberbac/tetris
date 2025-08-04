@@ -8,7 +8,6 @@ en suivant l'approche TDD et les directives de développement.
 import unittest
 from unittest.mock import Mock, patch
 import time
-from io import StringIO
 
 from src.domaine.services.gestionnaire_evenements import (
     GestionnaireEvenements, TypeEvenement, ToucheClavier
@@ -44,8 +43,8 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
         self.moteur_mock.obtenir_audio.assert_called_once()
         self.audio_mock.basculer_mute_musique.assert_called_once()
     
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_touche_m_donne_feedback_visuel_mute(self, mock_stdout):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_touche_m_donne_feedback_visuel_mute(self, mock_logger):
         """Scénario : L'utilisateur reçoit un feedback visuel quand il mute."""
         # Given : Audio activé
         self.audio_mock.basculer_mute_musique.return_value = True
@@ -55,13 +54,11 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
             "m", TypeEvenement.CLAVIER_APPUI, self.moteur_mock
         )
         
-        # Then : Message de confirmation affiché
-        output = mock_stdout.getvalue()
-        self.assertIn("🔇", output)
-        self.assertIn("Musique désactivée", output)
+        # Then : Message de confirmation via logger
+        mock_logger.info.assert_called_with("🔇 Musique désactivée")
     
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_touche_m_donne_feedback_visuel_unmute(self, mock_stdout):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_touche_m_donne_feedback_visuel_unmute(self, mock_logger):
         """Scénario : L'utilisateur reçoit un feedback visuel quand il unmute."""
         # Given : Audio désactivé (simule deuxième appui)
         self.audio_mock.basculer_mute_musique.return_value = False
@@ -71,10 +68,8 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
             "m", TypeEvenement.CLAVIER_APPUI, self.moteur_mock
         )
         
-        # Then : Message de confirmation affiché
-        output = mock_stdout.getvalue()
-        self.assertIn("🔊", output)
-        self.assertIn("Musique réactivée", output)
+        # Then : Message de confirmation via logger
+        mock_logger.info.assert_called_with("🔊 Musique réactivée")
     
     def test_basculement_mute_unmute_multiple(self):
         """Scénario : L'utilisateur bascule plusieurs fois entre mute/unmute."""
@@ -96,22 +91,20 @@ class TestAcceptanceMuteUnmute(unittest.TestCase):
         self.assertEqual(resultats, [True, True, True, True])
         self.assertEqual(self.audio_mock.basculer_mute_musique.call_count, 4)
     
-    def test_mute_sans_audio_disponible_informe_utilisateur(self):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_mute_sans_audio_disponible_informe_utilisateur(self, mock_logger):
         """Scénario : L'utilisateur essaie de mute mais l'audio n'est pas disponible."""
         # Given : Pas de système audio
         self.moteur_mock.obtenir_audio.return_value = None
         
         # When : Appui sur M
-        with patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            resultat = self.gestionnaire.traiter_evenement_clavier(
-                "m", TypeEvenement.CLAVIER_APPUI, self.moteur_mock
-            )
-            
-            # Then : Échec gracieux avec message informatif
-            self.assertFalse(resultat)
-            output = mock_stdout.getvalue()
-            self.assertIn("❌", output)
-            self.assertIn("Audio non disponible", output)
+        resultat = self.gestionnaire.traiter_evenement_clavier(
+            "m", TypeEvenement.CLAVIER_APPUI, self.moteur_mock
+        )
+        
+        # Then : Échec gracieux avec message informatif via logger
+        self.assertFalse(resultat)
+        mock_logger.warning.assert_called_with("❌ Audio non disponible")
     
     def test_mute_avec_erreur_audio_gere_gracieusement(self):
         """Scénario : Erreur du système audio lors du basculement."""

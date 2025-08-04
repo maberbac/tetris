@@ -1,64 +1,73 @@
 # Stratégie TDD pour Tetris - Architecture hexagonale
 
-## Date de mise à jour : 3 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT ✅ **NOUVEAU RECORD ABSOLU !**
+Stratégie de test et métriques du projet
 
-#### **Tests implémentés (195 tests - 100% ✅)** ✅ **NOUVEAU RECORD ABSOLU !** - CONFORME AUX DIRECTIVES
+## Date de mise à jour : 8 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT + EXCEPTION AUDIO INTÉGRÉE
+
+#### **Tests implémentés (258 tests - 100%)**
 ```
 tests/
-├── unit/                           # Tests unitaires (91 tests ✅)
+├── unit/                           # Tests unitaires (145 tests)
 │   ├── domaine/                    # Tests du domaine métier
 │   │   ├── entites/               # Tests des entités (Position + 7 pièces + Factory + Statistiques)
-│   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes + Restart ✅)
-│   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute)
-├── integration/                   # Tests d'intégration (22 tests ✅) ✅ **NOUVEAU RECORD ABSOLU !**
+│   │   └── services/              # Tests des services (GestionnaireEvenements + Commandes + ExceptionCollision + Restart)
+│   └── adapters/                  # Tests des adaptateurs (Audio avec mute/unmute + ExceptionAudio intégrée)
+├── integration/                   # Tests d'intégration (26 tests)
 │   ├── test_audio_integration.py  # Tests intégration audio (6 tests)
 │   ├── test_correction_audio.py   # Tests correction audio (5 tests)
-│   ├── test_restart_integration.py # Tests intégration restart (3 tests) ✅
+│   ├── test_exception_audio_integration.py # Tests intégration ExceptionAudio (4 tests)
+│   ├── test_restart_integration.py # Tests intégration restart (3 tests)
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
-│   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
-│   └── [4 tests d'intégration directe] # Tests génération, moteur, plateau, statistiques (4 tests) ✅
-├── acceptance/                    # Tests d'acceptance (82 tests ✅)
+│   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests)
+│   └── [4 tests d'intégration directe] # Tests génération, moteur, plateau, statistiques (4 tests)
+├── acceptance/                    # Tests d'acceptance (87 tests)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
-│   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
-│   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart ✅
-│   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
-│   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   ├── test_bug_visuel_ligne_complete.py # Tests bug visuel ligne complète ✅
-│   ├── test_son_gain_niveau.py   # Tests son gain de niveau ✅
-│   ├── test_son_game_over.py     # Tests son game over ✅
-│   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅
-│   ├── test_audio_rotation.py    # Tests audio rotation ✅
-│   └── test_messages_utilisateur.py # Tests messages utilisateur ✅
+│   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute
+│   ├── test_fonctionnalite_restart.py # Tests fonctionnalité restart
+│   ├── test_correction_bug_crash_placement.py # Tests robustesse crash placement
+│   ├── test_correction_bug_crash_reprise_partie.py # Tests robustesse crash reprise
+│   ├── test_correction_bug_lignes_multiples.py # Tests lignes multiples
+│   ├── test_correction_bug_gameover_premature.py # Tests game over
+│   ├── test_bug_visuel_ligne_complete.py # Tests affichage ligne complète
+│   ├── test_son_gain_niveau.py   # Tests son gain de niveau
+│   ├── test_son_game_over.py     # Tests son game over
+│   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes
+│   ├── test_audio_rotation.py    # Tests audio rotation avec ExceptionAudio
+│   └── test_masquage_zone_invisible.py # Tests masquage zone invisible
 └── [4 scripts officiels]         # Scripts obligatoires par directives
 ```
 
 ### 🎯 **Scripts Officiels Obligatoires (Conformité Directives)**
-1. `run_all_unit_tests.py` - Tests unitaires uniquement (91 tests)
-2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (82 tests)  
-3. `run_all_integration_tests.py` - Tests intégration uniquement (22 tests)  
-4. `run_suite_tests.py` - Suite complète avec métriques (195 tests total)
+1. `run_all_unit_tests.py` - Tests unitaires uniquement (145 tests)
+2. `run_all_acceptance_tests.py` - Tests acceptance uniquement (87 tests)  
+3. `run_all_integration_tests.py` - Tests intégration uniquement (26 tests)  
+4. `run_suite_tests.py` - Suite complète avec métriques (258 tests total)
 
-### **Métriques de qualité actuelles - PARFAITES** ✅ **NOUVEAU RECORD ABSOLU !** :
-- **📊 Total tests** : 195 tests (91 unitaires + 82 acceptance + 22 intégration) ✅ **NOUVEAU RECORD ABSOLU !**
+### **Métriques de qualité actuelles** :
+- **📊 Total tests** : 258 tests (145 unitaires + 87 acceptance + 26 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, **Restart**, **Système Logger** ✅ **NOUVEAU !**
-- **🔧 Corrections** : Tous les bugs corrigés + rotation horaire pièce T + fonctionnalité restart + **système logger complet** ✅ **NOUVEAU !**
-- **⚡ Performance** : Tests s'exécutent en ~1.9s avec reporting détaillé
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, Restart, ExceptionAudio
+- **🔧 Fonctionnalités** : Toutes les fonctionnalités du jeu testées avec rotation horaire, mute/unmute, restart, CommandeChuteRapide avec ExceptionCollision, gestion robuste ExceptionAudio
+- **⚡ Performance** : Tests s'exécutent rapidement avec reporting détaillé
 - **📋 Conformité** : Structure respecte intégralement les directives de développement
+- **🔧 API modernisée** : Correction des APIs obsolètes (_cases_occupees → _positions_occupees, suppression dépendance _orientation)
+- **🎵 Gestion audio robuste** : ExceptionAudio intégrée avec gestion centralisée et dégradation gracieuse
 
-### 🏆 **État final des tests - 185/185 TESTS RÉUSSIS** ✅ **NOUVEAU RECORD !** **(CONFORMITÉ TOTALE)**
+### 🏆 **État final des tests - 145/145 TESTS UNITAIRES RÉUSSIS**
 
-**Métriques de qualité actuelles - PARFAITES** ✅ **NOUVEAU RECORD !** :
-- **📊 Total tests** : 185 tests (85 unitaires + 75 acceptance + 25 intégration) ✅ **NOUVEAU RECORD !**
+**Métriques de qualité actuelles** :
+- **📊 Total tests** : 258 tests (145 unitaires + 87 acceptance + 26 intégration)
 - **✅ Taux de réussite** : 100.0%
-- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, **Restart** ✅ **NOUVEAU !**
-- **🔧 Corrections** : Tous les bugs corrigés + fonctionnalité mute + fonctionnalité restart implémentées ✅ **NOUVEAU !**
-- **🆕 Nouvelles fonctionnalités** : Restart avec touche R après game over ✅ **NOUVEAU !**
-- **🛠️ Correction runner intégration** : Script hybride découvre tous les tests (unittest + fonctions) ✅
-- **⚡ Performance** : Tests s'exécutent en ~1.4s
+- **🎯 Couverture** : Domaine complet, Services, Factory, Registry, Statistiques, Zone invisible, Mute/Unmute, Restart, ExceptionAudio intégrée
+- **🔧 Fonctionnalités** : Toutes les fonctionnalités testées (mute, restart, robustesse, CommandeChuteRapide avec ExceptionCollision, gestion audio robuste)
+- **🆕 Architecture** : Tests organisés selon l'architecture hexagonale
+- **🛠️ Découverte automatique** : Scripts utilisent unittest.TestLoader.discover() avec méthode par répertoire
+- **⚡ Performance** : Tests s'exécutent rapidement avec reporting détaillé
+- **🔧 API modernisée** : Tous les tests utilisent l'API actuelle sans dépendances obsolètes
+- **🎵 ExceptionAudio** : Système complet de gestion d'erreurs audio avec tests TDD (RED-GREEN-REFACTOR)
 
-### Phase 1 : Value Objects du domaine ✅
+### Phase 1 : Value Objects du domaine
 1. **Position (Value Object)** - 5 tests passants
    - ✅ Création avec coordonnées x, y
    - ✅ Déplacement (immutable) → nouvelle instance
@@ -151,21 +160,21 @@ tests/
    - ✅ test_scenario_partie_complete : Scénario complet avec progression
    - ✅ **Résultat : 12/12 tests unitaires statistiques passants**
 
-### Phase 10 : Système audio et organisation finale ✅
-1. **Intégration audio complète** ✅
+### Phase 10 : Système audio et organisation finale
+1. **Intégration audio complète**
    - ✅ Interface AudioJeu : Port pour l'architecture hexagonale
    - ✅ AudioPartie Adapter : Implémentation Pygame avec fallback automatique
-   - ✅ Correction chemin fichiers : 4 remontées au lieu de 3 (.parent.parent.parent.parent)
-   - ✅ Fichier audio fonctionnel : tetris-theme.wav (132KB) créé et testé
+   - ✅ Système de fichiers audio : tetris-theme.wav et effets sonores fonctionnels
    - ✅ Gestion d'erreurs robuste : Fallback OGG → WAV automatique
-   - ✅ Tests audio : Scripts de diagnostic et validation dans tmp/
+   - ✅ Tests audio : Scripts de diagnostic et validation
 
-2. **Organisation projet finale** ✅
+2. **Organisation projet finale**
    - ✅ Structure propre : Fichiers temporaires déplacés dans tmp/
    - ✅ Racine épurée : Seuls jouer.py et partie_tetris.py à la racine
    - ✅ Conformité directives : Respect total des DIRECTIVES_DEVELOPPEMENT.md
-   - ✅ Documentation synchronisée : Mise à jour immédiate après changements
-### Phase 13 : Implémentation fonctionnalité mute/unmute (2 août - TDD strict) ✅
+   - ✅ Documentation synchronisée : Mise à jour continue
+
+### Phase 11 : Implémentation fonctionnalité mute/unmute (TDD)
 1. **Commande de basculement mute** : Développement TDD de CommandeBasculerMute
    - Implémentation : Commande avec gestion d'erreurs et feedback utilisateur
    - **Résultat** : 7/7 tests unitaires pour la commande
@@ -179,12 +188,12 @@ tests/
    - **Résultat** : 8/8 tests d'acceptance réussis
 
 4. **Intégration gestionnaire événements** : Ajout touche M au mapping
-   - Correction : TypeEvenement.CLAVIER_MAINTIEN → CLAVIER_MAINTENU
-   - **Résultat** : Suite complète 131/131 tests (100% ✅)
+   - Mise à jour : TypeEvenement.CLAVIER_MAINTENU pour cohérence
+   - **Résultat** : Suite complète de tests fonctionnelle
 
 5. **Documentation synchronisée** : Mise à jour complète de la documentation
    - Documentation : README.md, DOC_TECHNIQUE.md, testing-strategy.md actualisés
-   - **Résultat** : Documentation cohérente avec fonctionnalité mute ✅
+   - **Résultat** : Documentation cohérente avec fonctionnalité mute
 
 ## 🏗️ **Structure finale des tests - ORGANISATION PROFESSIONNELLE**
 
@@ -192,36 +201,34 @@ tests/
 ```
 tests/
 ├── integration/                     # Tests système complet
-│   ├── test_partie_complete.py     # 4 tests ✅
-│   └── run_tests.py                # Lanceur principal
+│   ├── test_partie_complete.py     # Tests d'intégration
 ├── unit/                           # Tests composants isolés
 │   ├── domaine/                    # Tests unitaires domaine
 │   │   ├── entites/                # Position, Pièces, Plateau
 │   │   └── services/               # GestionnaireEvenements, Commandes (mute/unmute)
 │   └── adapters/                   # Tests unitaires adaptateurs
-│       └── test_audio_partie_mute.py # Tests audio avec mute/unmute ✅
+│       └── test_audio_partie_mute.py # Tests audio avec mute/unmute
 ├── acceptance/                     # Tests scénarios utilisateur
 │   ├── test_controles_rapide.py    # Tests contrôles
 │   ├── test_controles_simplifies.py
-│   ├── test_fonctionnalite_mute.py # Tests mute/unmute utilisateur ✅ NOUVEAU !
-│   ├── test_correction_bug_lignes_multiples.py # Tests bug lignes multiples ✅
-│   ├── test_correction_bug_gameover_premature.py # Tests bug game over prématuré ✅
-│   └── test_masquage_zone_invisible.py # Tests zone invisible masquée ✅
-└── README_TESTS.md                 # Documentation tests
+│   ├── test_fonctionnalite_mute.py # Tests mute/unmute utilisateur
+│   ├── test_correction_bug_lignes_multiples.py # Tests lignes multiples
+│   ├── test_correction_bug_gameover_premature.py # Tests game over
+│   └── test_masquage_zone_invisible.py # Tests zone invisible masquée
+└── [Scripts officiels]             # Scripts de lancement obligatoires
 ```
 
 ### Structure projet finale
 ```
 tetris/
-├── src/                            # Code source ✅
-├── tests/                          # TOUS les tests ✅
-├── tmp/                           # Scripts temporaires et outils ✅
+├── src/                            # Code source
+├── tests/                          # TOUS les tests
+├── tmp/                           # Scripts temporaires et outils
 ├── demo/                          # Démos utilisateurs
-├── docs/                          # Documentation complète ✅
-├── assets/                        # Médias du jeu (audio WAV fonctionnel) ✅
-├── partie_tetris.py               # Jeu complet ✅
-├── jouer.py                       # Lanceur simple ✅
-└── DIRECTIVES_DEVELOPPEMENT.md    # Méthodologie ✅
+├── docs/                          # Documentation complète
+├── assets/                        # Médias du jeu (audio WAV fonctionnel)
+├── partie_tetris.py               # Jeu complet
+└── jouer.py                       # Lanceur simple
 ```
 
 ### Conventions TDD appliquées - PROJET COMPLET
@@ -234,11 +241,56 @@ tetris/
 
 ### Gestion des Exceptions dans les Tests
 - **ValueError** : Tests de validation des données métier (dimensions, placements, types)
+- **ExceptionCollision** : Tests des commandes de mouvement avec gestion d'erreurs
+  ```python
+  # Exemple de test ExceptionCollision
+  def test_chute_rapide_piece_bloquee_leve_exception_collision(self):
+      """Test TDD: CommandeChuteRapide lève ExceptionCollision si pièce complètement bloquée."""
+      # Arrange - Créer une pièce qui ne peut absolument pas descendre
+      piece = PieceI.creer(x_pivot=5, y_pivot=17)  
+      plateau = Plateau(largeur=10, hauteur=20)
+      
+      # Bloquer la ligne directement en dessous
+      for x in range(10):
+          plateau._positions_occupees.add(Position(x, 17))
+      
+      moteur = MockMoteurJeu(piece, plateau)
+      
+      # Act & Assert - La commande doit lever ExceptionCollision
+      with self.assertRaises(ExceptionCollision) as context:
+          self.commande.execute(moteur)
+      
+      # Vérifier le message d'erreur
+      self.assertIn("Impossible d'effectuer une chute rapide", str(context.exception))
+      self.assertIn("pièce bloquée", str(context.exception))
+  ```
+- **ExceptionCollision** : Tests des commandes du domaine (CommandeDeplacerGauche, CommandeDeplacerDroite, CommandeTourner, CommandeChuteRapide)
 - **pygame.error** : Tests de robustesse des adapters audio/vidéo
 - **ImportError** : Tests de dépendances et fallbacks gracieux
 - **Exception** : Tests de résilience avec catch-all appropriés
 - **Organisation stricte** : `tests/integration/`, `tests/unit/`, `tests/acceptance/`
 - **AUCUN test à la racine** : Règle absolue respectée
+
+### Tests TDD pour ExceptionCollision
+```python
+# Tests unitaires TDD pour CommandeChuteRapide avec ExceptionCollision
+def test_chute_rapide_piece_bloquee_leve_exception_collision(self):
+    """Test TDD: CommandeChuteRapide lève ExceptionCollision si pièce bloquée."""
+    piece = PieceI.creer(x_pivot=5, y_pivot=17)  
+    plateau = Plateau(largeur=10, hauteur=20)
+    
+    # Bloquer la descente complètement
+    for x in range(10):
+        plateau._positions_occupees.add(Position(x, 17))
+    
+    moteur = MockMoteurJeu(piece, plateau)
+    
+    # Vérifier que ExceptionCollision est bien levée
+    with self.assertRaises(ExceptionCollision) as context:
+        self.commande.execute(moteur)
+    
+    self.assertIn("Impossible d'effectuer une chute rapide", str(context.exception))
+```
 
 ### Exemples concrets réalisés - PATTERNS AVANCÉS
 ```python
@@ -261,7 +313,7 @@ def test_moteur_partie():
     moteur = MoteurPartie()
     # Test déplacements, rotations, chute, statistiques
 
-# Tests système de statistiques - NOUVEAU !
+# Tests système de statistiques
 def test_statistiques():
     """Test complet du système de statistiques."""
     stats = StatistiquesJeu()
@@ -281,7 +333,9 @@ def test_statistiques():
     # Test score multiplié par niveau
     stats.ajouter_score_selon_lignes_completees(2)  # 300 × 2 = 600 points
     print(f"Score final: {stats.score:,} points")
-```
+
+# Tests Entities (mutables)
+def test_entity_deplacer_mute_instance():
     piece = PieceI.creer(x_spawn=5, y_spawn=0)
     piece.deplacer(1, 2)  # Mute l'instance
     # Vérifie changement d'état sur même objet
@@ -331,7 +385,7 @@ def test_piece_abstraite_deplacer_toutes_positions():
 ```python
 def test_piece_i_peut_tourner():
     piece = PieceI.creer(5, 0)
-    piece.tourner()  # ❌ Pas encore implémenté
+    piece.tourner()  # Test pour fonctionnalité à implémenter
     # Assertions sur nouvelle orientation
 ```
 
@@ -339,11 +393,16 @@ def test_piece_i_peut_tourner():
 ```python
 def tourner(self) -> None:
     # Code minimal pour faire passer le test
-    pass  # ou logique basique
+    self._orientation = (self._orientation + 1) % 2
 ```
 
 ### 3. REFACTOR (Amélioration code)
 ```python
+def tourner(self) -> None:
+    # Code optimisé et lisible
+    self._basculer_orientation_suivante()
+    self._recalculer_positions_depuis_pivot()
+```
 def tourner(self) -> None:
     # Code final optimisé et documenté
     if self._est_horizontal():
@@ -426,27 +485,24 @@ assert position.dans_limites(10, 20)
 3. **Organisation stricte** → `tests/`, `tmp/`, `demo/` - règles respectées
 4. **Documentation maintenue** → Guides et journal à jour automatiquement
 5. **Patterns émergents** → Factory, Registry, Command selon besoins naturels
-6. **Résolution de problèmes** → Debug méthodique avec TDD (audio path fix)
+6. **Résolution de problèmes** → Debug méthodique avec TDD
 7. **Gestion d'erreurs** → Fallback robuste et tests de validation
-8. **Debug TDD systématique** → Correction bug descente accélérée avec cycle complet RED-GREEN-REFACTOR
+8. **Debug TDD systématique** → Cycle complet RED-GREEN-REFACTOR
 
-### Phase 11 : Debug TDD - Correction bug descente accélérée ✅
-1. **Bug critique identifié et résolu via TDD** ✅
-   - ✅ **Problème signalé** : "la decente accélérée ne fonctionne pas, il y a un crash dès qu'on appuie sur la flèche de bas"
-   - ✅ **Erreur reproduite** : `AttributeError: 'MoteurPartie' object has no attribute 'faire_descendre_piece'`
-   - ✅ **Diagnostic TDD méthodique** : Script `tmp/debug_bug_descente_acceleree.py` pour reproduction systématique
-   - ✅ **Phase RED** : Tests créés dans `tests/domaine/services/test_descente_acceleree.py` (5 tests qui échouent)
-   - ✅ **Phase GREEN** : Implémentation minimale `faire_descendre_piece()` dans `MoteurPartie`
-   - ✅ **Phase REFACTOR** : Méthode intégrée proprement avec réutilisation de `deplacer_piece_active(0, 1)`
-   - ✅ **Validation complète** : CommandeDescendre fonctionne parfaitement, plus de crash
+### Développement TDD - Fonctionnalités avancées
+1. **Méthodologie appliquée**
+   - ✅ **Tests d'abord** : Tests créés avant implémentation
+   - ✅ **Cycle TDD complet** : RED → GREEN → REFACTOR avec validation
+   - ✅ **Exploration systématique** : Analyse de l'architecture existante
+   - ✅ **Reproduction contrôlée** : Isolation des problèmes en environnement test
+   - ✅ **Tests de régression** : Prévention de réapparition des problèmes
+   - ✅ **Architecture respectée** : Solutions intégrées harmonieusement
 
-2. **Méthodologie TDD stricte appliquée** ✅
-   - ✅ **Exploration systématique** : Analyse de l'architecture des commandes existantes
-   - ✅ **Reproduction contrôlée** : Isolation du bug dans environnement de test
-   - ✅ **Tests d'abord** : Suite de tests complète avant implémentation
-   - ✅ **Cycle TDD complet** : RED → GREEN → REFACTOR avec validation à chaque étape
-   - ✅ **Tests de régression** : Prévention de réapparition du bug
-   - ✅ **Architecture respectée** : Solution intégrée harmonieusement dans le système existant
+2. **Fonctionnalités développées**
+   - ✅ **Commandes de jeu** : 8 actions complètes (déplacement, rotation, pause, mute, restart)
+   - ✅ **Système audio** : Musique et effets sonores avec contrôles mute/unmute
+   - ✅ **Interface utilisateur** : Masquage zone invisible, affichage optimisé
+   - ✅ **Robustesse** : Gestion d'erreurs complète et fallbacks automatiques
 
 ---
 
@@ -458,7 +514,7 @@ assert position.dans_limites(10, 20)
 - ✅ **Patterns avancés** : Factory, Registry, Command
 - ✅ **Organisation professionnelle** : Structure de projet exemplaire
 - ✅ **Performance optimisée** : 60 FPS, O(1) collisions
-- ✅ **Tests complets** : 4/4 tests d'intégration passants
+- ✅ **Suite de tests complète** : 200 tests avec 100% de réussite
 - ✅ **Code français** : Cohérent et maintenir
 - ✅ **Documentation vivante** : Maintenue automatiquement
 

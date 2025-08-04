@@ -13,14 +13,14 @@ SCÉNARIOS UTILISATEUR :
 - L'utilisateur voit-il un message de fin de partie approprié ?
 """
 
-import pytest
+import unittest
 from src.domaine.entites.plateau import Plateau
 from src.domaine.entites.fabriques.fabrique_pieces import FabriquePieces
 from src.domaine.entites.piece import TypePiece
 from src.domaine.services.moteur_partie import MoteurPartie
 
 
-class TestAcceptanceCorrectionBugCrashPlacement:
+class TestAcceptanceCorrectionBugCrashPlacement(unittest.TestCase):
     """Tests d'acceptance pour valider les scénarios utilisateur lors des crashes de placement."""
     
     def test_placement_piece_position_invalide_ne_crash_pas(self):
@@ -46,7 +46,7 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         resultat = plateau.placer_piece_et_supprimer_lignes(piece_impossible)
         
         # Assert : Échec gracieux
-        assert resultat == -1
+        self.assertEqual(resultat, -1)
     
     def test_moteur_partie_placement_invalide_declenche_game_over(self):
         """
@@ -75,14 +75,14 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         moteur.en_pause = False
         
         # Vérification : s'assurer qu'il y a bien collision
-        assert not moteur.plateau.peut_placer_piece(piece_bloquee), "La pièce devrait être en collision"
+        self.assertFalse(moteur.plateau.peut_placer_piece(piece_bloquee), "La pièce devrait être en collision")
         
         # Act : Ne doit PAS crasher, retourner False et déclencher Game Over
         resultat = moteur.placer_piece_et_generer_nouvelle()
         
         # Assert : Échec gracieux avec Game Over
-        assert resultat == False
-        assert moteur.jeu_termine == True
+        self.assertEqual(resultat, False)
+        self.assertEqual(moteur.jeu_termine, True)
     
     def test_coherence_verification_placement(self):
         """
@@ -101,11 +101,11 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         piece_chevauchante = fabrique.creer(TypePiece.O, x_pivot=1, y_pivot=1)
         
         # peut_placer_piece doit retourner False
-        assert not plateau.peut_placer_piece(piece_chevauchante)
+        self.assertFalse(plateau.peut_placer_piece(piece_chevauchante))
         
         # placer_piece_et_supprimer_lignes doit être cohérent (retour -1)
         resultat = plateau.placer_piece_et_supprimer_lignes(piece_chevauchante)
-        assert resultat == -1
+        self.assertEqual(resultat, -1)
     
     def test_scenario_reel_chute_automatique_plateau_plein(self):
         """
@@ -158,10 +158,10 @@ class TestAcceptanceCorrectionBugCrashPlacement:
         moteur.en_pause = False
         
         # Vérification : la pièce ne peut effectivement pas être placée
-        assert not moteur.plateau.peut_placer_piece(piece_impossible)
+        self.assertFalse(moteur.plateau.peut_placer_piece(piece_impossible))
         
         # APRÈS CORRECTION : L'utilisateur voit un Game Over propre
         # Le moteur détecte l'impossibilité et déclenche Game Over
         resultat = moteur.placer_piece_et_generer_nouvelle()
-        assert resultat == False  # Échec gracieux
-        assert moteur.jeu_termine == True  # Game Over déclenché proprement
+        self.assertEqual(resultat, False)  # Échec gracieux
+        self.assertEqual(moteur.jeu_termine, True)  # Game Over déclenché proprement

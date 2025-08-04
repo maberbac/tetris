@@ -12,6 +12,7 @@ from src.domaine.entites.piece import Piece
 from src.domaine.entites.position import Position
 from src.domaine.entites.plateau import Plateau
 from src.domaine.entites.statistiques.statistiques_jeu import StatistiquesJeu
+from src.domaine.exceptions.exception_audio import ExceptionAudio
 from src.ports.sortie.audio_jeu import AudioJeu
 from .logger_tetris import logger_tetris
 
@@ -144,7 +145,11 @@ class MoteurPartie:
             
             # Jouer le son de rotation si audio disponible
             if self.audio:
-                self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=1.0)
+                try:
+                    self.audio.jouer_effet_sonore("assets/audio/sfx/rotate.wav", volume=1.0)
+                except ExceptionAudio as e:
+                    logger_tetris.debug(f"[AUDIO] Son rotation non joué: {e}")
+                    # Le jeu continue sans son
             
             return True
         else:
@@ -203,7 +208,6 @@ class MoteurPartie:
         if nb_lignes_supprimees == -1:
             # Placement impossible - déclencher Game Over
             self.jeu_termine = True
-            self.messages.append("💀 GAME OVER ! Plus de place pour les pièces.")
             logger_tetris.info("💀 GAME OVER ! Placement impossible.")
             
             # Jouer le son de game over
@@ -211,8 +215,9 @@ class MoteurPartie:
                 try:
                     self.audio.jouer_effet_sonore("assets/audio/sfx/game-over.wav", volume=1.0)
                     logger_tetris.info("🔊 Son de Game Over joué")
-                except Exception as e:
-                    logger_tetris.warning(f"⚠️ Erreur lors de la lecture du son de Game Over: {e}")
+                except ExceptionAudio as e:
+                    logger_tetris.debug(f"[AUDIO] Son game over non joué: {e}")
+                    # Le jeu continue sans son
             
             return False
         
@@ -223,25 +228,37 @@ class MoteurPartie:
             niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
             
             if nb_lignes_supprimees == 4:
-                self.messages.append("[PARTY] TETRIS ! (+800 pts)")
+                # Ajouter le message TETRIS pour l'affichage utilisateur
+                points_tetris = 800 * self.stats.niveau
+                self.messages.append(f"🎉 TETRIS ! {points_tetris} points !")
                 
                 # Jouer le son TETRIS spécial pour 4 lignes éliminées
                 if self.audio:
                     try:
                         self.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
                         logger_tetris.info("🎵 Son TETRIS joué ! (4 lignes éliminées)")
-                    except Exception as e:
-                        logger_tetris.warning(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
+                    except ExceptionAudio as e:
+                        logger_tetris.debug(f"[AUDIO] Son tetris non joué: {e}")
+                        # Le jeu continue sans son
             else:
-                self.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) ! (+{100 * nb_lignes_supprimees * self.stats.niveau} pts)")
+                # Ajouter message pour les autres lignes
+                points_lignes = [0, 100, 300, 500][nb_lignes_supprimees] * self.stats.niveau
+                self.messages.append(f"{nb_lignes_supprimees} ligne(s) ! {points_lignes} points")
             
             logger_tetris.debug(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.stats.score}")
             
             # Jouer le son de gain de niveau si nécessaire
-            if niveau_a_change and self.audio:
-                self.audio.jouer_effet_sonore("assets/audio/sfx/gained-a-new-level.wav", volume=1.0)
-                self.messages.append(f"🎉 NIVEAU {self.stats.niveau} ! La vitesse augmente !")
-                logger_tetris.info(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
+            if niveau_a_change:
+                # Ajouter message de niveau pour l'affichage utilisateur
+                self.messages.append(f"🎉 NIVEAU {self.stats.niveau} !")
+                
+                if self.audio:
+                    try:
+                        self.audio.jouer_effet_sonore("assets/audio/sfx/gained-a-new-level.wav", volume=1.0)
+                    except ExceptionAudio as e:
+                        logger_tetris.debug(f"[AUDIO] Son gain niveau non joué: {e}")
+                        # Le message de niveau s'affiche quand même
+                    logger_tetris.info(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
             
             # Accélérer le jeu selon le niveau
             self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)
@@ -276,7 +293,6 @@ class MoteurPartie:
                 if any(pos.y < 0 for pos in self.piece_active.positions):
                     # Pièce encore en zone invisible et ne peut pas descendre = Game Over
                     self.jeu_termine = True
-                    self.messages.append("💀 GAME OVER !")
                     logger_tetris.error("💀 GAME OVER ! La pièce ne peut pas descendre de la zone invisible.")
                     return
                 
@@ -313,12 +329,6 @@ class MoteurPartie:
         """Bascule l'état de pause."""
         self.en_pause = not self.en_pause
         
-        # Ajouter message explicatif pour l'utilisateur
-        if self.en_pause:
-            self.messages.append("⏸️ Jeu en pause - Appuyez sur P pour reprendre")
-        else:
-            self.messages.append("▶️ Jeu repris - Bonne partie !")
-        
         # Note : La musique continue même en pause - seule la touche M contrôle le mute/unmute
         logger_tetris.debug(f"[PAUSE] Pause: {'ON' if self.en_pause else 'OFF'}")
     
@@ -328,8 +338,11 @@ class MoteurPartie:
             try:
                 self.audio.jouer_musique("tetris-theme.wav", volume=0.7, boucle=True)
                 return True
+            except ExceptionAudio as e:
+                logger_tetris.debug(f"[AUDIO] Musique non démarrée: {e}")
+                return False  # Le jeu continue sans musique
             except Exception as e:
-                logger_tetris.error(f"❌ Erreur démarrage musique: {e}")
+                logger_tetris.error(f"❌ Erreur inattendue démarrage musique: {e}")
                 return False
         return False
     
@@ -409,3 +422,45 @@ class MoteurPartie:
         if self.audio:
             self.audio.nettoyer()
             logger_tetris.debug("[CLEANUP] Ressources audio nettoyées")
+    
+    def simuler_lignes_supprimees(self, nb_lignes_supprimees: int) -> None:
+        """
+        Méthode publique pour simuler la suppression de lignes (utile pour les tests).
+        Déclenche la même logique que dans placer_piece_et_generer_nouvelle().
+        """
+        if nb_lignes_supprimees > 0:
+            niveau_a_change = self.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
+            
+            if nb_lignes_supprimees == 4:
+                # Ajouter le message TETRIS pour l'affichage utilisateur
+                points_tetris = 800 * self.stats.niveau
+                self.messages.append(f"🎉 TETRIS ! {points_tetris} points !")
+                
+                # Jouer le son TETRIS spécial pour 4 lignes éliminées
+                if self.audio:
+                    try:
+                        self.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
+                        logger_tetris.info("🎵 Son TETRIS joué ! (4 lignes éliminées)")
+                    except ExceptionAudio as e:
+                        logger_tetris.debug(f"[AUDIO] Son tetris non joué: {e}")
+                        # Le jeu continue sans son
+            else:
+                # Ajouter message pour les autres lignes
+                points_lignes = [0, 100, 300, 500][nb_lignes_supprimees] * self.stats.niveau
+                self.messages.append(f"{nb_lignes_supprimees} ligne(s) ! {points_lignes} points")
+            
+            # Jouer le son de gain de niveau si nécessaire
+            if niveau_a_change:
+                # Ajouter message de niveau pour l'affichage utilisateur
+                self.messages.append(f"🎉 NIVEAU {self.stats.niveau} !")
+                
+                if self.audio:
+                    try:
+                        self.audio.jouer_effet_sonore("assets/audio/sfx/gained-a-new-level.wav", volume=1.0)
+                    except ExceptionAudio as e:
+                        logger_tetris.debug(f"[AUDIO] Son gain niveau non joué: {e}")
+                        # Le message de niveau s'affiche quand même
+                    logger_tetris.info(f"🎉 NIVEAU UP ! Nouveau niveau: {self.stats.niveau}")
+            
+            # Accélérer le jeu selon le niveau
+            self.intervalle_chute = max(0.1, 1.0 - (self.stats.niveau - 1) * 0.1)

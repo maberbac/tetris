@@ -18,6 +18,8 @@ from .commandes import (
     CommandeDescendre, CommandeChuteRapide, CommandeTournerPartie,
     CommandePause, CommandeBasculerMute, MoteurJeu
 )
+# Import des exceptions du domaine selon les directives
+from ..exceptions.exception_collision import ExceptionCollision
 from .commandes.commande_redemarrer import CommandeRedemarrer
 
 
@@ -161,8 +163,12 @@ class GestionnaireEvenements:
         if touche in self._touches_repetables:
             self._touches_maintenues[touche] = temps_actuel
         
-        # Exécuter la commande immédiatement
-        return commande.execute(moteur)
+        # Exécuter la commande immédiatement avec gestion des exceptions de collision
+        try:
+            return commande.execute(moteur)
+        except ExceptionCollision:
+            # Action impossible (collision) - traiter silencieusement selon les directives
+            return False
     
     def _traiter_relache(self, touche: ToucheClavier) -> bool:
         """Traite le relâchement d'une touche."""
@@ -190,7 +196,12 @@ class GestionnaireEvenements:
             # Calculer si on doit répéter maintenant
             temps_depuis_initial = temps_ecoule - self._delai_initial
             if temps_depuis_initial % self._delai_repetition < 0.016:  # ~60 FPS
-                return commande.execute(moteur)
+                # Exécuter avec gestion des exceptions de collision
+                try:
+                    return commande.execute(moteur)
+                except ExceptionCollision:
+                    # Action impossible (collision) - traiter silencieusement
+                    return False
         
         return False
     

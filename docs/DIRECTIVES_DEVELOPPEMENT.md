@@ -1,4 +1,5 @@
 # 🛠️ Directives de Développement
+Règles de développement pour le LLM
 
 ## � RÈGLE ABSOLUE - Organisation des Tests
 
@@ -31,10 +32,22 @@ test_*.py                 # ❌ JAMAIS !
 *_test.py                 # ❌ JAMAIS !
 run_tests.py              # ❌ JAMAIS !
 
+# ❌ INTERDIT - Documentation projet à la racine (sauf README.md)
+GUIDE.md                  # ❌ JAMAIS ! (doit être dans docs/)
+DOC_TECHNIQUE.md          # ❌ JAMAIS ! (doit être dans docs/)
+journal-developpement.md  # ❌ JAMAIS ! (doit être dans docs/)
+testing-strategy.md       # ❌ JAMAIS ! (doit être dans docs/)
+
 # ✅ CORRECT - Tests dans tests/
 tests/integration/test_*.py    # ✅ OUI !
 tests/unit/test_*.py           # ✅ OUI !
 tests/run_tests.py             # ✅ OUI !
+
+# ✅ CORRECT - Documentation dans docs/
+docs/DOC_TECHNIQUE.md          # ✅ OUI !
+docs/journal-developpement.md # ✅ OUI !
+docs/testing-strategy.md      # ✅ OUI !
+README.md                      # ✅ OUI ! (seule exception à la racine)
 ```
 
 ## 📁 Organisation des Fichiers
@@ -42,6 +55,7 @@ tests/run_tests.py             # ✅ OUI !
 ### Règles d'Organisation
 - **Démos** : Toujours créer les démos dans le répertoire `demo/`
 - **Tests officiels** : TOUS les tests dans le répertoire `tests/` avec sous-répertoires appropriés
+- **Documentation projet** : TOUS les fichiers `.md` de documentation (sauf `README.md`) dans le répertoire `docs/`
 - **Fichiers temporaires** : TOUT ce que je génère pour mes besoins dans `tmp/` (scripts, .md, analyses, notes, etc.)
 - **Assets du jeu** : TOUS les médias dans le répertoire `assets/` (sons, images, musiques)
 - **Structure existante** : Respecter l'architecture hexagonale en place (`src/domaine/`, `src/interface/`)
@@ -50,22 +64,27 @@ tests/run_tests.py             # ✅ OUI !
 ```
 tetris/
 ├── src/                    # Code source principal
-│   ├── domaine/           # Logique métier
-│   └── interface/         # Interface utilisateur
+│   ├── domaine/           # Logique métier (centre de l'hexagone)
+│   ├── ports/             # Interfaces (contrats)
+│   └── adapters/          # Implémentations techniques
 ├── assets/                # ⭐ Médias du jeu (sons, images)
 │   ├── audio/             # Sons et musiques
 │   │   ├── music/         # Musique principale
 │   │   └── sfx/           # Effets sonores (line_clear, rotate)
 │   └── images/            # Images et textures
 │       └── backgrounds/   # Arrière-plans
-├── demo/                  # ⭐ Démos et exemples
+├── docs/                  # ⭐ Documentation complète
+│   ├── DIRECTIVES_DEVELOPPEMENT.md  # Règles de développement
+│   ├── DOC_TECHNIQUE.md             # Documentation technique
+│   ├── journal-developpement.md     # Journal complet du projet
+│   └── testing-strategy.md          # Stratégie TDD
 ├── tests/                 # ⭐ TOUS les tests du projet
 │   ├── integration/       # Tests d'intégration
 │   ├── unit/             # Tests unitaires
 │   ├── acceptance/       # Tests d'acceptation
-│   └── run_tests.py      # Script de lancement des tests
+│   └── [4 scripts officiels]  # Scripts de lancement obligatoires
 ├── tmp/                   # ⭐ TOUT ce que je génère pour mes besoins
-└── *.py                  # Scripts principaux (jouer.py, etc.)
+└── *.py                  # Scripts principaux (jouer.py, partie_tetris.py)
 ```
 
 ### Contenu du Répertoire `tmp/`
@@ -76,6 +95,16 @@ tetris/
 - 🔍 Scripts d'exploration et de validation
 - 📋 Documentation de travail
 - 🧪 Prototypes et expérimentations
+
+### Organisation de la Documentation `docs/`
+**TOUTE la documentation officielle du projet (sauf README.md) :**
+- 📋 **`DIRECTIVES_DEVELOPPEMENT.md`** : Règles de développement et organisation du projet
+- 🏗️ **`DOC_TECHNIQUE.md`** : Architecture hexagonale, composants, structure technique détaillée
+- 📰 **`journal-developpement.md`** : Chronologie complète et historique du développement TDD
+- 🧪 **`testing-strategy.md`** : Stratégie TDD, métriques des tests, organisation des suites
+- 📚 **Autres `.md`** : Documentation spécialisée selon les besoins du projet
+
+**RÈGLE ABSOLUE** : Seul `README.md` peut rester à la racine (vue d'ensemble utilisateur)
 
 ### Organisation des Assets `assets/`
 **Structure standardisée pour les médias du jeu :**
@@ -128,21 +157,30 @@ plateau = Plateau(6, 6)  # ou n'importe quelle taille
 
 ### 🎯 Documentation à Maintenir Systématiquement
 
+#### Organisation de la Documentation
+- **`docs/DIRECTIVES_DEVELOPPEMENT.md`** : Règles de développement et organisation
+- **`docs/DOC_TECHNIQUE.md`** : Architecture, composants, structure technique  
+- **`docs/journal-developpement.md`** : Chronologie complète du projet
+- **`docs/testing-strategy.md`** : Stratégie TDD et métriques des tests
+- **`README.md`** (racine) : Vue d'ensemble utilisateur du projet
+
 #### Lors de changements dans `tests/`
-- **`tests/README.md`** : Structure, runners, organisation
-- **`DOC_TECHNIQUE.md`** : Architecture de tests, pyramide
+- **`docs/testing-strategy.md`** : Métriques, structure, runners
+- **`docs/DOC_TECHNIQUE.md`** : Architecture de tests, pyramide
+- **`README.md`** : Métriques globales
 
 #### Lors de changements dans `src/`
-- **`DOC_TECHNIQUE.md`** : Architecture, composants, structure
-- **`README.md` principal** : Vue d'ensemble du projet
+- **`docs/DOC_TECHNIQUE.md`** : Architecture, composants, structure
+- **`README.md`** : Vue d'ensemble du projet
 
 #### Lors de renommage/déplacement de fichiers
-- **TOUS les `.md` concernés** : Chemins, noms, références
+- **TOUS les `.md` dans `docs/`** : Chemins, noms, références
 - **Scripts de runners** : Imports, chemins relatifs
+- **`README.md`** : Structure projet
 
 #### Lors d'ajout de nouveaux patterns/composants
-- **`DOC_TECHNIQUE.md`** : Nouveaux patterns, exemples
-- **`docs/`** : Guides spécialisés si nécessaire
+- **`docs/DOC_TECHNIQUE.md`** : Nouveaux patterns, exemples
+- **`docs/journal-developpement.md`** : Évolution du projet
 
 ### ✅ Check-list OBLIGATOIRE Avant Commit
 ```bash

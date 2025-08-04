@@ -108,18 +108,3 @@ class PartieTetris:
             # Nettoyage des ressources
             self.affichage.nettoyer()
             self.moteur.fermer()  # Nettoie l'audio
-        
-
-
-
-if __name__ == "__main__":
-
-    try:
-        partie = PartieTetris()
-        partie.jouer()
-    except KeyboardInterrupt:
-        logger_tetris.info("⚠️ Partie interrompue par l'utilisateur")
-    except Exception as e:
-        logger_tetris.error(f"❌ Erreur durant la partie: {e}")
-        import traceback
-        traceback.print_exc()

@@ -5,11 +5,11 @@ Runner pour les tests unitaires - Tests de composants isolés.
 Ces tests valident le comportement individuel de chaque composant
 en isolation complète (domaine, entités, services).
 
-État actuel : 85 tests unitaires, 100% de réussite ✅
+État actuel : 91 tests unitaires, 100% de réussite ✅
 - Position (Value Object) : 5 tests ✅
 - 7 pièces complètes (I, O, T, S, Z, J, L) : 42 tests ✅
 - Factory Pattern et Registry : 8 tests ✅
-- Services et gestionnaires : 16 tests ✅ (incluant nouvelle fonctionnalité mute)
+- Services et gestionnaires : 22 tests ✅ (incluant nouvelle fonctionnalité mute + restart)
 - Adaptateurs (audio avec mute) : 14 tests ✅ (audio rotation + mute/unmute)
 """
 
@@ -35,8 +35,20 @@ def main():
         print(f"❌ Répertoire non trouvé: {repertoire_unit}")
         return False
     
-    # Découverte automatique de tous les tests unitaires
-    suite = loader.discover(repertoire_unit, pattern='test_*.py')
+    # Découverte automatique par répertoires (contourne le bug de découverte globale)
+    repertoires_tests = [
+        os.path.join(repertoire_unit, "adapters"),
+        os.path.join(repertoire_unit, "domaine", "exceptions"),
+        os.path.join(repertoire_unit, "domaine", "services"),
+        os.path.join(repertoire_unit, "domaine", "test_entites")
+    ]
+    
+    # Créer une suite combinée
+    suite = unittest.TestSuite()
+    for rep in repertoires_tests:
+        if os.path.exists(rep):
+            sous_suite = loader.discover(rep, pattern='test_*.py')
+            suite.addTest(sous_suite)
     
     # Compter les tests trouvés
     test_count = suite.countTestCases()

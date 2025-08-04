@@ -7,8 +7,11 @@ de contrôle audio avec la touche M.
 
 import unittest
 from unittest.mock import Mock, patch
-from io import StringIO
 import sys
+import os
+
+# Ajouter le répertoire racine du projet au path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
 
 from src.domaine.services.commandes.commandes_base import CommandeBasculerMute
 
@@ -43,8 +46,8 @@ class TestCommandeBasculerMute(unittest.TestCase):
         self.moteur_mock.obtenir_audio.assert_called_once()
         self.audio_mock.basculer_mute_musique.assert_called_once()
     
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_executer_affiche_message_mute(self, mock_stdout):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_executer_affiche_message_mute(self, mock_logger):
         """L'exécution doit afficher un message de feedback utilisateur."""
         # Simuler que l'audio confirme le basculement vers mute
         self.audio_mock.basculer_mute_musique.return_value = True
@@ -52,12 +55,11 @@ class TestCommandeBasculerMute(unittest.TestCase):
         resultat = self.commande.execute(self.moteur_mock)
         
         self.assertTrue(resultat)
-        output = mock_stdout.getvalue()
-        self.assertIn("🔇", output)  # Icône mute
-        self.assertIn("Musique désactivée", output)
+        # Vérifier que le logger a été appelé avec le bon message mute
+        mock_logger.info.assert_called_with("🔇 Musique désactivée")
     
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_executer_affiche_message_unmute(self, mock_stdout):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_executer_affiche_message_unmute(self, mock_logger):
         """L'exécution doit afficher un message de feedback pour unmute."""
         # Simuler que l'audio confirme le basculement vers unmute
         self.audio_mock.basculer_mute_musique.return_value = False
@@ -65,11 +67,11 @@ class TestCommandeBasculerMute(unittest.TestCase):
         resultat = self.commande.execute(self.moteur_mock)
         
         self.assertTrue(resultat)
-        output = mock_stdout.getvalue()
-        self.assertIn("🔊", output)  # Icône unmute
-        self.assertIn("Musique réactivée", output)
+        # Vérifier que le logger a été appelé avec le bon message unmute
+        mock_logger.info.assert_called_with("🔊 Musique réactivée")
     
-    def test_executer_gere_echec_audio(self):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_executer_gere_echec_audio(self, mock_logger):
         """La commande doit gérer l'échec du système audio."""
         # Simuler un problème avec le système audio
         self.moteur_mock.obtenir_audio.side_effect = Exception("Audio indisponible")
@@ -78,6 +80,8 @@ class TestCommandeBasculerMute(unittest.TestCase):
         
         # La commande doit retourner False en cas d'échec
         self.assertFalse(resultat)
+        # Vérifier que le logger error a été appelé
+        mock_logger.error.assert_called_with("❌ Erreur audio: Audio indisponible")
     
     def test_executer_gere_audio_none(self):
         """La commande doit gérer le cas où l'audio n'est pas disponible."""
@@ -89,17 +93,16 @@ class TestCommandeBasculerMute(unittest.TestCase):
         # La commande doit retourner False si pas d'audio
         self.assertFalse(resultat)
     
-    @patch('sys.stdout', new_callable=StringIO)
-    def test_executer_sans_audio_affiche_message_erreur(self, mock_stdout):
+    @patch('src.domaine.services.commandes.commandes_base.logger_tetris')
+    def test_executer_sans_audio_affiche_message_erreur(self, mock_logger):
         """Sans audio, un message d'information doit être affiché."""
         self.moteur_mock.obtenir_audio.return_value = None
         
         resultat = self.commande.execute(self.moteur_mock)
         
         self.assertFalse(resultat)
-        output = mock_stdout.getvalue()
-        self.assertIn("❌", output)  # Icône d'erreur
-        self.assertIn("Audio non disponible", output)
+        # Vérifier que le logger a été appelé avec le bon message d'erreur
+        mock_logger.warning.assert_called_with("❌ Audio non disponible")
 
 
 if __name__ == '__main__':

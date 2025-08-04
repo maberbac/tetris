@@ -102,20 +102,9 @@ class TestAcceptanceSonTetris(unittest.TestCase):
         # Simuler l'élimination de 4 lignes (TETRIS)
         nb_lignes_eliminees = 4
         
-        # Déclencher la logique du moteur pour 4 lignes
-        if nb_lignes_eliminees > 0:
-            self.moteur.stats.ajouter_score_selon_lignes_completees(nb_lignes_eliminees)
-            
-            if nb_lignes_eliminees == 4:
-                self.moteur.messages.append("[PARTY] TETRIS ! (+800 pts)")
-                
-                # Cette partie devrait maintenant jouer le son tetris.wav
-                if self.moteur.audio:
-                    try:
-                        self.moteur.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
-                        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
-                    except Exception as e:
-                        print(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
+        # Utiliser la méthode officielle du moteur pour simuler la suppression de lignes
+        self.moteur.simuler_lignes_supprimees(nb_lignes_eliminees)
+        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
         
         # Vérifications d'acceptance
         print(f"📊 Analyse des résultats:")
@@ -162,20 +151,9 @@ class TestAcceptanceSonTetris(unittest.TestCase):
                 
                 print(f"  📊 Test pour {nb_lignes} ligne(s)...")
                 
-                # Simuler l'élimination de nb_lignes lignes
+                # Simuler l'élimination de nb_lignes lignes via la méthode officielle du moteur
                 if nb_lignes > 0:
-                    moteur_local.stats.ajouter_score_selon_lignes_completees(nb_lignes)
-                    
-                    if nb_lignes == 4:
-                        moteur_local.messages.append("[PARTY] TETRIS ! (+800 pts)")
-                        
-                        if moteur_local.audio:
-                            try:
-                                moteur_local.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
-                            except Exception:
-                                pass
-                    else:
-                        moteur_local.messages.append(f"✨ {nb_lignes} ligne(s) !")
+                    moteur_local.simuler_lignes_supprimees(nb_lignes)
                 
                 # Vérifier qu'AUCUN son tetris.wav n'est joué
                 self.assertFalse(audio_spy_local.a_joue_tetris_wav(),
@@ -198,21 +176,10 @@ class TestAcceptanceSonTetris(unittest.TestCase):
         print("\n🎮 TEST D'ACCEPTANCE: Message TETRIS + Son ensemble")
         print("=" * 55)
         
-        # Simuler un TETRIS complet
+        # Simuler un TETRIS complet via la méthode officielle du moteur
         nb_lignes = 4
-        
-        if nb_lignes > 0:
-            self.moteur.stats.ajouter_score_selon_lignes_completees(nb_lignes)
-            
-            if nb_lignes == 4:
-                self.moteur.messages.append("[PARTY] TETRIS ! (+800 pts)")
-                
-                if self.moteur.audio:
-                    try:
-                        self.moteur.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
-                        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
-                    except Exception as e:
-                        print(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
+        self.moteur.simuler_lignes_supprimees(nb_lignes)
+        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
         
         # Vérifier l'expérience complète
         messages = self.moteur.messages  # Utiliser directement la liste des messages
@@ -245,30 +212,14 @@ class TestAcceptanceSonTetris(unittest.TestCase):
         print("\n🎮 TEST D'ACCEPTANCE: Intégration complète TETRIS")
         print("=" * 55)
         
-        # Test avec la méthode réelle du moteur (simulation simplifiée)
+        # Test avec la méthode réelle du moteur (simulation complète)
         print("📊 Simulation d'un placement avec 4 lignes complètes...")
         
-        # Simuler le résultat de placer_piece_et_supprimer_lignes
-        nb_lignes_supprimees = 4  # Comme si le plateau avait retourné 4 lignes supprimées
-        
-        # Reproduire la logique exacte du moteur
-        if nb_lignes_supprimees > 0:
-            niveau_a_change = self.moteur.stats.ajouter_score_selon_lignes_completees(nb_lignes_supprimees)
-            
-            if nb_lignes_supprimees == 4:
-                self.moteur.messages.append("[PARTY] TETRIS ! (+800 pts)")
-                
-                # NOUVEAU CODE : Jouer le son TETRIS spécial pour 4 lignes éliminées
-                if self.moteur.audio:
-                    try:
-                        self.moteur.audio.jouer_effet_sonore("assets/audio/sfx/tetris.wav", volume=1.0)
-                        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
-                    except Exception as e:
-                        print(f"⚠️ Erreur lors de la lecture du son TETRIS: {e}")
-            else:
-                self.moteur.messages.append(f"✨ {nb_lignes_supprimees} ligne(s) !")
-            
-            print(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.moteur.stats.score}")
+        # Utiliser la méthode officielle du moteur pour simuler 4 lignes supprimées
+        nb_lignes_supprimees = 4
+        self.moteur.simuler_lignes_supprimees(nb_lignes_supprimees)
+        print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
+        print(f"[PARTY] {nb_lignes_supprimees} ligne(s) complétée(s) ! Score: {self.moteur.stats.score}")
         
         # Vérifications d'intégration
         print(f"📊 Résultats d'intégration:")
