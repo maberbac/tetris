@@ -111,7 +111,7 @@ tetris/
 │   │   │   ├── entites/        # Tests des entités (Position, Pièces, Factory, Statistiques)
 │   │   │   └── services/       # Tests des services (GestionnaireEvenements, Commandes, Restart)
 │   │   └── adapters/           # Tests des adaptateurs (Audio avec mute/unmute + ExceptionAudio)
-│   ├── acceptance/             # Tests d'acceptance (87 tests)
+│   ├── acceptance/             # Tests d'acceptance (101 tests)
 │   │   ├── test_controles_*.py # Tests des contrôles utilisateur
 │   │   ├── test_fonctionnalite_mute.py # Tests mute/unmute
 │   │   ├── test_fonctionnalite_restart.py # Tests restart
@@ -124,6 +124,8 @@ tetris/
 │   │   ├── test_son_game_over.py # Tests son game over
 │   │   ├── test_son_tetris.py    # Tests son TETRIS pour 4 lignes
 │   │   ├── test_audio_rotation.py # Tests audio rotation avec ExceptionAudio
+│   │   ├── test_indicateur_mute.py # Tests indicateur visuel mute
+│   │   ├── test_mute_game_over.py # Tests correction mute game over
 │   │   └── test_masquage_zone_invisible.py # Tests masquage zone invisible
 │   ├── integration/            # Tests d'intégration (26 tests)
 │   │   ├── test_audio_integration.py # Tests intégration audio (6 tests)
@@ -654,15 +656,15 @@ python tests/run_suite_tests.py
 
 # Tests par catégorie
 python tests/run_all_unit_tests.py       # Tests unitaires (145 tests)
-python tests/run_all_acceptance_tests.py # Tests d'acceptance (87 tests)
+python tests/run_all_acceptance_tests.py # Tests d'acceptance (101 tests)
 python tests/run_all_integration_tests.py # Tests d'intégration (26 tests)
 ```
 
-Métriques actuelles : 258 tests, 100% de réussite
+Métriques actuelles : 272 tests, 100% de réussite
 - Architecture hexagonale : Complètement implémentée
 - Couverture TDD : Toutes les fonctionnalités testées
-- Performance : Exécution complète en ~1.9s
-- Fonctionnalités : Jeu complet avec contrôles, audio, et redémarrage
+- Performance : Exécution complète en ~3.4s
+- Fonctionnalités : Jeu complet avec contrôles, audio, indicateur mute, correction mute game over, et redémarrage
 
 #### CommandeRedemarrer - Fonctionnalité restart
 

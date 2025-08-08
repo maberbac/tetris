@@ -174,7 +174,11 @@ class AudioPartie(AudioJeu):
             self._volume_avant_mute = self._volume_musique
             self._est_mute = True
             pygame.mixer.music.set_volume(0.0)
-            logger_tetris.info("[MUTE] Musique désactivée")
+            
+            # Arrêter tous les effets sonores en cours
+            pygame.mixer.stop()
+            
+            logger_tetris.info("[MUTE] Musique désactivée + effets sonores arrêtés")
             
         return self._est_mute
     

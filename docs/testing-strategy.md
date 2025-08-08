@@ -1,10 +1,8 @@
 # Stratégie TDD pour Tetris - Architecture hexagonale
 
-Stratégie de test et métriques du projet
-
 ## Date de mise à jour : 8 août 2025 - CONFORME AUX DIRECTIVES DE DÉVELOPPEMENT + EXCEPTION AUDIO INTÉGRÉE
 
-#### **Tests implémentés (258 tests - 100%)**
+#### **Tests implémentés (272 tests - 100%)**
 ```
 tests/
 ├── unit/                           # Tests unitaires (145 tests)
@@ -20,7 +18,7 @@ tests/
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests)
 │   └── [4 tests d'intégration directe] # Tests génération, moteur, plateau, statistiques (4 tests)
-├── acceptance/                    # Tests d'acceptance (87 tests)
+├── acceptance/                    # Tests d'acceptance (101 tests)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute
@@ -34,6 +32,8 @@ tests/
 │   ├── test_son_game_over.py     # Tests son game over
 │   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes
 │   ├── test_audio_rotation.py    # Tests audio rotation avec ExceptionAudio
+│   ├── test_indicateur_mute.py   # Tests indicateur visuel mute
+│   ├── test_mute_game_over.py    # Tests correction mute game over
 │   └── test_masquage_zone_invisible.py # Tests masquage zone invisible
 └── [4 scripts officiels]         # Scripts obligatoires par directives
 ```

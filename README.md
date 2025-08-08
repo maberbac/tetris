@@ -76,7 +76,7 @@ Un jeu de Tetris classique développé en Python avec l'aide de Github Copilot (
 - Tests complets avec approche TDD (Test-Driven Development)
 - Rotation horaire : Pièce T avec rotation dans le sens horaire (Nord → Ouest → Sud → Est → Nord) ✅ CORRIGÉ !
 
-### Tests implémentés (258 tests - 100% ✅)
+### Tests implémentés (272 tests - 100% ✅)
 ```
 tests/
 ├── unit/                           # Tests unitaires (145 tests ✅)
@@ -92,7 +92,7 @@ tests/
 │   ├── test_son_gain_niveau_integration.py # Tests intégration son gain niveau (2 tests)
 │   ├── test_son_game_over_integration.py # Tests intégration son game over (2 tests) ✅
 │   └── [4 tests d'intégration directe] # Tests génération aléatoire, moteur, plateau, statistiques ✅
-├── acceptance/                    # Tests d'acceptance (87 tests ✅)
+├── acceptance/                    # Tests d'acceptance (101 tests ✅)
 │   ├── test_controles_rapide.py  # Tests contrôles complets
 │   ├── test_controles_simplifies.py # Tests contrôles simplifiés
 │   ├── test_fonctionnalite_mute.py # Tests fonctionnalité mute/unmute ✅
@@ -106,11 +106,13 @@ tests/
 │   ├── test_son_game_over.py     # Tests son game over ✅
 │   ├── test_son_tetris.py        # Tests son TETRIS pour 4 lignes ✅
 │   ├── test_audio_rotation.py    # Tests audio rotation avec ExceptionAudio ✅
+│   ├── test_indicateur_mute.py   # Tests indicateur visuel mute ✅
+│   ├── test_mute_game_over.py    # Tests correction mute game over ✅
 │   └── test_masquage_zone_invisible.py # Tests masquage zone invisible ✅
 └── [4 scripts officiels]          # Scripts de lancement avec découverte dynamique ✅
 ```
 
-Performance : 258 tests en temps rapide (100% succès - Suite complète validée ✅)
+Performance : 272 tests en temps rapide (100% succès - Suite complète validée ✅)
 
 ### 🔧 Découverte dynamique des tests ✅
 Les scripts de test utilisent maintenant `unittest.TestLoader.discover()` pour découvrir automatiquement tous les tests, éliminant le besoin de maintenir des listes manuelles de modules.
@@ -226,7 +228,7 @@ tetris/
 │   └── testing-strategy.md          # Stratégie TDD
 ├── tests/            # Tests organisés par type
 │   ├── unit/         # Tests unitaires (145 tests)
-│   ├── acceptance/   # Tests d'acceptance (87 tests)
+│   ├── acceptance/   # Tests d'acceptance (101 tests)
 │   └── integration/  # Tests d'intégration (26 tests)
 ├── tmp/              # Scripts temporaires et outils de développement
 ├── jouer.py          # Point d'entrée principal
@@ -259,9 +261,9 @@ Organisation conforme aux directives :
 - Outils de développement : Déplacés dans `tmp/` (comme `metriques_tests.py`)
 - AUCUN test à la racine : Règle absolue respectée
 
-Couverture actuelle : 258 tests, 100% de réussite
+Couverture actuelle : 272 tests, 100% de réussite
 - 145 tests unitaires : Domaine, entités, services, statistiques, zone invisible, mute/unmute, restart, ExceptionAudio
-- 87 tests d'acceptance : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + fonctionnalité restart + audio rotation avec ExceptionAudio
+- 101 tests d'acceptance : Scénarios utilisateur + corrections de bugs + fonctionnalité mute + son gain niveau + son game over + son TETRIS + fonctionnalité restart + audio rotation avec ExceptionAudio
 - 26 tests d'intégration : Intégration audio, restart, génération aléatoire, moteur, plateau, statistiques, ExceptionAudio
 
 ## 📋 État du développement
@@ -286,4 +288,4 @@ Couverture actuelle : 258 tests, 100% de réussite
 - Système audio intégré avec musique de fond fonctionnelle
 - Gestion d'erreurs audio : Fallback automatique et fonctionnement sans son
 - Zone invisible : Système de spawn réaliste avec Y_SPAWN_DEFAUT = -3
-- Suite de tests complète : 258/258 tests passent (100% réussite) 
+- Suite de tests complète : 272/272 tests passent (100% réussite) 

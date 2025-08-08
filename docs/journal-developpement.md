@@ -258,7 +258,7 @@ Documentation du processus de développement complet
 
 56. ✅ **Correction tests legacy et validation finale** : Mise à jour des tests existants
     - Correction : test_audio_rotation.py adapté pour ExceptionAudio au lieu de return False
-    - Validation : 258 tests passent (145 unitaires + 87 acceptance + 26 intégration - 100% ✅)
+    - Validation : 272 tests passent (145 unitaires + 101 acceptance + 26 intégration - 100% ✅)
     - **Résultat** : Système ExceptionAudio complètement intégré avec couverture de tests totale
 
 ### **Phase 22 : Correction découverte tests et API obsolète (7 août - TDD strict)** ✅ **NOUVEAU !**
@@ -810,3 +810,21 @@ Le projet Tetris est maintenant **100% fonctionnel et complet** avec :
     - DOC_TECHNIQUE.md : Section ExceptionCollision mise à jour avec toutes les commandes
     - Journal-developpement.md : Nouvelle phase documentée avec détails TDD
     - **Résultat** : Documentation entièrement cohérente avec conformité directives ✅
+
+### **Phase 23 : Correction mute game over et indicateur visuel (8 août - TDD strict)** ✅ **NOUVEAU !**
+57. ✅ **Tests d'acceptance indicateur mute visuel** : Développement TDD de tests pour feedback utilisateur
+    - **RED** : Tests validant que l'utilisateur voit l'indicateur mute quand activé
+    - **GREEN** : Tests validant que l'indicateur disparaît quand mute désactivé
+    - **Résultat** : 10 tests d'acceptance pour indicateur mute créés et passants ✅
+
+58. ✅ **Correction critique mute game over** : Résolution du problème pygame.mixer.Sound continue malgré mute
+    - **RED** : Test reproduisant le problème exact signalé par utilisateur
+    - Investigation : pygame.mixer.Sound ignore volume_effectif = 0 si déjà en cours de lecture
+    - **GREEN** : Ajout de pygame.mixer.stop() dans basculer_mute_musique() pour arrêter sons en cours
+    - **Résultat** : 4 tests d'acceptance pour correction mute game over créés et passants ✅
+
+59. ✅ **Validation complète et mise à jour métriques** : Documentation synchronisée avec nouveaux tests
+    - Tests total : 272 tests (145 unitaires + 101 acceptance + 26 intégration - 100% ✅)
+    - Nouveaux tests : +14 tests d'acceptance (indicateur mute + correction mute game over)
+    - Documentation : README.md, DOC_TECHNIQUE.md, testing-strategy.md, journal-developpement.md mis à jour
+    - **Résultat** : Système mute complètement robuste avec correction pygame.mixer et feedback visuel ✅
