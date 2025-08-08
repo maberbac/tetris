@@ -1,7 +1,30 @@
 """
 Interface audio pour le jeu de Tetris.
 
-Port de sortie selon l'architecture hexagonale pour la gestion audio.
+Port de sortie selon l'archit    @abstractmethod
+    def est_musique_en_cours(self) -> bool:
+        """
+        Vérifie si la musique est en cours de lecture.
+        
+        Returns:
+            bool: True si la musique joue, False sinon
+        """
+        pass
+    
+    @abstractmethod
+    def obtenir_etat_mute(self) -> bool:
+        """
+        Obtient l'état actuel du mute.
+        
+        Returns:
+            bool: True si l'audio est en mode mute, False sinon
+        """
+        pass
+    
+    @abstractmethod
+    def nettoyer(self) -> None:
+        """Nettoie les ressources audio."""
+        passale pour la gestion audio.
 """
 
 from abc import ABC, abstractmethod

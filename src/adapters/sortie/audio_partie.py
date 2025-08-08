@@ -253,6 +253,15 @@ class AudioPartie(AudioJeu):
         
         return pygame.mixer.music.get_busy()
     
+    def obtenir_etat_mute(self) -> bool:
+        """
+        Obtient l'état actuel du mute.
+        
+        Returns:
+            bool: True si l'audio est en mode mute, False sinon
+        """
+        return self._est_mute
+    
     def nettoyer(self) -> None:
         """Nettoie les ressources audio et ferme le système."""
         if self._initialise:

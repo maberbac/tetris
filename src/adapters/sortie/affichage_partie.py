@@ -117,8 +117,53 @@ class AffichagePartie(AffichageJeu):
         self._dessiner_messages(moteur)
         self._dessiner_etat_jeu(moteur)
         
+        # Indicateur de mute (en dernier pour qu'il soit au-dessus de tout)
+        self._dessiner_indicateur_mute(moteur)
+        
         pygame.display.flip()
     
+    def _dessiner_indicateur_mute(self, moteur: 'MoteurPartie') -> None:
+        """Dessine l'indicateur visuel de mute dans l'interface."""
+        # Vérifier que l'affichage est initialisé
+        if not self.initialise:
+            return
+            
+        audio = moteur.obtenir_audio()
+        if not audio or not hasattr(audio, 'obtenir_etat_mute'):
+            return
+        
+        # Afficher l'indicateur seulement si le son est en mute
+        if audio.obtenir_etat_mute():
+            # Position : coin supérieur droit de la zone de jeu
+            x = self.zone_jeu_x + self.largeur_jeu - 100
+            y = self.zone_jeu_y - 35
+            
+            # Icône de mute avec fond semi-transparent
+            largeur_indicateur = 90
+            hauteur_indicateur = 25
+            
+            # Fond semi-transparent rouge pour attirer l'attention
+            rect_fond = pygame.Rect(x, y, largeur_indicateur, hauteur_indicateur)
+            surface_fond = pygame.Surface((largeur_indicateur, hauteur_indicateur))
+            surface_fond.set_alpha(180)
+            surface_fond.fill((139, 0, 0))  # Rouge foncé
+            self.ecran.blit(surface_fond, (x, y))
+            
+            # Bordure rouge vive
+            pygame.draw.rect(self.ecran, (255, 0, 0), rect_fond, 2)
+            
+            # Texte "MUTE"
+            texte_mute = "MUTE"
+            rendu_mute = self.police_normale.render(texte_mute, True, self.blanc)
+            
+            # Centrer le texte dans l'indicateur
+            largeur_texte = rendu_mute.get_width()
+            hauteur_texte = rendu_mute.get_height()
+            x_texte = x + (largeur_indicateur - largeur_texte) // 2
+            y_texte = y + (hauteur_indicateur - hauteur_texte) // 2
+            
+            self.ecran.blit(rendu_mute, (x_texte, y_texte))
+
     def nettoyer(self) -> None:
         """Nettoie les ressources pygame."""
         if self.initialise:

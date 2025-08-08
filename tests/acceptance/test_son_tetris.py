@@ -65,6 +65,10 @@ class AudioSpyTetris(AudioJeu):
     def est_musique_en_cours(self) -> bool:
         return False
     
+    def obtenir_etat_mute(self) -> bool:
+        """Retourne l'état de mute (pour compatibilité avec l'interface)."""
+        return False
+    
     def nettoyer(self) -> None:
         pass
     
