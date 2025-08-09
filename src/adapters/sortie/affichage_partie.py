@@ -20,6 +20,7 @@ class AffichagePartie(AffichageJeu):
     
     def __init__(self):
         self.initialise = False
+        self.horloge_fps = None  # Pour calculer le FPS
         
     def initialiser(self) -> None:
         """Initialise l'affichage pygame."""
@@ -88,6 +89,9 @@ class AffichagePartie(AffichageJeu):
         self.zone_jeu_y = self.marge + 40
         self.zone_interface_x = self.zone_jeu_x + self.largeur_jeu + self.marge
         
+        # Initialiser l'horloge pour le calcul du FPS
+        self.horloge_fps = pygame.time.Clock()
+        
         self.initialise = True
         logger_tetris.info("🖥️ Interface graphique initialisée")
     
@@ -119,6 +123,9 @@ class AffichagePartie(AffichageJeu):
         
         # Indicateur de mute (en dernier pour qu'il soit au-dessus de tout)
         self._dessiner_indicateur_mute(moteur)
+        
+        # FPS en temps réel (en dernier pour qu'il soit toujours visible)
+        self._dessiner_fps()
         
         pygame.display.flip()
     
@@ -347,3 +354,40 @@ class AffichagePartie(AffichageJeu):
         self.ecran.blit(surface_fond, (x - 15, y - 10))
         
         self.ecran.blit(rendu, (x, y))
+
+    def _dessiner_fps(self) -> None:
+        """Dessine le FPS en temps réel dans le coin supérieur droit."""
+        if not self.initialise or not self.horloge_fps:
+            return
+            
+        # Calculer le FPS actuel
+        fps_actuel = self.horloge_fps.get_fps()
+        
+        # Formater le texte du FPS
+        texte_fps = f"FPS: {fps_actuel:.1f}"
+        
+        # Choisir la couleur selon le FPS
+        if fps_actuel >= 55:
+            couleur_fps = (0, 255, 0)  # Vert pour bon FPS
+        elif fps_actuel >= 45:
+            couleur_fps = (255, 255, 0)  # Jaune pour FPS moyen
+        else:
+            couleur_fps = (255, 0, 0)  # Rouge pour FPS faible
+        
+        # Rendre le texte
+        rendu_fps = self.police_monospace.render(texte_fps, True, couleur_fps)
+        
+        # Position dans le coin supérieur droit
+        largeur_texte = rendu_fps.get_width()
+        x = self.ecran.get_width() - largeur_texte - 10
+        y = 10
+        
+        # Fond semi-transparent pour la lisibilité
+        rect_fond = pygame.Rect(x - 5, y - 2, largeur_texte + 10, 20)
+        surface_fond = pygame.Surface((largeur_texte + 10, 20))
+        surface_fond.set_alpha(128)
+        surface_fond.fill(self.noir)
+        self.ecran.blit(surface_fond, (x - 5, y - 2))
+        
+        # Afficher le FPS
+        self.ecran.blit(rendu_fps, (x, y))

@@ -169,15 +169,15 @@ class TestAcceptanceSonTetris(unittest.TestCase):
     
     def test_message_tetris_toujours_present_avec_son(self):
         """
-        Test d'acceptance : Le message TETRIS est toujours affiché avec le son.
+        Test d'acceptance : Le son TETRIS est joué pour 4 lignes (sans messages).
         
         Scénario utilisateur :
         1. Le joueur réalise un TETRIS (4 lignes)
-        2. Il voit le message "[PARTY] TETRIS ! (+800 pts)"
-        3. Il entend le son tetris.wav en même temps
-        4. L'expérience est complète (visuel + audio)
+        2. Il entend le son tetris.wav spécial
+        3. Aucun message n'est affiché (gameplay épuré)
+        4. L'expérience audio est complète
         """
-        print("\n🎮 TEST D'ACCEPTANCE: Message TETRIS + Son ensemble")
+        print("\n🎮 TEST D'ACCEPTANCE: Son TETRIS sans messages")
         print("=" * 55)
         
         # Simuler un TETRIS complet via la méthode officielle du moteur
@@ -185,23 +185,13 @@ class TestAcceptanceSonTetris(unittest.TestCase):
         self.moteur.simuler_lignes_supprimees(nb_lignes)
         print("🎵 Son TETRIS joué ! (4 lignes éliminées)")
         
-        # Vérifier l'expérience complète
-        messages = self.moteur.messages  # Utiliser directement la liste des messages
-        messages_tetris = [msg for msg in messages if "TETRIS" in msg]
-        
-        print(f"📨 Messages TETRIS: {messages_tetris}")
+        # Vérifier que le son est joué
         print(f"🎵 Sons TETRIS joués: {len(self.audio_spy.obtenir_sons_tetris())}")
         
-        # Assertions d'acceptance pour l'expérience complète
-        self.assertTrue(len(messages_tetris) > 0, "Le message TETRIS doit être affiché")
+        # Assertion d'acceptance - seul le son compte
         self.assertTrue(self.audio_spy.a_joue_tetris_wav(), "Le son TETRIS doit être joué")
         
-        # Vérifier le contenu du message
-        message_tetris = messages_tetris[0]
-        self.assertIn("TETRIS", message_tetris, "Le message doit contenir 'TETRIS'")
-        self.assertIn("800", message_tetris, "Le message doit montrer le bonus de 800 points")
-        
-        print("✅ Test d'acceptance RÉUSSI : Expérience TETRIS complète (message + son)")
+        print("✅ Test d'acceptance RÉUSSI : Son TETRIS joué (gameplay épuré sans messages)")
     
     def test_integration_complete_tetris_dans_moteur(self):
         """
@@ -228,19 +218,12 @@ class TestAcceptanceSonTetris(unittest.TestCase):
         # Vérifications d'intégration
         print(f"📊 Résultats d'intégration:")
         print(f"   Score obtenu: {self.moteur.stats.score}")
-        print(f"   Messages directs: {self.moteur.messages}")
         print(f"   Sons TETRIS joués: {len(self.audio_spy.obtenir_sons_tetris())}")
         
         # Assertions d'intégration
         self.assertEqual(self.moteur.stats.score, 800, "Le score TETRIS doit être de 800 points")
         self.assertTrue(self.audio_spy.a_joue_tetris_wav(), 
                        "Le son TETRIS doit être joué automatiquement")
-        
-        messages = self.moteur.messages  # Utiliser directement la liste des messages
-        print(f"   Détail messages: {messages}")  # Debug
-        self.assertTrue(len(messages) > 0, "Des messages doivent être générés")
-        self.assertTrue(any("TETRIS" in msg for msg in messages),
-                       f"Le message TETRIS doit être généré. Messages trouvés: {messages}")
         
         print("✅ Test d'acceptance RÉUSSI : Intégration complète TETRIS dans le moteur")
     

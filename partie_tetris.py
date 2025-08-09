@@ -102,7 +102,11 @@ class PartieTetris:
                 
                 # Affichage via l'adaptateur de sortie
                 self.affichage.dessiner(self.moteur)
+                
+                # Synchroniser les horloges pour le calcul du FPS
                 horloge.tick(60)
+                if self.affichage.horloge_fps:
+                    self.affichage.horloge_fps.tick(60)
         
         finally:
             # Nettoyage des ressources

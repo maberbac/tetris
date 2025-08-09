@@ -24,7 +24,7 @@ Un jeu de Tetris classique développé en Python avec l'aide de Github Copilot (
 
 ## 🎬 Démonstration du gameplay
 
-[![Démonstration Tetris](https://img.youtube.com/vi/4wGwvLoQEzo/0.jpg)](https://youtu.be/4wGwvLoQEzo)
+[![Démonstration Tetris](https://img.youtube.com/vi/vP7z9LnUWTY/0.jpg)](https://youtu.be/vP7z9LnUWTY)
 
 *Cliquez sur l'image ci-dessus pour voir une démonstration vidéo du jeu en action !*
 
